@@ -1,0 +1,212 @@
+;;; -*- coding: utf-8 -*-
+
+;; ----- ido-last-directory-list -----
+(
+ ("/home/giovanni/development/cpp/chan/include/" . "chan/")
+ ("/home/giovanni/development/cpp/chan/" . "include/")
+ ("/home/giovanni/development/c/p1/" . "esercizi/")
+ ("/home/giovanni/development/rust/LogHive/src/" . "bee/")
+ ("/home/giovanni/development/rust/LogHive/" . "src/")
+ ("/home/giovanni/development/rust/gamulator/target/debug/" . "deps/")
+ ("/home/giovanni/development/rust/gamulator/target/rust-analyzer/metadata/" . "workspace/")
+ ("/home/giovanni/development/rust/gamulator/target/rust-analyzer/" . "metadata/")
+ ("/home/giovanni/development/rust/gamulator/target/" . "debug/")
+ ("/home/giovanni/development/rust/rmine/" . "src/")
+ ("/home/giovanni/development/rust/LLD_gbemu/part1/" . "gbemu/")
+ ("/home/giovanni/development/rust/LLD_gbemu/" . "part12/")
+ ("/home/giovanni/development/rust/gamulator/" . "src/")
+ ("/home/giovanni/development/cpp/yahl/" . "include/")
+ ("/home/giovanni/development/rust/kfd/" . "src/")
+ ("/home/giovanni/development/rust/" . "LogHive/")
+ ("/home/giovanni/development/go/WebWeaver/" . "cmd/")
+ ("/home/giovanni/development/go/ians/pkg/" . "console/")
+ ("/home/giovanni/development/go/ians/" . "pkg/")
+ ("/home/giovanni/development/go/" . "ians/")
+ ("/home/giovanni/development/cpp/eikon/test/" . "bin/")
+ ("/home/giovanni/development/cpp/solar-system/" . "src/")
+ ("/home/giovanni/development/c/" . "p1/")
+ ("/home/giovanni/development/cpp/eikon/" . "src/")
+ ("/home/" . "giovanni/")
+ ("/" . "home/")
+ ("/home/giovanni/development/cpp/" . "chan/")
+ ("/home/giovanni/development/" . "c/")
+ ("/home/giovanni/" . "development/")
+ ("/home/giovanni/.config/" . "fastfetch/")
+ ("/home/giovanni/.config/emacs/" . "auto-save-list/")
+)
+
+;; ----- ido-work-directory-list -----
+(
+ "/home/giovanni/.config/fastfetch/"
+ "/home/giovanni/development/c/p1/esercizi/"
+ "/home/giovanni/development/rust/LogHive/src/"
+ "/home/giovanni/development/cpp/chan/include/chan/"
+ "/home/giovanni/.config/emacs/"
+ "/home/giovanni/development/rust/LogHive/"
+ "/home/giovanni/development/cpp/eikon/src/"
+ "/home/giovanni/development/cpp/eikon/include/"
+ "/home/giovanni/development/cpp/eikon/"
+ "/home/giovanni/development/cpp/eikon/cli/"
+ "/home/giovanni/development/c/p1/"
+ "/home/giovanni/development/go/ians/pkg/console/"
+ "/home/giovanni/development/c/"
+ "/home/giovanni/development/rust/LogHive/src/bee/"
+ "/home/giovanni/development/rust/LogHive/src/hive/"
+ "/home/giovanni/development/rust/gamulator/src/"
+ "/home/giovanni/development/rust/gamulator/target/rust-analyzer/metadata/workspace/"
+ "/home/giovanni/development/rust/rmine/src/"
+ "/home/giovanni/development/cpp/eikon/test/"
+ "/home/giovanni/development/cpp/eikon/assets/"
+ "/home/giovanni/development/cpp/yahl/include/"
+ "/home/giovanni/development/cpp/yahl/src/"
+ "/home/giovanni/development/go/ians/"
+ "/home/giovanni/development/rust/kfd/src/"
+ "/home/giovanni/development/go/WebWeaver/cmd/"
+ "/home/giovanni/development/cpp/solar-system/src/"
+ "/home/giovanni/development/pixel-buffer/"
+ "/home/giovanni/"
+)
+
+;; ----- ido-work-file-list -----
+(
+ "config.jsonc"
+ "11.c"
+ "bee.rs"
+ "1.c"
+ "config.rs"
+ "10.c"
+ "main.rs"
+ "chan.hpp"
+ "utils.rs"
+ "init.el"
+)
+
+;; ----- ido-dir-file-cache -----
+(
+ ("/home/giovanni/.config/fastfetch/" (26893 63727 716179 22000) "../" "config.jsonc" "./" "logo/")
+
+ ("/home/giovanni/.config/" (26893 62989 298188 924000) "monitors.xml~" "xdg-terminals.list" "QtProject.conf" "gtk-3.0/" "autostart/" "goa-1.0/" ".gsd-keyboard.settings-ported" "Raspberry Pi/" "gtk-4.0/" "Google/" "go/" "binwalk/" "gnome-initial-setup-done" "../" "google-chrome/" "ghidra/" "QtProject/" "wofi/" "inkscape/" "qimessaging/" "update-notifier/" "neofetch/" "composer/" "herd-lite/" "dconf/" "tiling-assistant/" "init.el" ".clangd" "evolution/" "systemd/" "notion-app/" "eog/" "Android Open Source Project/" "emacs/" "flutter/" "GNOME-xdg-terminals.list" "Exodus/" "pulse/" "ubuntu-xdg-terminals.list" "ibus/" "htop/" "nautilus/" "JetBrains/" "user-dirs.locale" "background" "mimeapps.list" "enchant/" "Code/" "monitors.xml" "./" "gopls/" "kitty/" "user-dirs.dirs" "yelp/" "rygel.conf" "fastfetch/" "gnome-session/")
+
+ ("/home/giovanni/" (26893 63729 249195 135000) ".wget-hsts" ".gnupg/" ".zcompdump" ".gitconfig" ".local/" "Testing/" ".idlerc/" "Pubblici/" ".pub-cache/" ".bash_logout" ".bash_history" "Arduino/" "go/" ".gphoto/" "DartConfiguration.tcl" ".vscode/" ".pki/" "../" ".flutter" ".mongodb/" ".BurpSuite/" "CMakeCache.txt" "Scrivania/" "CMakeFiles/" "Documenti/" ".gradle/" ".java/" ".dotnet/" ".zcompdump-giovanni-pc-5.9.zwc" ".lesshst" ".bashrc" ".zcompdump-giovanni-pc-5.9" ".dart-tool/" "snap/" "development/" ".zsh_history" ".emulator_console_auth_token" ".sudo_as_admin_successful" "AndroidStudioProjects/" ".android/" ".profile" ".arduino15/" ".flutter-devtools/" "Video/" "Scaricati/" ".node_repl_history" ".john/" ".python_history" ".cargo/" "./" ".npm/" ".mysql_history" "src/" ".rustup/" ".ssh/" ".cache/" ".config/" "Modelli/" "Musica/" ".zshrc" "Immagini/" ".dartServer/")
+
+ ("/home/giovanni/development/c/p1/esercizi/" (26891 12632 152870 853000) "1.c" "9.c" "10.c" "3.c" "../" "4.c" "7.c" "8.c" "5.c" "2.c" "6.c" "./")
+
+ ("/home/giovanni/development/rust/LogHive/src/" (26891 12490 8875 299000) "config.rs" "../" "bee.rs" "utils.rs" "main.rs" "./")
+
+ ("/home/giovanni/development/rust/LogHive/" (26891 11047 114920 434000) "Cargo.lock" ".gitignore" "../" "README.md" "Cargo.toml" ".github/" "CODE_OF_CONDUCT.md" "target/" ".git/" "docs/" "CONTRIBUTING.md" "LICENSE" "./" "assets/" "src/" "config.yml")
+
+ ("/home/giovanni/development/cpp/eikon/src/" (26881 65247 673794 418000) "png.cpp" "font.cpp" "../" "utils.cpp" "pixels.cpp" "shapes.cpp" "bmp.cpp" "./" "ppm.cpp" "eikon.cpp")
+
+ ("/home/giovanni/.config/emacs/" (26890 4120 224762 683000) "irony/" "auto-save-list/" "../" "smex-items" "elpa/" "init.el" "tree-sitter/" "./" "ido.last" "url/" "eln-cache/")
+
+ ("/home/giovanni/development/cpp/chan/include/chan/" (26711 53097 828553 348000) "../" "./" "chan.hpp")
+
+ ("/home/giovanni/development/cpp/chan/include/" (26711 53091 990204 748000) "../" "chan/" "./")
+
+ ("/home/giovanni/development/cpp/chan/" (26719 58460 110263 944000) "tests/" "bin/" ".vscode/" ".gitignore" "../" "README.md" "include/" "examples/" ".git/" "LICENSE" "./")
+
+ ("/home/giovanni/development/" (26885 5864 965898 982000) "dart/" "rust/" "python/" "c/" "go/" "javascript/" "../" "cpp/" "php/" "shell/" "java/" "assembly/" "./" "nao/")
+
+ ("/home/giovanni/development/cpp/eikon/" (26881 65230 586794 953000) "build/" "bin/" "outputs/" "copy" ".vscode/" ".gitignore" "../" "README.md" "copy.cpp" "include/" ".github/" "CODE_OF_CONDUCT.md" ".clangd" "build.sh" ".git/" "cli/" "docs/" "CONTRIBUTING.md" "LICENSE" "test/" "./" "CMakeLists.txt" "assets/" "src/")
+
+ ("/home/giovanni/development/c/p1/" (26881 63724 660842 59000) "executor" "bin/" "../" "#run.sh#" "executor.c" "esercizi/" "build.sh" "./")
+
+ ("/home/giovanni/development/c/" (26881 60963 676928 424000) "threadpool/" "ahttp-parser/" "Checksum-generator/" "p1/" "../" "runtime-linker/" "cjson/" "kfd/" "kilo/" "./" "subnethero/")
+
+ ("/home/giovanni/development/rust/LogHive/src/bee/" (26878 18780 54120 312000) "../" "./")
+
+ ("/home/giovanni/development/rust/LogHive/src/hive/" (26878 17460 315604 56000) "../" "hive.rs" "./" "lib.rs")
+
+ ("/home/giovanni/development/cpp/eikon/include/" (26876 31971 475492 524000) "ppm.hpp" "colors.hpp" "png.hpp" "utils.hpp" "../" "formats.hpp" "eikon.hpp" "bmp.hpp" "pixels.hpp" "./" "matrix.hpp" "shapes.hpp" "font.hpp")
+
+ ("/home/giovanni/development/rust/rmine/src/" (26876 36395 605234 588000) "../" "main.rs" "./")
+
+ ("/home/giovanni/development/rust/gamulator/src/" (26876 38234 514308 313000) "../" "main.rs" "./")
+
+ ("/home/giovanni/development/rust/gamulator/target/debug/deps/" (26713 30785 344157 904000) "libgamulator-617fff0d4ca12328.rmeta" "../" "gamulator-ed488ebfa4c47720.d" "gamulator-617fff0d4ca12328.d" "libgamulator-ed488ebfa4c47720.rmeta" "./")
+
+ ("/home/giovanni/development/rust/gamulator/target/debug/build/" (26713 28915 428060 352000) "../" "./")
+
+ ("/home/giovanni/development/rust/gamulator/target/debug/" (26713 28915 428060 352000) "build/" ".fingerprint/" "../" "deps/" ".cargo-lock" "examples/" "incremental/" "./")
+
+ ("/home/giovanni/development/rust/gamulator/target/rust-analyzer/metadata/workspace/" (26876 35791 675324 470000) "Cargo.lock" "../" "./")
+
+ ("/home/giovanni/development/rust/gamulator/target/rust-analyzer/metadata/sysroot/" (26713 28915 218547 715000) "Cargo.lock" "../" "./")
+
+ ("/home/giovanni/development/rust/gamulator/target/rust-analyzer/metadata/" (26713 28915 218547 715000) "../" "workspace/" "./" "sysroot/")
+
+ ("/home/giovanni/development/rust/gamulator/target/rust-analyzer/" (26713 28914 671153 940000) "metadata/" "../" "./")
+
+ ("/home/giovanni/development/rust/gamulator/target/" (26713 28915 427057 900000) "debug/" "../" "rust-analyzer/" ".rustc_info.json" "./")
+
+ ("/home/giovanni/development/rust/rmine/" (26779 1898 685561 948000) ".gitignore" "../" "Cargo.toml" ".git/" "./" "src/")
+
+ ("/home/giovanni/development/rust/LLD_gbemu/part12/" (26604 3429 872213 635000) "tests/" "cmake/" "gbemu/" ".vscode/" ".gitignore" "../" "lib/" "include/" "NotoSansMono-Medium.ttf" "./" "CMakeLists.txt")
+
+ ("/home/giovanni/development/rust/LLD_gbemu/part1/gbemu/" (26604 3429 854213 111000) "../" "main.c" "./" "CMakeLists.txt")
+
+ ("/home/giovanni/development/rust/LLD_gbemu/part1/include/" (26604 3429 854213 111000) "ppu.h" "common.h" "timer.h" "../" "cart.h" "emu.h" "./" "cpu.h" "bus.h")
+
+ ("/home/giovanni/development/rust/LLD_gbemu/part1/tests/" (26604 3429 854213 111000) "../" "./" "CMakeLists.txt" "check_gbe.c")
+
+ ("/home/giovanni/development/rust/LLD_gbemu/part1/lib/" (26604 3429 854213 111000) "cart.c" "ppu.c" "emu.c" "cpu.c" "../" "bus.c" "timer.c" "./" "CMakeLists.txt")
+
+ ("/home/giovanni/development/rust/LLD_gbemu/part1/" (26604 3429 854213 111000) "tests/" "cmake/" "gbemu/" ".gitignore" "../" "lib/" "include/" "NotoSansMono-Medium.ttf" "./" "CMakeLists.txt")
+
+ ("/home/giovanni/development/rust/gamulator/" (26713 28915 427057 900000) "Cargo.lock" ".gitignore" "../" "Cargo.toml" "target/" ".git/" "./" "src/")
+
+ ("/home/giovanni/development/rust/" (26875 43699 660082 384000) "gamulator/" "rmine/" "LLD_gbemu/" "../" "kfd/" "LogHive/" "./")
+
+ ("/home/giovanni/development/cpp/eikon/assets/" (26853 6471 433872 527000) "../" "outputs.png" "logo.png" "./" "cli.png")
+
+ ("/home/giovanni/development/cpp/yahl/src/" (26871 36039 967806 390000) "lexer.cpp" "../" "./")
+
+ ("/home/giovanni/development/cpp/yahl/include/" (26871 36025 429806 844000) "token.hpp" "source_position.hpp" "../" "lexer.hpp" "yahl.hpp" "./")
+
+ ("/home/giovanni/development/cpp/eikon/test/" (26872 34979 363954 303000) "build/" "bin/" "../" "test_framework.hpp" "test.cpp" "logs.hpp" "test_functions.hpp" "./" "CMakeLists.txt")
+
+ ("/home/giovanni/development/cpp/yahl/" (26870 22602 236868 545000) ".gitignore" "../" "README.md" "include/" "build.sh" ".git/" "LICENSE" "./" "CMakeLists.txt" "assets/" "src/")
+
+ ("/home/giovanni/development/cpp/" (26870 21699 197731 552000) "eikon/" "argparse/" "../" "solar-system/" "R4Quest/" "mix/" "chan/" "yahl/" "brainfuck-translator/" "./" "memory-allocator/")
+
+ ("/home/giovanni/development/rust/kfd/src/" (26868 42474 915538 582000) "../" "jwt.rs" "uuid.rs" "random.rs" "main.rs" "./" "regex.rs")
+
+ ("/home/giovanni/development/cpp/eikon/cli/" (26868 59475 39744 120000) "cmds.hpp" "build/" "bin/" "utils.hpp" "../" "data.cpp" "eikoncli.hpp" "data.hpp" "cmds.cpp" "./" "CMakeLists.txt" "eikoncli.cpp")
+
+ ("/home/giovanni/development/rust/kfd/" (26840 4447 825958 647000) "Cargo.lock" ".gitignore" "../" "Cargo.toml" "target/" ".git/" "./" "src/")
+
+ ("/home/giovanni/development/rust/LLD_gbemu/" (26604 3429 921215 61000) "part8/" "part2-3/" "windows_deps/" "part6/" "part10/" "part16/" "part9/" "part1/" "../" "README.md" "part7/" "roms/" "part15/" "part5/" "part14/" "part12/" ".git/" "docs/" "part11/" "./" "part4/" "part13/")
+
+ ("/home/giovanni/development/go/WebWeaver/cmd/" (26478 58121 698849 168000) "main.go" "../" "go.mod" "./")
+
+ ("/home/giovanni/development/go/WebWeaver/" (26731 64057 622207 763000) "webui/" "go.work" ".gitignore" "../" "README.md" "benchmark/" "go.work.sum" "CODE_OF_CONDUCT.md" "Makefile" "SECURITY.md" ".git/" "configs/" "docs/" "CONTRIBUTING.md" "LICENSE" "pkg/" "./" "main" "assets/" "Dockerfile" "cmd/" "internal/")
+
+ ("/home/giovanni/development/go/ians/pkg/console/" (26817 35541 609338 192000) "scan.go" "error.go" "../" "clear.go" "print.go" "data.go" "fmt.go" "./")
+
+ ("/home/giovanni/development/go/ians/pkg/" (26817 35753 82865 983000) "../" "progressbar/" "console/" "files/" "system/" "tcp/" "./" "ascii/" "jsonUtils/")
+
+ ("/home/giovanni/development/go/ians/" (26838 34114 733205 856000) "install.sh" "../" "README.md" "update.sh" "utils/" "go.mod" ".git/" "go.sum" "LICENSE" "ians.go" "pkg/" "./" "assets/" "setup.sh" "internal/")
+
+ ("/home/giovanni/development/go/" (26697 43321 186526 979000) "WebWeaver/" "../" "Jinjector/" "ians/" "./" "Whispr/")
+
+ ("/home/giovanni/development/cpp/eikon/test/bin/" (26859 27702 757960 328000) "../" "./")
+
+ ("/home/giovanni/development/pixel-buffer/" (26854 16519 654815 221000) "../" "a.out" "main.cc" "./")
+
+ ("/home/giovanni/development/cpp/solar-system/src/" (26487 40730 233555 311000) "star.cpp" "solar_system.cpp" "../" "main.cpp" "./" "planet.cpp")
+
+ ("/home/giovanni/development/cpp/solar-system/" (26488 63915 64637 315000) "build/" "solarsystem" ".gitignore" "../" "README.md" "include/" "Makefile" ".git/" "LICENSE" "./" "assets/" "src/")
+
+ ("/home/giovanni/development/c/ahttp-parser/" (26854 7135 264925 465000) "bench.c" "../" "README.md" "Makefile" "ahttp_parser.c" "./" "ahttp_parser.h")
+
+ ("/home/" (26473 5619 619999 527000) "giovanni/" "../" "./")
+
+ ("/home/giovanni/development/cpp/argparse/" (26669 56247 40156 88000) "../" "./")
+
+ ("/home/giovanni/.config/Android Open Source Project/" (26506 26553 431198 966000) "../" "Emulator.conf" "./")
+
+ ("/home/giovanni/.config/emacs/auto-save-list/" (26854 6791 245936 226000) "../" "./" ".saves-9923-giovanni-pc~")
+)
+
+;; ----- ido-unc-hosts-cache -----
+t

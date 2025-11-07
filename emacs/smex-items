@@ -1,0 +1,33 @@
+
+;; ----- smex-history -----
+(
+ shell
+ rust-ts-mode
+ eglot
+ eval-buffer
+ flymake-mode
+ load-file
+ package-install
+)
+
+;; ----- smex-data -----
+(
+ (cd . 1)
+ (delete-file . 3)
+ (list-packages . 4)
+ (irony-install-server . 13)
+ (package-refresh-contents . 4)
+ (package-install . 6)
+ (eglot . 18)
+ (shell . 6)
+ (compile . 4)
+ (switch-to-prev-buffer . 1)
+ (eval-buffer . 8)
+ (dired . 3)
+ (message-mailto . 1)
+ (load-file . 9)
+ (treesit-install-language-grammar . 1)
+ (remember-clipboard . 1)
+ (rust-ts-mode . 6)
+ (flymake-mode . 1)
+)
