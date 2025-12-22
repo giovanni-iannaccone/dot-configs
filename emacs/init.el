@@ -15,9 +15,12 @@
 
 (ensure-package-installed 
  '(company 
-   irony
    doom-themes
-   eglot))
+   eglot
+   flycheck
+   irony
+   rust-mode
+   yasnippet))
 
 ;; Utility functions
 
@@ -32,16 +35,17 @@
   (transpose-lines 1)
   (forward-line -1))
 
-(defun search-selection-on-internet (&optional keywords)
-  (interactive)
-  (let ((selected-text (buffer-substring (region-beginning) (region-end))))
-    (eww (format "%s" selected-text ))))
-
 (defun mark-whole-line ()
   (interactive)
   (beginning-of-line)
   (push-mark nil nil 1)
   (end-of-line))
+
+;; Delete the selected text upon text insertion
+
+(use-package delsel
+  :ensure nil
+  :hook (after-init . delete-selection-mode))
 
 ;; Key binding
 
@@ -61,6 +65,8 @@
 
 ;; Appereance
 
+(load-theme 'debian-i3 t)
+
 (setq column-number-mode t)
 (setq inhibit-startup-screen t)
 (setq make-backup-files nil)
@@ -69,6 +75,8 @@
 (setq-default tab-width 4)
 (setq c-basic-offset 4)
 (setq c-basic-indent 4)
+
+(set-frame-font "JetBrainsMono NF 13" nil t)
 
 (menu-bar-mode 0)
 (tool-bar-mode 0)
@@ -122,26 +130,35 @@
   (add-hook 'c-mode-hook 'company-mode)
   (add-hook 'rust-mode-hook 'company-mode))
 
-;; Delete the selected text upon text insertion
-
-(use-package delsel
-  :ensure nil
-  :hook (after-init . delete-selection-mode))
-
-;; doom-dark+ theme
+;; variables
 
 (custom-set-variables
- '(custom-enabled-themes '(doom-dark+))
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  '(custom-safe-themes
-   '("aec7b55f2a13307a55517fdf08438863d694550565dee23181d2ebd973ebd6b8"
-     "014cb63097fc7dbda3edf53eb09802237961cbb4c9e9abd705f23b86511b0a69"
+   '("900f067cd6d9e7ef8104b2eea3be9a4dc703936bc91a6e1380eeaa3fb7b8eec1"
+     "abb7432b521577a7ed6f39494a2693e95660c095b287346ac08f54cdbf04f513"
+     "e4534f696824122b2f14bc135bd7cfddf9f6899c7341e85632fef1e3ae4f1b8b"
+     "9af6c155bdc4ced2c070d106c4b6e2bff8927fd2b73de172c893f2167951609d"
+     "30e86ff71b48ace65d107369c866f72a8026f9aee9d51af14027dc1f592a8389"
+     "3aca0ba9406433384f04c547defb40aa5d7f73ccf7440f3651125bd94affef52"
+     "67969b721d540195a76904b0a690d22b22b934991d6c552c5550cdc2da86c2e4"
+     "a9805d705c6b3348493d5679d835426efdf458da7de3d3815aae56046745138e"
      default))
  '(package-selected-packages
-   '(auto-complete-c-headers company-irony doom-themes evil go-mode
-                             irony-eldoc nerd-icons-completion
-                             nerd-icons-corfu nerd-icons-dired
-                             rust-mode smex)))
-(custom-set-faces)
+   '(auto-complete-c-headers company-irony doom-themes flycheck go-mode
+                             goto-chg irony-eldoc lsp-ui magit
+                             nerd-icons-completion nerd-icons-corfu
+                             nerd-icons-dired projectile rust-mode
+                             smex yasnippet)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(font-lock-comment-face ((t (:foreground "#4e5b55")))))
 
 ;; Eglot
 
@@ -153,7 +170,7 @@
 
 (add-hook 'c-mode-hook 'eglot-ensure)
 (add-hook 'c++-mode-hook 'eglot-ensure)
-(add-hook 'rust-mode-hook 'eglot-ensure)
 (add-hook 'go-mode-hook 'eglot-ensure)
+(add-hook 'rust-mode-hook 'eglot-ensure)
 (add-hook 'python-mode-hook 'eglot-ensure)
 (add-hook 'javascript-mode-hook 'eglot-ensure)

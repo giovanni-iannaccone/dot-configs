@@ -13,7 +13,7 @@ ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=5'
 bindkey -e
 
 setopt PROMPT_SUBST
-PROMPT='%F{green}%*%f %F{blue}%~%f %F{red}${vcs_info_msg_0_}%f$ '
+PROMPT='%F{yellow}%*%f %F{blue}%~%f %F{green}${vcs_info_msg_0_}%f$ '
 
 HISTFILE=~/.zsh_history
 HISTSIZE=100000
@@ -22,5 +22,18 @@ SAVEHIST=100000
 export PATH=$PATH:~/go/bin
 
 setopt inc_append_history
-alias clearhst="echo > $HISTFILE"
+
+alias clearhist="echo > $HISTFILE"
+
+alias ..="cd .."
+
+alias cat="batcat"
+alias catp="batcat -pp"
+
 alias ls="ls --color=auto"
+alias la="ls -a"
+alias ll="ls -l"
+
+alias github="eval '$(ssh-agent -s)' && ssh-add ~/.ssh/github && ssh -T git@github.com"
+
+fastfetch
