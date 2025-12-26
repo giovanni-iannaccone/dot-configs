@@ -30,10 +30,12 @@ alias ..="cd .."
 alias cat="batcat"
 alias catp="batcat -pp"
 
-alias ls="ls --color=auto"
-alias la="ls -a"
-alias ll="ls -l"
+alias ls="eza --icons"
+alias la="eza --icons -a"
+alias ll="eza --icons -l"
+alias lt="eza --icons --tree"
 
 alias github="eval '$(ssh-agent -s)' && ssh-add ~/.ssh/github && ssh -T git@github.com"
+alias imgshow="kitty +kitten icat"
 
 fastfetch

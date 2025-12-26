@@ -15,10 +15,10 @@
 
 (ensure-package-installed 
  '(company 
-   doom-themes
    eglot
    flycheck
    irony
+   magit
    rust-mode
    yasnippet))
 
@@ -60,8 +60,6 @@
 (global-set-key (kbd "M-<down>") 'move-line-down)
 
 (global-set-key (kbd "M-x") 'smex)
-
-(global-set-key (kbd "<f5>") 'search-selection-on-internet)
 
 ;; Appereance
 
@@ -133,10 +131,6 @@
 ;; variables
 
 (custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
  '(custom-safe-themes
    '("900f067cd6d9e7ef8104b2eea3be9a4dc703936bc91a6e1380eeaa3fb7b8eec1"
      "abb7432b521577a7ed6f39494a2693e95660c095b287346ac08f54cdbf04f513"
@@ -154,10 +148,6 @@
                              nerd-icons-dired projectile rust-mode
                              smex yasnippet)))
 (custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
  '(font-lock-comment-face ((t (:foreground "#4e5b55")))))
 
 ;; Eglot

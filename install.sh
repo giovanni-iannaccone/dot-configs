@@ -27,8 +27,8 @@ PACKAGES_AUDIO=(
 )
 
 PACKAGES_UTILITIES=(
-    avahi-daemon acpi acpid xfce4-power-manager feh emacs
-    flameshot bat qimgv xdg-user-dirs-gtk fastfetch libclang-dev
+    avahi-daemon acpi acpid xfce4-power-manager feh emacs mupdf bat
+    flameshot imagemagick xdg-user-dirs-gtk fastfetch libclang-dev htop
 )
 
 PACKAGES_TERMINAL=(
@@ -52,6 +52,9 @@ msg() {
     echo -e "${CYAN}$*${RESET}";
 }
 
+msg "Updating the system..."
+sudo apt update && sudo apt upgrade
+
 msg "Installing core packages..."
 sudo apt-get install -y "${PACKAGES_CORE[@]}" || die "Failed to install core packages"
 
@@ -67,6 +70,11 @@ sudo apt-get install -y "${PACKAGES_AUDIO[@]}" || die "Failed to install audio p
 msg "Installing system utilities..."
 sudo apt-get install -y "${PACKAGES_UTILITIES[@]}" || die "Failed to install utilities"
 
+curl -sS https://debian.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/trusted.gpg.d/debian.griffo.io.gpg
+echo "deb https://debian.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/debian.griffo.io.list
+sudo apt update
+sudo apt install eza
+
 msg "Installing zen browser..."
 (wget -qO- https://github.com/zen-browser/desktop/releases/download/1.0.2-b.2/zen.linux-x86_64.tar.xz | sudo tar xj -C /opt) || die "Failed to install zen browser"
 mkdir -p "$HOME"/.local/bin
@@ -81,14 +89,16 @@ sudo apt-get install -y "${PACKAGES_FONTS[@]}" || echo "${RED}Failed to install 
 msg "Installing build dependencies..."
 sudo apt-get install -y "${PACKAGES_BUILD[@]}" || die "Failed to install build tools"
 
+sudo apt autoremove
 sudo systemctl enable avahi-daemon acpid
 
 if [ -d "$CONFIG_DIR" ]; then
     clear
-    read -p "Found existing i3 config. Override them ? (y/n) " -n 1 -r
+    read -p "Found existing config. Override them ? (y/n) " -n 1 -r
     echo
     [[ $REPLY =~ ^[Yy]$ ]] || die "Installation cancelled"
     rm -rf "$CONFIG_DIR"
 fi
 
-cp -r * "$CONFIG_DIR" || die "Failed to copy i3 config"
+cp -r * "$CONFIG_DIR" || die "Failed to copy config"
+cp $CONFIG_DIR/zsh/.zshrc .

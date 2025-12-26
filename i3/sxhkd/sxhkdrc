@@ -6,13 +6,9 @@ super + b
 super + Return
 	kitty
 
-# Toggle Scratchpad Terminal
-super + shift + Return
-	~/.config/i3/scripts/scratchpad
-
 # Launch Rofi Application Menu
 super + space
-   	rofi -show drun -modi drun -line-padding 4 -hide-scrollbar -show-icons -theme ~/.config/i3/rofi/config.rasi
+	rofi -show drun -modi drun -line-padding 4 -hide-scrollbar -show-icons -theme ~/.config/i3/rofi/config.rasi
 
 # Launch settings
 super + s
