@@ -1,6 +1,6 @@
 #!/bin/bash
 
-CONFIG_DIR=CONFIG_DIR="$HOME/.config/"
+CONFIG_DIR="$HOME/.config/"
 
 RED   = "\033[0;31m"
 GREEN = "\033[0;32m"
@@ -14,7 +14,7 @@ PACKAGES_CORE=(
 )
 
 PACKAGES_UI=(
-    polybar rofi dunst lxappearance network-manager-gnome lxpolkit
+    polybar rofi dunst lxappearance picom network-manager-gnome lxpolkit
 )
 
 PACKAGES_FILE_MANAGER=(
