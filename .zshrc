@@ -1,6 +1,15 @@
 autoload -U compinit; compinit
 autoload -Uz vcs_info
+
 precmd() { vcs_info }
+
+pwncheck() {
+    file $1
+    echo '\n'
+    checksec --file=$1
+    echo '\n'
+    readelf -a $1 | grep GNU_STACK -A 1
+}
 
 source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh

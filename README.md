@@ -75,6 +75,7 @@ My prompt is very simple: `TIME CURRENT_DIRECTORY GIT_BRANCH`. I don’t use fra
 | `la` | Lists all files in the directory |
 | `ll` | Lists files with additional information |
 | `lt` | Displays the current directory in a tree-like output |
+| `pwncheck` | Basic PWN controls like stack canaries and non‑exec stack |
 
 ## 📘 Emacs
 

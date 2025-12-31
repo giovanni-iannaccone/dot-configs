@@ -101,4 +101,4 @@ if [ -d "$CONFIG_DIR" ]; then
 fi
 
 cp -r * "$CONFIG_DIR" || die "Failed to copy config"
-cp $CONFIG_DIR/zsh/.zshrc .
+cp $CONFIG_DIR/.zshrc .
