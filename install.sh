@@ -14,7 +14,7 @@ PACKAGES_CORE=(
 )
 
 PACKAGES_UI=(
-    polybar rofi dunst lxappearance picom network-manager-gnome lxpolkit
+    polybar rofi dunst picom network-manager-gnome lxpolkit
 )
 
 PACKAGES_FILE_MANAGER=(
@@ -23,16 +23,16 @@ PACKAGES_FILE_MANAGER=(
 )
 
 PACKAGES_AUDIO=(
-    pavucontrol pulsemixer pamixer pipewire-audio
+    pulsemixer pamixer pipewire-audio
 )
 
 PACKAGES_UTILITIES=(
-    avahi-daemon acpi acpid xfce4-power-manager feh emacs mupdf bat
-    flameshot imagemagick xdg-user-dirs-gtk fastfetch libclang-dev htop
+    avahi-daemon acpi acpid feh emacs mupdf bat ripgrep
+    flameshot imagemagick fastfetch libclang-dev htop
 )
 
 PACKAGES_TERMINAL=(
-    suckless-tools kitty zsh
+    suckless-tools kitty zsh vim
 )
 
 PACKAGES_FONTS=(
@@ -102,3 +102,12 @@ fi
 
 cp -r * "$CONFIG_DIR" || die "Failed to copy config"
 cp $CONFIG_DIR/.zshrc .
+
+sudo apt update && sudo apt upgrade
+
+read -p "Configurations installed, restart now ? (y/n) " -n 1 -r
+if [[ $REPLY =~ ^[Yy]$ ]]; then
+	sudo reboot
+fi
+
+echo "${GREEN}Done${RESET}"

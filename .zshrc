@@ -3,6 +3,10 @@ autoload -Uz vcs_info
 
 precmd() { vcs_info }
 
+cyclic() {
+    python3 -c "print('A'*$1)"
+}
+
 pwncheck() {
     file $1
     echo '\n'
@@ -38,6 +42,8 @@ alias ..="cd .."
 
 alias cat="batcat"
 alias catp="batcat -pp"
+
+alias grep="rg"
 
 alias ls="eza --icons"
 alias la="eza --icons -a"

@@ -15,13 +15,16 @@ sudo ./install.sh
 ## ⚙️ Utilities
 The installation script also sets up a collection of lightweight, essential utilities to enhance productivity and keep the system minimal:
 - `bat` a modern cat replacement with syntax highlighting
+- `Emacs` a powerful keyboard‑driven text editor
 - `eza` a Rust-based ls replacement with icons
 - `flameshot` screenshot tool
 - `htop` process and resource monitor
 - `ImageMagick` versatile image editor and converter
 - `Kitty` fast, GPU-based terminal emulator
 - `MuPDF` lightweight PDF viewer
+- `ripgrep` a fast grep replacement with search highlitghting
 - `Thunar` simple and efficient file manager
+- `Vim` light-weight text editor, perfect for quick tasks
 - `Zen` minimal web browser
 
 ## 📐 i3
@@ -38,12 +41,12 @@ In window managers like i3, keybindings are crucial and can make the mouse almos
 
 | Keybind | Action |
 |---------|--------|
-| Super + B | Start zen browser|
-| Super + Enter | Launch terminal ( kitty ) |
+| Super + B | Start browser (Zen) |
+| Super + Enter | Launch terminal (kitty) |
 | Super + Space | Launch Rofi |
-| Super + Ctrl + l | Lock screen with i3lock |
-| Super + e | Start emacs |
-| Super + f | Start the file manager |
+| Super + Ctrl + l | Lock screen (i3lock) |
+| Super + e | Start Emacs |
+| Super + f | Start  file manager (Thunar) |
 | Super + v | Launch audio mixer |
 | Super + h | Show keybindings help |
 | Super + print | Take a screenshot |
@@ -64,12 +67,14 @@ Press Super + h to list all of the keybinds
 My prompt is very simple: `TIME CURRENT_DIRECTORY GIT_BRANCH`. I don’t use frameworks like Oh My Zsh or unusual plugins. Instead, I’ve defined aliases to help with commands I can’t always remember, frequently used long commands, and others that make my terminal cleaner and more user-friendly.
 
 | Alias | Description |
-|-------|--------|
+|-------|-------------|
 | `..` | Change to the parent directory |
-| `clearhist` | Clears zsh history |
 | `cat` | Maps to `batcat`, a `cat` replacement with syntax highlighting |
 | `catp` | Provides the classic `cat` command |
+| `clearhist` | Clears zsh history |
+| `cyclic` | Prints a specified number of "A" to stdout |
 | `github` | Connects to GitHub automatically using an SSH key |
+| `grep` | An alias for ripgrep, a fast grep replacement |
 | `imgshow` | Displays an image directly in Kitty |
 | `ls` | Maps to `eza`, a Rust-based alternative to `ls` with icons |
 | `la` | Lists all files in the directory |
