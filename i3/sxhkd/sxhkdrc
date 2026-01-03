@@ -20,7 +20,7 @@ super + f
 
 # Launch Emacs (Text Editor)
 super + e
-	emacs ~/development
+	emacs . 
 
 # Launch GIMP (Image Editor)
 super + g
@@ -37,6 +37,10 @@ super + h
 # Lock screen (i3lock)
 super + control + l
         i3lock --nofork --show-failed-attempts --ignore-empty-password --tiling -c 000000
+
+# Launch Rofi Wallpaper Menu
+super + w
+	~/.config/i3/scripts/wallpaper
 
 # Paste to note (bashrc note)   
 super + shift + v

@@ -1,0 +1,8 @@
+wall_dir="${HOME}/.config/wallpapers"
+rofi_command="rofi -dmenu -i -p "Select:" -theme ~/.config/i3/rofi/wallpaper.rasi"
+
+wall_selection=$(find "${wall_dir}"  -maxdepth 1  -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" -o -iname "*.webp" \) -exec basename {} \; | sort | while read -r A ; do  echo -en "$A\x00icon\x1f""${wall_dir}"/"$A\n" ; done | $rofi_command)
+
+[[ -n "$wall_selection" ]] || exit 1
+feh --bg-fill ${wall_dir}/${wall_selection} &
+cp ${wall_dir}/${wall_selection} ~/.config/default.png &

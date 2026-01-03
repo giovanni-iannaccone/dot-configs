@@ -49,6 +49,7 @@ In window managers like i3, keybindings are crucial and can make the mouse almos
 | Super + f | Start  file manager (Thunar) |
 | Super + v | Launch audio mixer |
 | Super + h | Show keybindings help |
+| Super + w | Launch Wallpaper Menu |
 | Super + print | Take a screenshot |
 | Super + [1-9, 0] | Switch to workspace 1-10 |
 | Super + Shift + [1-9, 0] | Move current window to workspace 1-10 |
@@ -59,6 +60,10 @@ In window managers like i3, keybindings are crucial and can make the mouse almos
 | Super + Alt + f | Toggle fullscreen |
 
 Press Super + h to list all of the keybinds
+
+## 🖼️ Wallpapers
+
+To set a new wallpaper, copy it into the `.config/wallpapers` folder, press Super + w, and select it from the wallpaper menu. The chosen wallpaper will be saved and set as the default, so you won’t need to change it each time you log in.
 
 ## 💻 Zsh
 
