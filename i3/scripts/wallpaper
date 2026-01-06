@@ -5,4 +5,5 @@ wall_selection=$(find "${wall_dir}"  -maxdepth 1  -type f \( -iname "*.jpg" -o -
 
 [[ -n "$wall_selection" ]] || exit 1
 feh --bg-fill ${wall_dir}/${wall_selection} &
-cp ${wall_dir}/${wall_selection} ~/.config/default.png &
+echo ${wall_dir}/${wall_selection} > ~/.config/default &
+

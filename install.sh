@@ -101,7 +101,7 @@ if [ -d "$CONFIG_DIR" ]; then
 fi
 
 cp -r * "$CONFIG_DIR" || die "Failed to copy config"
-cp -r wallpapers/planet.png "$CONFIG_DIR/default.png"
+echo $CONFIG_DIR/wallpapers/planet.png > $CONFIG_DIR/default
 cp $CONFIG_DIR/.zshrc .
 
 sudo apt update && sudo apt upgrade

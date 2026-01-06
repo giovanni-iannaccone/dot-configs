@@ -14,13 +14,17 @@ super + shift + Return
 super + space
    	rofi -show drun -modi drun -line-padding 4 -hide-scrollbar -show-icons -theme ~/.config/i3/rofi/config.rasi
 
+# Launch Rofi Wallpaper Menu
+super + w
+	~/.config/i3/scripts/wallpaper
+
 # Launch File Manager (Thunar)
 super + f
 	thunar
 
 # Launch Emacs (Text Editor)
 super + e
-	emacs . 
+	emacs .
 
 # Launch GIMP (Image Editor)
 super + g
@@ -33,14 +37,6 @@ super + v
 # Show Keybinding Help Script
 super + h
 	~/.config/i3/scripts/help
-    
-# Lock screen (i3lock)
-super + control + l
-        i3lock --nofork --show-failed-attempts --ignore-empty-password --tiling -c 000000
-
-# Launch Rofi Wallpaper Menu
-super + w
-	~/.config/i3/scripts/wallpaper
 
 # Paste to note (bashrc note)   
 super + shift + v
@@ -129,6 +125,10 @@ super + shift + 8
 # Move to Workspace 9
 super + shift + 9
 	i3-msg move container to workspace number 9
+
+# Lock screen (i3lock)
+super + control + l
+        i3lock --nofork --show-failed-attempts --ignore-empty-password --tiling -c 000000
 
 # Move to Workspace 10
 super + shift + 0

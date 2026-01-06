@@ -29,7 +29,7 @@ The installation script also sets up a collection of lightweight, essential util
 
 ## 📐 i3
 
-<img width="1920" height="1080" alt="rofi" src="https://github.com/user-attachments/assets/1630c733-3902-4c43-905c-43c7237db83d" /> <br/> <br/>
+<img width="1920" height="1080" alt="rofi" src="https://github.com/user-attachments/assets/c0d44c34-9ac6-444b-9c85-1f6b134dd093" /> <br/> <br/>
 
 Since i3 is based on X11, the application launcher is Rofi. Press Super + Space to open it, navigate with the arrow keys or type the name of an app to search, and press Enter to launch your selection.
 
@@ -44,7 +44,6 @@ In window managers like i3, keybindings are crucial and can make the mouse almos
 | Super + B | Start browser (Zen) |
 | Super + Enter | Launch terminal (kitty) |
 | Super + Space | Launch Rofi |
-| Super + Ctrl + l | Lock screen (i3lock) |
 | Super + e | Start Emacs |
 | Super + f | Start  file manager (Thunar) |
 | Super + v | Launch audio mixer |
@@ -57,13 +56,10 @@ In window managers like i3, keybindings are crucial and can make the mouse almos
 | Super + Shift + q | Quit i3 |
 | Super + insert | Volume up |
 | Super + delete | Volume down |
+| Super + Ctrl + l | Lock screen (i3lock) |
 | Super + Alt + f | Toggle fullscreen |
 
 Press Super + h to list all of the keybinds
-
-## 🖼️ Wallpapers
-
-To set a new wallpaper, copy it into the `.config/wallpapers` folder, press Super + w, and select it from the wallpaper menu. The chosen wallpaper will be saved and set as the default, so you won’t need to change it each time you log in.
 
 ## 💻 Zsh
 
@@ -100,6 +96,12 @@ Emacs is already set up for different programming languages, such as C/C++, Go, 
 | `M-<up>` | Move the line up |
 | `M-<down>` | Move the line down |
 | `M-x` | Start smex |
+
+## 🖼️ Wallpapers
+
+<img width="1920" height="1080" alt="wallpaper" src="https://github.com/user-attachments/assets/4eecdd69-7ea2-4465-985a-26ab6e4f61e8" /> <br/> <br/>
+
+To set a new wallpaper, copy it into the `.config/wallpapers` folder, press Super + w, and select it from the wallpaper menu. The chosen wallpaper will be saved and set as the default, so you won’t need to change it each time you log in.
 
 ## 🐞 Troubleshooting
 
