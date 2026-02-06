@@ -14,25 +14,26 @@ PACKAGES_CORE=(
 )
 
 PACKAGES_UI=(
-    polybar rofi dunst picom network-manager-gnome lxpolkit
+    polybar rofi dunst picom lxpolkit breeze-cursor-them
+    breeze-icon-theme    
 )
 
 PACKAGES_FILE_MANAGER=(
-    thunar thunar-archive-plugin thunar-volman
-    gvfs-backends dialog mtools smbclient cifs-utils fd-find unzip
+    mc gvfs-backends dialog smbclient
+    mtools cifs-utils fd-find unzip
 )
 
 PACKAGES_AUDIO=(
-    pulsemixer pamixer pipewire-audio
+    pulsemixer pamixer pipewire-audio playerctl
 )
 
 PACKAGES_UTILITIES=(
-    avahi-daemon acpi acpid feh emacs mupdf bat ripgrep
+    avahi-daemon acpi acpid feh emacs bat ripgrep
     flameshot imagemagick fastfetch libclang-dev htop
 )
 
 PACKAGES_TERMINAL=(
-    suckless-tools kitty zsh vim
+    suckless-tools kitty zsh
 )
 
 PACKAGES_FONTS=(
@@ -103,6 +104,8 @@ fi
 cp -r * "$CONFIG_DIR" || die "Failed to copy config"
 echo $CONFIG_DIR/wallpapers/planet.png > $CONFIG_DIR/default
 cp $CONFIG_DIR/.zshrc .
+
+cp -r ./mc/skins ~/.local/share/mc
 
 sudo apt update && sudo apt upgrade
 

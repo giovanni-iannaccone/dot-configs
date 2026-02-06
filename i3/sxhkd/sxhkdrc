@@ -2,6 +2,10 @@
 super + b
 	zen
 
+# Launch Private Browser (Zen Incognito Mode)
+super + shift + b
+	zen -private-window
+
 # Launch Terminal (kitty)
 super + Return
 	kitty
@@ -17,18 +21,6 @@ super + space
 # Launch Rofi Wallpaper Menu
 super + w
 	~/.config/i3/scripts/wallpaper
-
-# Launch File Manager (Thunar)
-super + f
-	thunar
-
-# Launch Emacs (Text Editor)
-super + e
-	emacs .
-
-# Launch GIMP (Image Editor)
-super + g
-	gimp
 
 # Launch Pulsemixer (Audio Mixer)
 super + v
@@ -126,45 +118,17 @@ super + shift + 8
 super + shift + 9
 	i3-msg move container to workspace number 9
 
-# Lock screen (i3lock)
-super + control + l
-        i3lock --nofork --show-failed-attempts --ignore-empty-password --tiling -c 000000
-
 # Move to Workspace 10
 super + shift + 0
 	i3-msg move container to workspace number 10
 
-# Focus Left
-super + h
-	i3-msg focus left
+# Lock screen (i3lock)
+super + control + l
+        i3lock --nofork --show-failed-attempts --ignore-empty-password --tiling -c 000000
 
-# Focus Down
-super + j
-	i3-msg focus down
-
-# Focus Up
-super + k
-	i3-msg focus up
-
-# Focus Right
-super + l
-	i3-msg focus right
-
-# Move Window Left
-super + shift + h
-	i3-msg move left
-
-# Move Window Down
-super + shift + j
-	i3-msg move down
-
-# Move Window Up
-super + shift + k
-	i3-msg move up
-
-# Move Window Right
-super + shift + l
-	i3-msg move right
+# Launch Power Menu
+super + p
+	~/.config/i3/scripts/power
 
 # Focus Left (Arrow)
 super + Left
@@ -225,6 +189,22 @@ XF86MonBrightnessUp
 # Brightness Down (Media Key)
 XF86MonBrightnessDown
 	xbacklight -10
+
+# Play Content (Media Key)
+XF86AudioPlay
+    exec playerctl play-pause
+
+# Pause Content (Media Key)
+XF86AudioPause
+    exec playerctl play-pause
+
+# Next Content (Media Key)
+XF86AudioNext
+    exec playerctl next
+
+# Previous Content (Media Key)
+XF86AudioPrev
+    exec playerctl previous
 
 # Reload sxhkd Config
 super + Escape

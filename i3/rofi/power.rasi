@@ -1,7 +1,7 @@
 * {
     bg: #161616;
     background-color: @bg;
-    font: "JetBrainsMono Nerd Font 12";  /* Monospace font for alignment */
+    font: "JetBrainsMono Nerd Font 12";
 }
 
 configuration {
@@ -22,9 +22,6 @@ window {
 mainbox {
     children: [inputbar, listview];
 }
-
-// ELEMENT
-// -----------------------------------
 
 element {
     padding: 4 8;
@@ -86,7 +83,7 @@ element.normal.urgent {
 }
 
 listview {
-    columns: 1;  /* Show in a single column for better alignment */
+    columns: 1;
     lines: 8;
     padding: 8 0;
     fixed-height: true;

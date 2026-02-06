@@ -21,10 +21,8 @@ The installation script also sets up a collection of lightweight, essential util
 - `htop` process and resource monitor
 - `ImageMagick` versatile image editor and converter
 - `Kitty` fast, GPU-based terminal emulator
-- `MuPDF` lightweight PDF viewer
+- `mc` a lightweight and terminal based file manager with <a href="https://github.com/deadnews/mc-onedark">onedark</a> theme
 - `ripgrep` a fast grep replacement with search highlitghting
-- `Thunar` simple and efficient file manager
-- `Vim` light-weight text editor, perfect for quick tasks
 - `Zen` minimal web browser
 
 ## 📐 i3
@@ -73,7 +71,6 @@ My prompt is very simple: `TIME CURRENT_DIRECTORY GIT_BRANCH`. I don’t use fra
 | `cat` | Maps to `batcat`, a `cat` replacement with syntax highlighting |
 | `catp` | Provides the classic `cat` command |
 | `clearhist` | Clears zsh history |
-| `cyclic` | Prints a specified number of "A" to stdout |
 | `github` | Connects to GitHub automatically using an SSH key |
 | `grep` | An alias for ripgrep, a fast grep replacement |
 | `imgshow` | Displays an image directly in Kitty |
