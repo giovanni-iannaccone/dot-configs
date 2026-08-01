@@ -237,27 +237,89 @@ scan_menu() {
 
 saved_menu() {
 
-    choice=$(nmcli -t -f NAME connection show |
-        {
-            echo "$BACK"
-            cat
-        } |
-        rofi \
-        -dmenu \
-        -i \
-        -p "󰈀 Saved Networks" \
-        -theme "$ROFI_THEME")
+    while true; do
+
+        choice=$(
+            {
+                echo "$BACK"
+                nmcli -t -f NAME connection show
+            } |
+            rofi \
+                -dmenu \
+                -i \
+                -p "󰈀 Saved Networks" \
+                -theme "$ROFI_THEME"
+        )
+
+        case "$choice" in
+            "$BACK"|"")
+                return
+                ;;
+        esac
+
+        saved_network_actions "$choice"
+
+    done
+}
 
 
-    case "$choice" in
-        "$BACK"|"")
-            return
-            ;;
-    esac
+saved_network_actions() {
 
+    local network="$1"
 
-    nmcli connection up "$choice"
+    while true; do
 
+        action=$(
+            printf "%s\n" \
+                "󰤨  Connect" \
+                "󰆴  Forget Network" \
+                "$BACK" |
+            rofi \
+                -dmenu \
+                -i \
+                -p "$network" \
+                -theme "$ROFI_THEME"
+        )
+
+        case "$action" in
+
+            "󰤨  Connect")
+
+                if nmcli connection up "$network"; then
+                    notify-send "Wi-Fi" "Connected to $network"
+                else
+                    notify-send "Wi-Fi" "Connection failed"
+                fi
+
+                return
+                ;;
+
+            "󰆴  Forget Network")
+
+                confirm=$(
+                    printf "%s\nNo" "Yes" |
+                    rofi \
+                        -dmenu \
+                        -selected-row 0 \
+                        -p "Forget \"$network\"?" \
+                        -theme "$ROFI_THEME"
+                )
+
+                [ "$confirm" != "Yes" ] && continue
+
+                if nmcli connection delete "$network"; then
+                    notify-send "Wi-Fi" "Removed \"$network\""
+                    return
+                else
+                    notify-send "Wi-Fi" "Failed to remove \"$network\""
+                fi
+                ;;
+
+            "$BACK"|"")
+                return
+                ;;
+        esac
+    done
 }
 
 info_menu() {
