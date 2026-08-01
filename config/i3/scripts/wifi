@@ -1,0 +1,356 @@
+#!/usr/bin/env bash
+
+ROFI_THEME="$HOME/.config/i3/rofi/wifi.rasi"
+
+BACK="󰌍  Back"
+
+wifi_interface() {
+    nmcli -t -f DEVICE,TYPE device | awk -F: '$2=="wifi"{print $1; exit}'
+}
+
+wifi_title() {
+    iface=$(wifi_interface)
+
+    connection=$(nmcli -t -f GENERAL.CONNECTION device show "$iface" 2>/dev/null | cut -d: -f2)
+
+    if [ "$connection" != "--" ] && [ -n "$connection" ]; then
+        echo "󰤨  Wi-Fi  |  $connection"
+    else
+        echo "󰤭  Wi-Fi  |  Disconnected"
+    fi
+}
+
+signal_icon() {
+    case "$1" in
+        9[0-9]|100) echo "󰤨" ;;
+        [6-8][0-9]) echo "󰤥" ;;
+        [4-5][0-9]) echo "󰤢" ;;
+        [2-3][0-9]) echo "󰤟" ;;
+        *) echo "󰤯" ;;
+    esac
+}
+
+security_icon() {
+    case "$1" in
+        *WPA3*) echo "󰌿" ;;
+        *WPA*) echo "󰌾" ;;
+        *) echo "󰷛" ;;
+    esac
+}
+
+main_menu() {
+    while true; do
+
+        choice=$(printf "%s\n" \
+            "󰤨  Scan Networks" \
+            "󰈀  Saved Networks" \
+            "󰤭  Toggle Wi-Fi" \
+            "󰤮  Disconnect" \
+            "󰋗  Information" |
+        rofi \
+            -dmenu \
+            -i \
+            -p "$(wifi_title)" \
+            -line-padding 4 \
+            -hide-scrollbar \
+            -theme "$ROFI_THEME")
+
+        case "$choice" in
+
+            "󰤨  Scan Networks")
+                scan_menu
+                ;;
+
+            "󰈀  Saved Networks")
+                saved_menu
+                ;;
+
+            "󰤭  Toggle Wi-Fi")
+                if [ "$(nmcli radio wifi)" = "enabled" ]; then
+                    nmcli radio wifi off
+                else
+                    nmcli radio wifi on
+                fi
+                ;;
+
+            "󰤮  Disconnect")
+                nmcli device disconnect "$(wifi_interface)"
+                notify-send "Wi-Fi" "Disconnected"
+                ;;
+
+            "󰋗  Information")
+                info_menu
+                ;;
+
+            "")
+                exit 0
+                ;;
+        esac
+    done
+}
+
+scan_menu() {
+
+    (
+        echo "󰤨  Scanning networks..."
+        sleep 999
+    ) | rofi \
+        -dmenu \
+        -i \
+        -p "󰤨 Wi-Fi" \
+        -no-fixed-num-lines \
+        -theme "$ROFI_THEME" &
+
+    ROFI_PID=$!
+
+    nmcli device wifi rescan >/dev/null 2>&1
+    sleep 2
+
+    kill "$ROFI_PID" 2>/dev/null
+
+
+    declare -A best_networks
+    declare -A network_map
+
+    saved=$(nmcli -t -f NAME connection show)
+
+    entries="$BACK"
+
+
+    while IFS=: read -r active ssid signal security freq; do
+
+        [ -z "$ssid" ] && continue
+        [ "$ssid" = "--" ] && continue
+
+        current="${best_networks[$ssid]}"
+
+        if [ -z "$current" ] || [ "$signal" -gt "${current%%:*}" ]; then
+            best_networks["$ssid"]="$signal:$active:$security:$freq"
+        fi
+
+    done < <(
+        nmcli -t \
+        -f IN-USE,SSID,SIGNAL,SECURITY,FREQ \
+        device wifi list
+    )
+
+
+    while IFS= read -r ssid; do
+
+        data="${best_networks[$ssid]}"
+
+        signal="${data%%:*}"
+        rest="${data#*:}"
+
+        active="${rest%%:*}"
+        rest="${rest#*:}"
+
+        security="${rest%%:*}"
+        freq="${rest#*:}"
+
+
+        if [ "$active" = "*" ]; then
+            state="󰄬"
+        elif grep -Fxq "$ssid" <<< "$saved"; then
+            state="󰇖"
+        else
+            state=" "
+        fi
+
+
+        freq_int=${freq%.*}
+
+        if [ "$freq_int" -gt 4000 ] 2>/dev/null; then
+            band="5GHz"
+        else
+            band="2.4GHz"
+        fi
+
+
+        line=$(printf "%s  %-28s  %s  %3s%%  %-5s %-7s %s" \
+            "$state" \
+            "$ssid" \
+            "$(signal_icon "$signal")" \
+            "$signal" \
+            "$(security_icon "$security")" \
+            "${security:-OPEN}" \
+            "$band"
+        )
+
+
+        entries+=$'\n'"$line"
+        network_map["$line"]="$ssid"
+
+
+    done < <(
+        for ssid in "${!best_networks[@]}"; do
+            echo "${best_networks[$ssid]%%:*} $ssid"
+        done | sort -rn | cut -d' ' -f2-
+    )
+
+
+    choice=$(printf "%s\n" "$entries" |
+        rofi \
+        -dmenu \
+        -i \
+        -p "󰤨 Networks" \
+        -line-padding 3 \
+        -theme "$ROFI_THEME"
+    )
+
+
+    case "$choice" in
+        "$BACK"|"")
+            return
+            ;;
+    esac
+
+
+    ssid="${network_map[$choice]}"
+
+    [ -z "$ssid" ] && return
+
+
+    if nmcli device wifi connect "$ssid" >/dev/null 2>&1; then
+        notify-send "Wi-Fi" "Connected: $ssid"
+        return
+    fi
+
+
+    password=$(rofi \
+        -dmenu \
+        -password \
+        -p "󰌾 Password" \
+        -theme "$ROFI_THEME"
+    )
+
+
+    [ -z "$password" ] && return
+
+
+    if nmcli device wifi connect "$ssid" password "$password"; then
+        notify-send "Wi-Fi" "Connected: $ssid"
+    else
+        notify-send "Wi-Fi" "Connection failed"
+    fi
+}
+
+saved_menu() {
+
+    choice=$(nmcli -t -f NAME connection show |
+        {
+            echo "$BACK"
+            cat
+        } |
+        rofi \
+        -dmenu \
+        -i \
+        -p "󰈀 Saved Networks" \
+        -theme "$ROFI_THEME")
+
+
+    case "$choice" in
+        "$BACK"|"")
+            return
+            ;;
+    esac
+
+
+    nmcli connection up "$choice"
+
+}
+
+info_menu() {
+
+    iface=$(nmcli -t -f DEVICE,TYPE device | awk -F: '$2=="wifi"{print $1; exit}')
+    
+    [ -z "$iface" ] && return
+
+    IW="/usr/sbin/iw"
+
+    device_info=$(nmcli device show "$iface" 2>/dev/null)
+
+    get_nmcli() {
+        echo "$device_info" |
+            grep -m1 "$1" |
+            sed 's/^[^:]*:[[:space:]]*//'
+    }
+
+    connection=$(get_nmcli "GENERAL.CONNECTION")
+    mac=$(get_nmcli "GENERAL.HWADDR")
+    ip=$(get_nmcli "IP4.ADDRESS")
+    gateway=$(get_nmcli "IP4.GATEWAY")
+
+    dns=$(echo "$device_info" |
+        grep "IP4.DNS" |
+        sed 's/^[^:]*:[[:space:]]*//' |
+        tr '\n' ' ')
+
+
+    link=$($IW dev "$iface" link 2>/dev/null)
+
+read -r ssid freq signal rxrate txrate <<< "$(
+echo "$link" | awk '
+/SSID:/ {
+    ssid=$2
+}
+/freq:/ {
+    freq=$2
+}
+/signal:/ {
+    signal=$2
+}
+/rx bitrate:/ {
+    rx=$3" "$4
+}
+/tx bitrate:/ {
+    tx=$3" "$4
+}
+END {
+    print ssid, freq, signal, rx, tx
+}
+'
+)"
+
+    freq_int=${freq%.*}
+    
+    if [ "$freq_int" -gt 4000 ] 2>/dev/null; then
+        band="5 GHz"
+    else
+        band="2.4 GHz"
+    fi
+
+    case "$freq" in
+        24*)
+            band="2.4 GHz"
+            ;;
+        5*)
+            band="5 GHz"
+            ;;
+        *)
+            band="Unknown"
+            ;;
+    esac
+
+    info="󰤨  SSID:          ${ssid:-Unknown}
+󰖩  Interface:     ${iface}
+󰈀  MAC:           ${mac:-Unknown}
+󰩟  IP:            ${ip:-Unknown}
+󰒍  Gateway:       ${gateway:-Unknown}
+󰇖  DNS:           ${dns:-Unknown}
+󰤨  Signal:        ${signal:-Unknown} dBm
+󰓅  TX Speed:      ${txrate:-Unknown}
+󰓅  RX Speed:      ${rxrate:-Unknown}
+󰈙  Frequency:     ${freq:-Unknown} MHz
+󰥔  Band:          ${band:-Unknown}"
+    
+    printf "%s\n" "$info" |
+    rofi \
+        -dmenu \
+        -i \
+        -p "󰋗 Wi-Fi Information" \
+        -line-padding 4 \
+        -theme "$ROFI_THEME" >/dev/null
+}
+
+main_menu

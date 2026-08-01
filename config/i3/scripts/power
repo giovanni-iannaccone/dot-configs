@@ -1,0 +1,35 @@
+ROFI_THEME="$HOME/.config/i3/rofi/power.rasi"
+
+chosen=$(
+echo -e \
+"󰌾  Lock\n󰍃  Logout\n󰐥  Shutdown\n󰜉  Reboot" | \
+rofi -dmenu \
+    -i \
+    -p "Power Menu" \
+    -line-padding 4 \
+    -hide-scrollbar \
+    -theme "$ROFI_THEME"
+)
+
+case "$chosen" in
+    "󰌾  Lock")
+        exec i3lock \
+            --nofork \
+            --show-failed-attempts \
+            --ignore-empty-password \
+            --tiling \
+            -c 000000
+        ;;
+    "󰍃  Logout")
+        exec i3-msg exit
+        ;;
+    "󰐥  Shutdown")
+        systemctl poweroff
+        ;;
+    "󰜉  Reboot")
+        systemctl reboot
+        ;;
+    *)
+        exit 0
+        ;;
+esac

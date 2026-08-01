@@ -1,0 +1,134 @@
+* {
+    bg: #000000;
+    fg: #F2F4F8;
+    accent: #4C7899;
+
+    background-color: @bg;
+}
+
+configuration {
+    show-icons: true;
+    icon-theme: "Papirus";
+    location: 0;
+    font: "JetBrainsMono Nerd Font 12";
+    display-drun: "Select:";
+}
+
+window {
+    width: 45%;
+    transparency: "real";
+    orientation: vertical;
+
+    border: 2px;
+    border-color: @accent;
+    border-radius: 0px;
+}
+
+mainbox {
+    children: [inputbar, listview];
+}
+
+entry {
+    text-color: @fg;
+    placeholder: "";
+    placeholder-color: #777777;
+}
+
+/* ELEMENT ------------------------------------------------ */
+
+element {
+    padding: 0 12;
+    border-radius: 0px;
+    vertical-align: 0.5;
+}
+
+element-text {
+    background-color: inherit;
+    text-color: inherit;
+    vertical-align: 0.5;
+}
+
+element-icon {
+    size: 96px;
+    background-color: inherit;
+    padding: 0 8 0 0;
+    alignment: vertical;
+}
+
+/* NORMAL ------------------------------------------------ */
+
+element.normal.normal {
+    background-color: @bg;
+    text-color: @fg;
+}
+
+element.normal.active {
+    background-color: @bg;
+    text-color: @fg;
+}
+
+element.normal.urgent {
+    background-color: #f25d78;
+    text-color: #000000;
+}
+
+/* Alternate */
+
+element.alternate.normal {
+    background-color: @bg;
+    text-color: @fg;
+}
+
+element.alternate.active {
+    background-color: @bg;
+    text-color: @fg;
+}
+
+/* Selected */
+
+element.selected.normal {
+    background-color: @accent;
+    text-color: #FFFFFF;
+}
+
+element.selected.active {
+    background-color: @accent;
+    text-color: #FFFFFF;
+}
+
+element.selected.urgent {
+    background-color: #900000;
+    text-color: #FFFFFF;
+}
+
+/* LISTVIEW ----------------------------------------------- */
+
+listview {
+    columns: 1;
+
+    lines: 3;
+    fixed-columns: true;
+    fixed-lines: false;
+
+    padding: 4px 0 8px;
+    spacing: 2px;
+}
+
+/* INPUT BAR ---------------------------------------------- */
+
+inputbar {
+    padding: 10 0 0;
+    margin: 0;
+}
+
+entry {
+    text-color: #F2F4F8;
+    padding: 0 0 0 0;
+    margin: 0 -2 0 0;
+}
+
+prompt {
+    text-color: #4C7899;
+    padding: 10 6 0 10;
+    margin: 0 -2 0 0;
+}

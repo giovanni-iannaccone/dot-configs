@@ -14,12 +14,12 @@ PACKAGES_CORE=(
 )
 
 PACKAGES_UI=(
-    polybar rofi dunst picom lxpolkit breeze-cursor-them
+    rofi dunst picom lxpolkit breeze-cursor-them
     breeze-icon-theme    
 )
 
 PACKAGES_FILE_MANAGER=(
-    mc gvfs-backends dialog smbclient
+    gvfs-backends dialog smbclient
     mtools cifs-utils fd-find unzip
 )
 
@@ -81,6 +81,11 @@ msg "Installing zen browser..."
 mkdir -p "$HOME"/.local/bin
 sudo ln /opt/zen/zen "$HOME"/.local/bin/zen
 
+msg "Installing yazi..."
+curl -fsSL https://yazi-rs.github.io/builds/yazi-keyring.gpg | sudo tee /usr/share/keyrings/yazi-keyring.gpg >/dev/null
+echo 'deb [signed-by=/usr/share/keyrings/yazi-keyring.gpg] https://yazi-rs.github.io/builds/ stable main' | sudo tee /etc/apt/sources.list.d/yazi.list >/dev/null
+sudo apt update && sudo apt install yazi
+
 msg "Installing terminal tools..."
 sudo apt-get install -y "${PACKAGES_TERMINAL[@]}" || die "Failed to install terminal tools"
 
@@ -101,11 +106,9 @@ if [ -d "$CONFIG_DIR" ]; then
     rm -rf "$CONFIG_DIR"
 fi
 
-cp -r * "$CONFIG_DIR" || die "Failed to copy config"
-echo $CONFIG_DIR/wallpapers/planet.png > $CONFIG_DIR/default
-cp $CONFIG_DIR/.zshrc .
-
-cp -r ./mc/skins ~/.local/share/mc
+cp -r ./config/* "$CONFIG_DIR" || die "Failed to copy config"
+echo $CONFIG_DIR/wallpapers/ye.png > $CONFIG_DIR/default
+mv $CONFIG_DIR/.zshrc .
 
 sudo apt update && sudo apt upgrade
 

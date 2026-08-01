@@ -1,0 +1,125 @@
+* {
+    bg: #000000;
+    fg: #F2F4F8;
+    accent: #4C7899;
+
+    background-color: @bg;
+    text-color: @fg;
+    font: "JetBrainsMono Nerd Font 12";
+}
+
+configuration {
+    location: 0;
+    display-drun: "Launch";
+}
+
+window {
+    width: 45%;
+    transparency: "real";
+    orientation: vertical;
+
+    border: 2px;
+    border-color: @accent;
+    border-radius: 0px;
+}
+
+/* LAYOUT ------------------------------------------------- */
+
+mainbox {
+    children: [inputbar, listview];
+}
+
+inputbar {
+    padding: 12px;
+    margin: 0;
+}
+
+prompt {
+    text-color: @accent;
+    padding: 0 8 0 0;
+}
+
+entry {
+    text-color: @fg;
+    placeholder: "";
+    placeholder-color: #777777;
+}
+
+/* LISTVIEW ----------------------------------------------- */
+
+listview {
+    columns: 1;
+
+    lines: 24;
+    fixed-height: true;
+    fixed-columns: true;
+    fixed-lines: true;
+
+    padding: 4px 0 8px;
+    spacing: 2px;
+}
+
+/* ELEMENT ------------------------------------------------ */
+
+element {
+    padding: 4 8;
+    border-radius: 0px;
+}
+
+element-text {
+    background-color: inherit;
+    text-color: inherit;
+}
+
+element-icon {
+    size: 16px;
+    background-color: inherit;
+    padding: 0 6 0 0;
+    alignment: vertical;
+}
+
+/* NORMAL ------------------------------------------------ */
+
+element.normal.normal {
+    background-color: #000000;
+    text-color: #F2F4F8;
+}
+
+element.normal.active {
+    background-color: #000000;
+    text-color: #F2F4F8;
+}
+
+element.normal.urgent {
+    background-color: #f25d78;
+    text-color: #000000;
+}
+
+/* ALTERNATE ------------------------------------------------ */
+
+element.alternate.normal {
+    background-color: #000000;
+    text-color: #F2F4F8;
+}
+
+element.alternate.active {
+    background-color: #000000;
+    text-color: #F2F4F8;
+}
+
+/* SELECTED ------------------------------------------------ */
+
+element.selected.normal {
+    background-color: #4C7899;
+    text-color: #FFFFFF;
+}
+
+element.selected.active {
+    background-color: #4C7899;
+    text-color: #FFFFFF;
+}
+
+element.selected.urgent {
+    background-color: #900000;
+    text-color: #FFFFFF;
+}
