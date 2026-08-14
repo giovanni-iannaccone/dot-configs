@@ -20,7 +20,7 @@ exec_always --no-startup-id ~/.config/i3/scripts/autostart.sh
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
-bindsym $mod+Return exec kitty
+bindsym $mod+Return exec alacritty
 
 bar {
     status_command i3status

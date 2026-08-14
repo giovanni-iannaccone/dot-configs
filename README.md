@@ -1,7 +1,7 @@
 <img width="1920" height="1080" alt="rofi" src="images/wifi.png" /> <br/> <br/>
 
 # 🔧  Configs for my Debian system
-This repository contains my lightweight configurations for Zsh, Kitty, Emacs, i3, and other tools I use daily. They are tailored for low-level programming and optimized to run smoothly even on older machines. It’s a minimal setup, free from heavy frameworks or flashy themes like Oh My Zsh or Doom, designed to keep development fast, clean, and efficient.
+This repository contains my lightweight configurations for Zsh, Alacritty, Emacs, i3, and other tools I use daily. They are tailored for low-level programming and optimized to run smoothly even on older machines. It’s a minimal setup, free from heavy frameworks or flashy themes like Oh My Zsh or Doom, designed to keep development fast, clean, and efficient.
 
 ## 📥 Installation
 The repository includes an `install.sh` script that automates the entire setup process. To run it:
@@ -20,7 +20,7 @@ The installation script also sets up a collection of lightweight, essential util
 - `flameshot` screenshot tool
 - `htop` process and resource monitor
 - `ImageMagick` versatile image editor and converter
-- `Kitty` fast, GPU-based terminal emulator
+- `Alacritty` fast, GPU-based terminal emulator
 - `yazi` a lightweight and terminal based file manager
 - `ripgrep` a fast grep replacement with search highlitghting
 - `Zen` minimal web browser
@@ -38,7 +38,7 @@ In window managers like i3, keybindings are crucial and can make the mouse almos
 | Keybind                  | Action                                |
 |--------------------------|---------------------------------------|
 | Super + B                | Start browser (Zen)                   |
-| Super + Enter            | Launch terminal (kitty)               |
+| Super + Enter            | Launch terminal (Alacritty)           |
 | Super + Space            | Launch Rofi                           |
 | Super + e                | Start Emacs                           |
 | Super + f                | Launch file manager (yazi)            |

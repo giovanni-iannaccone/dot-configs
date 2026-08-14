@@ -1,0 +1,56 @@
+[terminal]
+shell = { program = "/usr/bin/zsh" }
+
+[window]
+decorations = "None"
+opacity = 0.80
+padding = { x = 5, y = 5 }
+startup_mode = "windowed"
+
+[font]
+normal = { family = "JetBrainsMono Nerd Font" }
+size = 9.0
+
+[font.bold]
+family = "JetBrainsMono Nerd Font"
+style = "Bold"
+
+[font.italic]
+family = "JetBrainsMono Nerd Font"
+style = "Italic"
+
+[font.bold_italic]
+family = "JetBrainsMono Nerd Font"
+style = "Bold Italic"
+
+[colors.primary]
+background = "#000000"
+foreground = "#FFFFFF"
+
+[colors.cursor]
+cursor = "#00A8FF"
+text = "#000000"
+
+[colors.selection]
+background = "#0057FF"
+foreground = "#FFFFFF"
+
+[colors.normal]
+black = "#000000"
+red = "#FF0033"
+green = "#00FF41"
+yellow = "#FFD600"
+blue = "#008CFF"
+magenta = "#D500FF"
+cyan = "#00E5FF"
+white = "#E8F1FF"
+
+[colors.bright]
+black = "#333333"
+red = "#FF3355"
+green = "#39FF14"
+yellow = "#FFFF33"
+blue = "#00B7FF"
+magenta = "#FF33FF"
+cyan = "#66FFFF"
+white = "#FFFFFF"

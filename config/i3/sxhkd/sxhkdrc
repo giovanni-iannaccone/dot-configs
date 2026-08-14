@@ -6,9 +6,9 @@ super + b
 super + shift + b
 	zen -private-window
 
-# Launch Terminal (kitty)
+# Launch Terminal (alacritty)
 super + Return
-	kitty
+	alacritty
 
 # Toggle Scratchpad Terminal
 super + shift + Return

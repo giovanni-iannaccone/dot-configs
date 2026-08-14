@@ -33,7 +33,7 @@ PACKAGES_UTILITIES=(
 )
 
 PACKAGES_TERMINAL=(
-    suckless-tools kitty zsh
+    suckless-tools alacritty zsh
 )
 
 PACKAGES_FONTS=(
@@ -85,6 +85,17 @@ msg "Installing yazi..."
 curl -fsSL https://yazi-rs.github.io/builds/yazi-keyring.gpg | sudo tee /usr/share/keyrings/yazi-keyring.gpg >/dev/null
 echo 'deb [signed-by=/usr/share/keyrings/yazi-keyring.gpg] https://yazi-rs.github.io/builds/ stable main' | sudo tee /etc/apt/sources.list.d/yazi.list >/dev/null
 sudo apt update && sudo apt install yazi
+
+msg "Installing Überzug++..."
+echo 'deb http://download.opensuse.org/repositories/home:/justkidding/Debian_12/ /' \
+  | sudo tee /etc/apt/sources.list.d/home:justkidding.list
+
+curl -fsSL https://download.opensuse.org/repositories/home:/justkidding/Debian_12/Release.key \
+  | gpg --dearmor \
+  | sudo tee /etc/apt/trusted.gpg.d/home_justkidding.gpg > /dev/null
+
+sudo apt update
+sudo apt install ueberzugpp || die "Failed to install Überzug++"
 
 msg "Installing terminal tools..."
 sudo apt-get install -y "${PACKAGES_TERMINAL[@]}" || die "Failed to install terminal tools"
