@@ -72,7 +72,6 @@ My prompt is very simple: `TIME CURRENT_DIRECTORY GIT_BRANCH`. I don’t use fra
 | `clearhist` | Clears zsh history                                             |
 | `github`    | Connects to GitHub automatically using an SSH key              |
 | `grep`      | An alias for ripgrep, a fast grep replacement                  |
-| `imgshow`   | Displays an image directly in Kitty                            |
 | `ls`        | Maps to `eza`, a Rust-based alternative to `ls` with icons     |
 | `la`        | Lists all files in the directory                               |
 | `ll`        | Lists files with additional information                        |

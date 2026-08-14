@@ -54,6 +54,8 @@ alias grep="rg"
 alias cat="batcat"
 alias catp="batcat -pp"
 
+alias chmox="chmod +x"
+
 alias rmcr="rm core.*"
 alias rf="rm -rf"
 
@@ -65,16 +67,12 @@ alias ll="eza --icons -l"
 alias lla="eza --icons -la"
 alias lt="eza --icons --tree"
 
-alias chmox="chmod +x"
+alias angrinit="cp ~/development/ctf/templates/angr-template.py solve.py; venv"
+alias gdb="gdb -q"
+alias objdump="objdump -M intel"
 
 alias github="eval '$(ssh-agent -s)' && ssh-add ~/.ssh/github && ssh -T git@github.com"
-alias imgshow="kitty +kitten icat"
-alias kssh="kitty +kitten ssh"
-
-alias angrinit="cp ~/development/ctf/templates/angr-template.py solve.py; venv"
-alias pwninit="pwninit --template-path ~/development/ctf/templates/pwninit-template.py; mv *_patched $1 2>&/dev/null"
-
-alias gdb="gdb -q"
+alias curl="curl --path-as-is"
 
 alias venv="source ~/Downloads/venv/bin/activate"
 alias webup="python3 -m http.server 8080"
@@ -86,5 +84,5 @@ alias updatezsh="source ~/.zshrc"
 
 alias -g NE="2>/dev/null"
 
-export PATH=$PATH:/opt:~/go/bin:/home/giovanni/.local/share/gem/ruby/3.3.0/bin:/usr/sbin:/sbin
+export PATH=$PATH:~/.local/bin/:/opt:~/go/bin:/home/giovanni/.local/share/gem/ruby/3.3.0/bin:/usr/sbin:/sbin:~/.cargo/bin
 export EDITOR=emacs
