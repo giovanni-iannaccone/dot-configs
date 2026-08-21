@@ -9,16 +9,21 @@
 }
 
 configuration {
+    show-icons: true;
+    icon-theme: "Papirus";
+
     location: 0;
-    display-drun: "Power Menu";
+    display-drun: "Apps";
 }
+
+/* WINDOW ------------------------------------------------- */
 
 window {
     width: 40%;
     transparency: "real";
-    orientation: vertical;
-    border-color: #4C7899;
-    
+
+    background-color: @bg;
+
     border: 2px;
     border-color: @accent;
     border-radius: 0px;
@@ -46,14 +51,14 @@ entry {
     placeholder-color: #777777;
 }
 
-/* LISTVIEW ----------------------------------------------- */
+/* RESULTS ------------------------------------------------ */
 
 listview {
-    columns: 1;
+    columns: 2;
 
-    lines: 5;
+    lines: 9;
     dynamic: true;
-    fixed-height: true;
+    fixed-height: false;
     fixed-columns: true;
     fixed-lines: false;
 
@@ -64,8 +69,14 @@ listview {
 /* ELEMENT ------------------------------------------------ */
 
 element {
-    padding: 4 8;
+    padding: 8px 12px;
     border-radius: 0px;
+}
+
+element-icon {
+    size: 18px;
+    padding: 0 10px 0 0;
+    background-color: inherit;
 }
 
 element-text {
@@ -73,23 +84,16 @@ element-text {
     text-color: inherit;
 }
 
-element-icon {
-    size: 16px;
-    background-color: inherit;
-    padding: 0 6 0 0;
-    alignment: vertical;
-}
-
 /* NORMAL ------------------------------------------------- */
 
 element.normal.normal {
-    background-color: #000000;
-    text-color: #F2F4F8;
+    background-color: @bg;
+    text-color: @fg;
 }
 
 element.normal.active {
-    background-color: #000000;
-    text-color: #F2F4F8;
+    background-color: @bg;
+    text-color: @fg;
 }
 
 element.normal.urgent {
@@ -97,27 +101,27 @@ element.normal.urgent {
     text-color: #000000;
 }
 
-/* ALTERNATE ------------------------------------------------- */
+/* ALTERNATE ---------------------------------------------- */
 
 element.alternate.normal {
-    background-color: #000000;
-    text-color: #F2F4F8;
+    background-color: @bg;
+    text-color: @fg;
 }
 
 element.alternate.active {
-    background-color: #000000;
-    text-color: #F2F4F8;
+    background-color: @bg;
+    text-color: @fg;
 }
 
-/* SELECTED ------------------------------------------------- */
+/* SELECTED ----------------------------------------------- */
 
 element.selected.normal {
-    background-color: #4C7899;
+    background-color: @accent;
     text-color: #FFFFFF;
 }
 
 element.selected.active {
-    background-color: #4C7899;
+    background-color: @accent;
     text-color: #FFFFFF;
 }
 

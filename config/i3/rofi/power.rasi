@@ -10,7 +10,7 @@
 
 configuration {
     location: 0;
-    display-drun: "Power Menu";
+    display-drun: "Power";
 }
 
 window {
@@ -53,7 +53,7 @@ listview {
 
     lines: 4;
     dynamic: true;
-    fixed-height: false;
+    fixed-height: true;
     fixed-columns: true;
     fixed-lines: false;
 

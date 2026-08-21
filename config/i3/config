@@ -17,6 +17,7 @@ client.background       #00141d
 for_window [class=".*"] title_format "  %title"
 
 exec_always --no-startup-id ~/.config/i3/scripts/autostart.sh
+exec --no-startup-id dbus-update-activation-environment --systemd DISPLAY
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod

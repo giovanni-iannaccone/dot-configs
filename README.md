@@ -17,13 +17,13 @@ The installation script also sets up a collection of lightweight, essential util
 - `bat` a modern cat replacement with syntax highlighting
 - `Emacs` a powerful keyboard‑driven text editor
 - `eza` a Rust-based ls replacement with icons
-- `flameshot` screenshot tool
+- `main` minimal screenshot tool
 - `htop` process and resource monitor
 - `ImageMagick` versatile image editor and converter
 - `Alacritty` fast, GPU-based terminal emulator
 - `yazi` a lightweight and terminal based file manager
 - `ripgrep` a fast grep replacement with search highlitghting
-- `Zen` minimal web browser
+- `Nyxt` minimal web browser
 
 ## 📐 i3
 
@@ -37,7 +37,7 @@ In window managers like i3, keybindings are crucial and can make the mouse almos
 
 | Keybind                  | Action                                |
 |--------------------------|---------------------------------------|
-| Super + B                | Start browser (Zen)                   |
+| Super + B                | Start browser (Nyxt)                  |
 | Super + Enter            | Launch terminal (Alacritty)           |
 | Super + Space            | Launch Rofi                           |
 | Super + e                | Start Emacs                           |

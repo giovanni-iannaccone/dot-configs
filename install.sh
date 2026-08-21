@@ -1,11 +1,12 @@
 #!/bin/bash
 
 CONFIG_DIR="$HOME/.config/"
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 
-RED   = "\033[0;31m"
-GREEN = "\033[0;32m"
-CYAN  = "\033[0;36m"
-RESET = "\033[0m"
+RED="\033[0;31m"
+GREEN="\033[0;32m"
+CYAN="\033[0;36m"
+RESET="\033[0m"
 
 PACKAGES_CORE=(
     xorg xorg-dev xbacklight xbindkeys xvkbd xinput
@@ -14,8 +15,8 @@ PACKAGES_CORE=(
 )
 
 PACKAGES_UI=(
-    rofi dunst picom lxpolkit breeze-cursor-them
-    breeze-icon-theme    
+    rofi dunst picom lxpolkit breeze-icon-theme
+    breeze-cursor-theme
 )
 
 PACKAGES_FILE_MANAGER=(
@@ -28,8 +29,8 @@ PACKAGES_AUDIO=(
 )
 
 PACKAGES_UTILITIES=(
-    avahi-daemon acpi acpid feh emacs bat ripgrep
-    flameshot imagemagick fastfetch libclang-dev htop
+    avahi-daemon acpi acpid feh emacs ripgrep
+    maim imagemagick libclang-dev htop bat
 )
 
 PACKAGES_TERMINAL=(
@@ -76,10 +77,16 @@ echo "deb https://debian.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | su
 sudo apt update
 sudo apt install eza
 
-msg "Installing zen browser..."
-(wget -qO- https://github.com/zen-browser/desktop/releases/download/1.0.2-b.2/zen.linux-x86_64.tar.xz | sudo tar xj -C /opt) || die "Failed to install zen browser"
-mkdir -p "$HOME"/.local/bin
-sudo ln /opt/zen/zen "$HOME"/.local/bin/zen
+msg "Installing Nyxt..."
+sudo wget -O /opt/Linux-Nyxt-x86_64.tar.gz https://github.com/atlas-engineer/nyxt/releases/latest/download/Linux-Nyxt-x86_64.tar.gz
+sudo tar -xf Linux-Nyxt-x86_64.tar.gz
+cd "$SCRIPT_DIR"
+
+msg "Installing Librewolf..."
+sudo apt install extrepo -y
+sudo extrepo enable librewolf
+sudo apt update
+sudo apt install librewolf -y
 
 msg "Installing yazi..."
 curl -fsSL https://yazi-rs.github.io/builds/yazi-keyring.gpg | sudo tee /usr/share/keyrings/yazi-keyring.gpg >/dev/null
@@ -106,19 +113,26 @@ sudo apt-get install -y "${PACKAGES_FONTS[@]}" || echo "${RED}Failed to install 
 msg "Installing build dependencies..."
 sudo apt-get install -y "${PACKAGES_BUILD[@]}" || die "Failed to install build tools"
 
-sudo apt autoremove
-sudo systemctl enable avahi-daemon acpid
+sudo apt autoremove -y
+sudo systemctl enable --now avahi-daemon acpid
 
 if [ -d "$CONFIG_DIR" ]; then
     clear
-    read -p "Found existing config. Override them ? (y/n) " -n 1 -r
+    read -p "Found existing config. Backup and override it? (y/n) " -n 1 -r
     echo
-    [[ $REPLY =~ ^[Yy]$ ]] || die "Installation cancelled"
-    rm -rf "$CONFIG_DIR"
+
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+        mv "$CONFIG_DIR" "${CONFIG_DIR}.backup-$(date +%Y%m%d-%H%M%S)"
+        mkdir -p "$CONFIG_DIR"
+    else
+        die "Installation cancelled"
+    fi
+else
+    mkdir -p "$CONFIG_DIR"
 fi
 
 cp -r ./config/* "$CONFIG_DIR" || die "Failed to copy config"
-echo $CONFIG_DIR/wallpapers/ye.png > $CONFIG_DIR/default
+echo $CONFIG_DIR/wallpapers/ye.jpg > $CONFIG_DIR/default
 mv $CONFIG_DIR/.zshrc .
 
 sudo apt update && sudo apt upgrade

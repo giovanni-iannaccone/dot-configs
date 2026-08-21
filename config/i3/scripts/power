@@ -5,7 +5,7 @@ echo -e \
 "󰌾  Lock\n󰍃  Logout\n󰐥  Shutdown\n󰜉  Reboot" | \
 rofi -dmenu \
     -i \
-    -p "Power Menu" \
+    -p "Power" \
     -line-padding 4 \
     -hide-scrollbar \
     -theme "$ROFI_THEME"

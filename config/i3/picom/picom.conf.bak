@@ -8,16 +8,14 @@ shadow-exclude = [
   "_GTK_FRAME_EXTENTS@:c"
 ];
 
-fading = true;
-fade-in-step = 0.03;
-fade-out-step = 0.03;
-
+fading = false;
 inactive-opacity = 0.92;
 frame-opacity = 1.0
 inactive-opacity-override = false;
-opacity-rule = [ "94:class_g = 'Geany'"];
-
-# corner-radius = 10
+opacity-rule = [
+    #"100:class_g = 'kitty'",
+    "94:class_g = 'Geany'"
+];
 
 rounded-corners-exclude = [
   "window_type = 'dock'",
@@ -32,8 +30,7 @@ blur-background-exclude = [
   "_GTK_FRAME_EXTENTS@:c"
 ];
 
-backend = "glx";
-#backend = "xr_glx_hybrid";
+backend = "x";
 dithered-present = false;
 
 vsync = true;
@@ -44,7 +41,7 @@ detect-rounded-corners = true;
 detect-client-opacity = true;
 detect-transient = true;
 
-use-damage = true;
+use-damage = false;
 
 log-level = "warn";
 
@@ -56,3 +53,8 @@ wintypes:
   popup_menu = { opacity = 0.95; }
   dropdown_menu = { opacity = 0.95; }
 };
+
+unredir-if-possible = true;
+unredir-if-possible-exclude = [
+#    "class_g = 'kitty'"
+];

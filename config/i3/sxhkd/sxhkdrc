@@ -1,12 +1,12 @@
-# Launch Browser (Zen)
+# Launch Browser (Nyxt)
 super + b
-	zen
+      /opt/nyxt/Nyxt-x86_64.AppImage
 
-# Launch Private Browser (Zen Incognito Mode)
+# Launch Private Browser (Librewolf)
 super + shift + b
-	zen -private-window
+      librewolf -private-window
 
-# Launch Terminal (alacritty)
+# Launch Terminal (Alacritty)
 super + Return
 	alacritty
 
@@ -24,7 +24,7 @@ super + space
          -theme ~/.config/i3/rofi/config.rasi
 
 # Show Applications List
-super + control + space
+super + a
     rofi -show drun \
          -modi drun \
          -matching fuzzy \
@@ -32,7 +32,7 @@ super + control + space
          -line-padding 4 \
          -hide-scrollbar \
          -show-icons \
-         -theme ~/.config/i3/rofi/full.rasi
+         -theme ~/.config/i3/rofi/applications.rasi
 
 # Launch Rofi Wallpaper Menu
 super + w
@@ -40,8 +40,12 @@ super + w
 
 # Launch File Manager (yazi)
 super + f
-    kitty yazi
+    alacritty -e yazi
 
+# Launche Editor (emacs)
+super + e
+    alacritty -e emacs -nw
+          
 # Launch Wifi Menu
 super + c
 	~/.config/i3/scripts/wifi
@@ -72,11 +76,11 @@ super + shift + v
 
 # Take a Screenshot (Region Select)
 super + Print
-	flameshot gui --path ~/Screenshots/
+    ~/.config/i3/scripts/screenshot select
 
 # Take a Fullscreen Screenshot
 Print
-	flameshot full --path ~/Screenshots/
+   	~/.config/i3/scripts/screenshot full
 
 # Switch to Workspace 1
 super + 1

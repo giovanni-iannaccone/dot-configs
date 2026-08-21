@@ -1,0 +1,18 @@
+#!/bin/sh
+
+file="$HOME/Screenshots/$(date +%Y-%m-%d_%H-%M-%S).png"
+
+case "$1" in
+    full)
+        maim "$file"
+        ;;
+    select)
+        maim -s "$file"
+        ;;
+esac
+
+if [ -f "$file" ]; then
+    notify-send "Saved screenshots" "$file"
+else
+    notify-send "Error"
+fi

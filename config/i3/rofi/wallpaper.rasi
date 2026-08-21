@@ -9,9 +9,9 @@
 configuration {
     show-icons: true;
     icon-theme: "Papirus";
+
     location: 0;
-    font: "JetBrainsMono Nerd Font 12";
-    display-drun: "Select:";
+    display-drun: "Select";
 }
 
 window {
@@ -84,7 +84,7 @@ element.alternate.active {
     text-color: @fg;
 }
 
-/* Selected */
+/* SELECTED ----------------------------------------------- */
 
 element.selected.normal {
     background-color: @accent;
@@ -117,7 +117,7 @@ listview {
 /* INPUT BAR ---------------------------------------------- */
 
 inputbar {
-    padding: 10 0 0;
+    padding: 15 0 10;
     margin: 0;
 }
 
@@ -129,6 +129,6 @@ entry {
 
 prompt {
     text-color: #4C7899;
-    padding: 10 6 0 10;
-    margin: 0 -2 0 0;
+    padding: 0 6 0 10;
+    margin: 0 0 0 0;
 }
