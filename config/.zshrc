@@ -15,18 +15,6 @@ pwncheck() {
     ldd $1
 }
 
-sc32() {
-    nasm -f elf -o shellcode.elf $1
-    objcopy --dump-section .text=shellcode shellcode.elf
-    rm shellcode.elf
-}
-
-sc64() {
-    gcc -nostdlib -static $1 -o shellcode.elf
-    objcopy --dump-section .text=shellcode shellcode.elf
-    rm shellcode.elf
-}
-
 source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
@@ -37,8 +25,11 @@ ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=5'
 
 bindkey -e
 
+setopt autocd
 setopt PROMPT_SUBST
-PROMPT='%F{green}%*%f %F{blue}%~%f %F{red}${vcs_info_msg_0_}%f$ '
+PROMPT='%F{green}%n@%m%f %F{blue}%~%f %F{red}${vcs_info_msg_0_}%f$ '
+
+PROMPT_EOL_MARK=''
 
 HISTFILE=~/.zsh_history
 HISTSIZE=100000
@@ -48,18 +39,19 @@ setopt inc_append_history
 
 alias clearhist="echo > $HISTFILE"
 
-alias ..="cd .."
 alias grep="rg"
 
 alias cat="batcat"
 alias catp="batcat -pp"
 
+alias copy="xclip -sel clip"
 alias chmox="chmod +x"
 
 alias rmcr="rm core.*"
 alias rf="rm -rf"
 
 alias emacs="emacs -nw"
+alias make="make -j$(nproc)"
 
 alias ls="eza --icons"
 alias la="eza --icons -a"
@@ -80,9 +72,17 @@ alias webup="python3 -m http.server 8080"
 alias wgdown="sudo wg-quick down "
 alias wgup="sudo wg-quick up "
 
+alias docker="podman"
+
 alias updatezsh="source ~/.zshrc"
 
 alias -g NE="2>/dev/null"
 
 export PATH=$PATH:~/.local/bin/:/opt:~/go/bin:/home/giovanni/.local/share/gem/ruby/3.3.0/bin:/usr/sbin:/sbin:~/.cargo/bin
 export EDITOR=emacs
+
+if [[ "$INSIDE_EMACS" = 'vterm' ]] \
+   && [[ -n ${EMACS_VTERM_PATH} ]] \
+   && [[ -f ${EMACS_VTERM_PATH}/etc/emacs-vterm-zsh.sh ]]; then
+    source "${EMACS_VTERM_PATH}/etc/emacs-vterm-zsh.sh"
+fi

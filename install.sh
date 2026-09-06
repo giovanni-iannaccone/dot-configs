@@ -10,8 +10,8 @@ RESET="\033[0m"
 
 PACKAGES_CORE=(
     xorg xorg-dev xbacklight xbindkeys xvkbd xinput
-    build-essential i3 sxhkd xdotool
-    libnotify-bin libnotify-dev
+    build-essential i3 sxhkd xdotool gnome-keyring
+    libnotify-bin libnotify-dev libsecret-tools
 )
 
 PACKAGES_UI=(
@@ -22,6 +22,7 @@ PACKAGES_UI=(
 PACKAGES_FILE_MANAGER=(
     gvfs-backends dialog smbclient
     mtools cifs-utils fd-find unzip
+    libvips-tools
 )
 
 PACKAGES_AUDIO=(
@@ -30,7 +31,7 @@ PACKAGES_AUDIO=(
 
 PACKAGES_UTILITIES=(
     avahi-daemon acpi acpid feh emacs ripgrep
-    maim imagemagick libclang-dev htop bat
+    maim imagemagick libclang-dev bat
 )
 
 PACKAGES_TERMINAL=(
@@ -77,21 +78,14 @@ echo "deb https://debian.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | su
 sudo apt update
 sudo apt install eza
 
-msg "Installing Nyxt..."
-sudo wget -O /opt/Linux-Nyxt-x86_64.tar.gz https://github.com/atlas-engineer/nyxt/releases/latest/download/Linux-Nyxt-x86_64.tar.gz
-sudo tar -xf Linux-Nyxt-x86_64.tar.gz
-cd "$SCRIPT_DIR"
+msg "Installing Qutebrowser..."
+sudo apt install qutebrowser
 
 msg "Installing Librewolf..."
 sudo apt install extrepo -y
 sudo extrepo enable librewolf
 sudo apt update
 sudo apt install librewolf -y
-
-msg "Installing yazi..."
-curl -fsSL https://yazi-rs.github.io/builds/yazi-keyring.gpg | sudo tee /usr/share/keyrings/yazi-keyring.gpg >/dev/null
-echo 'deb [signed-by=/usr/share/keyrings/yazi-keyring.gpg] https://yazi-rs.github.io/builds/ stable main' | sudo tee /etc/apt/sources.list.d/yazi.list >/dev/null
-sudo apt update && sudo apt install yazi
 
 msg "Installing Überzug++..."
 echo 'deb http://download.opensuse.org/repositories/home:/justkidding/Debian_12/ /' \

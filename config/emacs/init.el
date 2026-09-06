@@ -1,27 +1,48 @@
-;; Melpa
-
 (require 'package)
+
 (add-to-list 'package-archives
-	    '("melpa" . "https://melpa.org/packages/") t)
-(package-initialize)
+             '("melpa" . "https://melpa.org/packages/") t)
 
-;; Packages
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
 
-(defun ensure-package-installed (packages)
-  (dolist (package packages)
-    (unless (package-installed-p package)
-      (when (y-or-n-p (format "Package %s is missing. Install it? " package))
-        (package-install package)))))
+(require 'use-package)
 
-(ensure-package-installed 
- '(company 
-   eglot
-   flycheck
-   irony
-   rust-mode
-   yasnippet))
+(setq use-package-always-ensure t
+      use-package-always-defer t)
 
-;; Utility functions
+(setq inhibit-startup-screen t
+      inhibit-splash-screen t
+      initial-scratch-message nil
+      ring-bell-function 'ignore
+      make-backup-files nil
+      use-file-dialog nil
+      column-number-mode t)
+
+(setq-default indent-tabs-mode nil
+              make-backup-files nil
+              cursor-type 'bar 
+              tab-width 4
+              c-basic-offset 4
+              c-basic-indent 4)
+
+(set-frame-font "JetBrainsMono NF 13" nil t)
+
+(blink-cursor-mode 0)
+(menu-bar-mode 0)
+(scroll-bar-mode -1)
+(tool-bar-mode -1)
+(winner-mode 1)
+
+(use-package emacs
+  :init
+  (defalias 'yes-or-no-p 'y-or-n-p))
+
+(add-hook 'prog-mode-hook #'display-line-numbers-mode)
+(setq display-line-numbers-type 'relative)
+
+(server-start)
 
 (defun move-line-up ()
   (interactive)
@@ -40,146 +61,234 @@
   (push-mark nil nil 1)
   (end-of-line))
 
-;; Delete the selected text upon text insertion
+(defun my-search-selection (start end fn)
+  "Search selected text with FN."
+  (interactive "r")
+  (let ((text (string-trim
+               (buffer-substring-no-properties start end))))
+    (when (string-empty-p text)
+      (user-error "No text selected"))
+    (funcall fn
+             (if (string-match-p "^\\(http\\|https\\|file\\|ftp\\):" text)
+                 text
+               (concat "https://lite.duckduckgo.com/lite/?q="
+                       (url-hexify-string text))))))
 
-(use-package delsel
+(defun search-selection-with-eww (start end)
+  (interactive "r")
+  (my-search-selection start end #'eww))
+
+(defun search-selection-with-browser (start end)
+  (interactive "r")
+  (my-search-selection start end #'browse-url))
+
+(delete-selection-mode 1)
+
+(global-set-key (kbd "C-l") #'mark-whole-line)
+(global-set-key (kbd "C-v") #'yank)
+(global-set-key (kbd "C-z") #'undo)
+
+(global-set-key (kbd "M-<up>") #'move-line-up)
+(global-set-key (kbd "M-<down>") #'move-line-down)
+
+(global-set-key (kbd "<f5>") #'search-selection-with-eww)
+(global-set-key (kbd "C-<f5>") #'search-selection-with-browser)
+
+(global-set-key (kbd "C-M-w") #'woman)
+
+(use-package helpful
+  :bind
+  (("C-h f" . helpful-callable)
+   ("C-h v" . helpful-variable)
+   ("C-h k" . helpful-key)
+   ("C-h x" . helpful-command)))
+
+(use-package which-key
+  :ensure t
+  :init
+  (which-key-mode))
+
+(use-package isearch
   :ensure nil
-  :hook (after-init . delete-selection-mode))
+  :custom
+  (search-whitespace-regexp ".*?")
+  (isearch-lazy-count t)
+  (isearch-wrap-pause 'no)
+  :bind
+  (:map isearch-mode-map
+        ("<down>" . isearch-repeat-forward)
+        ("<up>" . isearch-repeat-backward)))
 
-;; Key binding
+(use-package vertico
+  :init
+  (vertico-mode 1))
 
-(global-set-key (kbd "C-l") 'mark-whole-line)
+(use-package orderless
+  :custom
+  (completion-styles '(orderless basic))
+  (completion-category-overrides
+   '((file (styles partial-completion)))))
 
-(global-set-key (kbd "C-c") 'kill-ring-save)
-(global-set-key (kbd "C-v") 'yank)
+(use-package marginalia
+  :init
+  (marginalia-mode 1))
 
-(global-set-key (kbd "C-z") 'undo)
+(use-package consult
+  :bind
+  (("C-x b" . consult-buffer)
+   ("M-g g" . consult-goto-line)
+   ("M-s l" . consult-line)
+   ("M-s r" . consult-ripgrep)
+   ("M-s f" . consult-find)
+   ("M-y" . consult-yank-pop)))
 
-(global-set-key (kbd "M-<up>") 'move-line-up)
-(global-set-key (kbd "M-<down>") 'move-line-down)
+(use-package embark
+  :bind
+  (("C-." . embark-act)
+   ("C-h B" . embark-bindings)))
 
-(global-set-key (kbd "M-x") 'smex)
+(use-package embark-consult
+  :after (embark consult))
 
-;; Appereance
+(use-package corfu
+  :custom
+  (corfu-auto t)
+  (corfu-auto-delay 0.1)
+  (corfu-auto-prefix 1)
+  (corfu-cycle t)
+  :init
+  (global-corfu-mode 1))
+
+(use-package cape
+  :bind
+  ("C-c p" . cape-prefix-map))
+
+(use-package eglot
+  :hook
+  ((c-mode
+    c++-mode
+    go-mode
+    python-mode
+    python-ts-mode)
+   . eglot-ensure)
+  :custom
+  (eglot-ignored-server-capabilities
+   '(:documentOnTypeFormattingProvider))
+  :config
+  (add-to-list 'eglot-server-programs
+               '((python-mode python-ts-mode)
+                 "basedpyright-langserver" "--stdio")))
+(setq-default
+ eglot-workspace-configuration
+ '((:basedpyright
+    . ((analysis
+        . ((typeCheckingMode . "basic")
+           (diagnosticSeverityOverrides
+            . ((reportUnknownVariableType . "none")
+               (reportUnknownMemberType . "none")
+               (reportUnknownArgumentType . "none")
+               (reportOptionalMemberAccess . "none")
+               (reportOperatorIssue . "none")
+               (reportWildcardImportFromLibrary . "none")
+               (reportAttributeAccessIssue . "none")
+               (reportUnknownParameterType . "none")))))))))
+
+(use-package magit
+  :defer t
+  :bind
+  ("C-x g" . magit-status))
+
+(use-package project
+  :ensure nil
+  :bind-keymap
+  ("C-x p" . project-prefix-map))
+
+(use-package saveplace
+  :ensure nil
+  :init
+  (save-place-mode 1))
+
+(use-package autorevert
+  :ensure nil
+  :init
+  (global-auto-revert-mode 1))
+
+(use-package dirvish
+  :init
+  (dirvish-override-dired-mode 1)
+  :bind
+  ("C-x d" . dirvish))
+
+(defun my-vterm-toggle ()
+  (interactive)
+  (if (eq major-mode 'vterm-mode)
+      (previous-buffer)
+    (vterm)))
+
+(use-package vterm
+  :bind
+  ("C-x t" . my-vterm-toggle)
+  :custom
+  (vterm-shell "/bin/zsh")
+  (vterm-max-scrollback 1000)
+  (vterm-timer-delay 0.01))
+
+(use-package savehist
+  :ensure nil
+  :init
+  (savehist-mode 1))
+
+(use-package pdf-tools
+  :commands (pdf-tools-install)
+  :mode ("\\.pdf\\'" . pdf-view-mode)
+  :config
+  (pdf-tools-install))
+
+(use-package proced
+  :ensure nil
+  :defer t
+  :commands proced
+  :bind (("C-M-p" . proced))
+  :custom
+  (proced-auto-update-flag t)
+  (proced-goal-attribute nil)
+  (proced-show-remote-processes t)
+  (proced-enable-color-flag t)
+  (proced-format 'custom)
+  :config
+  (add-to-list
+   'proced-format-alist
+   '(custom user pid ppid sess tree pcpu pmem rss start time state (args comm))))
+
+(use-package recentf
+  :ensure nil
+  :init
+  (recentf-mode 1)
+  :custom
+  (recentf-max-saved-items 200)
+  :bind
+  ("C-x C-r" . #'consult-recent-file))
+
+(use-package tramp
+  :ensure nil
+  :custom
+  (tramp-default-method "ssh"))
+
+(use-package uniquify
+  :ensure nil
+  :custom
+  (uniquify-buffer-name-style 'forward))
+
+(use-package multiple-cursors
+  :ensure t
+  :bind
+  (("C-c m m" . mc/mark-more-like-this-extended)
+   ("C-c m l" . mc/mark-lines)))
 
 (load-theme 'debian-i3 t)
 
-(setq column-number-mode t)
-(setq inhibit-startup-screen t)
-(setq make-backup-files nil)
+(set-frame-parameter nil 'alpha-background 80)
+(add-to-list 'default-frame-alist '(alpha-background . 80))
 
-(setq-default indent-tabs-mode nil)
-(setq-default tab-width 4)
-(setq c-basic-offset 4)
-(setq c-basic-indent 4)
-
-(set-frame-font "JetBrainsMono NF 13" nil t)
-
-(menu-bar-mode 0)
-(tool-bar-mode 0)
-
-(global-display-line-numbers-mode)
-(setq display-line-numbers-type 'relative)
-
-(ido-mode 1)
-
-;; Company
-
-(require 'company)
-(add-hook 'after-init-hook 'global-company-mode)
-
-(use-package company
-  :ensure t
-  :config
-  (setq company-idle-delay 0)
-  (setq company-minimum-prefix-length 1))
-
-(with-eval-after-load 'company
-  (define-key company-active-map (kbd "M-n") nil))
-
-;; Rust
-
-(use-package rust-ts-mode
-  :mode ("\\.rs" . rust-ts-mode)
-  :hook ((rust-ts-mode . eglot-ensure)
-         (rust-ts-mode . company-mode))
-  :config
-  (add-to-list 'eglot-server-programs '(rust-ts-mode . ("rust-analyzer"))))
-
-;; Irony
-
-(use-package company-irony
-  :ensure t
-  :config
-  (add-to-list 'company-backends 'company-irony))
-
-(require 'irony)
-
-(use-package irony
-  :ensure t
-  :config
-  (add-hook 'c++-mode-hook 'irony-mode)
-  (add-hook 'c-mode-hook 'irony-mode)
-  (add-hook 'rust-mode-hook 'irony-mode)
-  (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options))
-
-(with-eval-after-load 'company
-  (add-hook 'c++-mode-hook 'company-mode)
-  (add-hook 'c-mode-hook 'company-mode)
-  (add-hook 'rust-mode-hook 'company-mode))
-
-;; variables
-
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(custom-safe-themes
-   '("3ba36ec7b18e5bbec2839be7c8810b3c22ae4e359efcbe633989ed66e0126404"
-     "81bd36e67025c946b41a23eab4570d220f61bc73499989f7595a394d39a57e06"
-     "a9fc8b52c66a45f399941c08017827459b7fc8acb5af570adc618b57cd6a6303"
-     "63f30131d043cc0c19d3c08fa55199f3b0edc4bc757f899de7ad8eac00a34a75"
-     "cdab8128a4186f068ee78c640026775d3fa44171b77227e57e545c13827be938"
-     "900f067cd6d9e7ef8104b2eea3be9a4dc703936bc91a6e1380eeaa3fb7b8eec1"
-     "abb7432b521577a7ed6f39494a2693e95660c095b287346ac08f54cdbf04f513"
-     "e4534f696824122b2f14bc135bd7cfddf9f6899c7341e85632fef1e3ae4f1b8b"
-     "9af6c155bdc4ced2c070d106c4b6e2bff8927fd2b73de172c893f2167951609d"
-     "30e86ff71b48ace65d107369c866f72a8026f9aee9d51af14027dc1f592a8389"
-     "3aca0ba9406433384f04c547defb40aa5d7f73ccf7440f3651125bd94affef52"
-     "67969b721d540195a76904b0a690d22b22b934991d6c552c5550cdc2da86c2e4"
-     "a9805d705c6b3348493d5679d835426efdf458da7de3d3815aae56046745138e"
-     default))
- '(package-selected-packages
-   '(auto-complete-c-headers company-irony flycheck go-mode goto-chg
-                             irony-eldoc jupyter lsp-ui magit
-                             nerd-icons-completion nerd-icons-corfu
-                             nerd-icons-dired projectile rust-mode
-                             smex yasnippet)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(font-lock-comment-face ((t (:foreground "#4e5b55")))))
-
-;; Transparency
-(set-frame-parameter nil 'alpha-background 92)
-(add-to-list 'default-frame-alist '(alpha-background . 92))
-
-(set-face-background 'default "unspecified")
-;; Eglot
-
-(require 'eglot)
-
-(use-package eglot
-  :custom (eglot-ignored-server-capabilities 
-           '(:documentOnTypeFormattingProvider)))
-
-(add-hook 'c-mode-hook 'eglot-ensure)
-(add-hook 'c++-mode-hook 'eglot-ensure)
-(add-hook 'go-mode-hook 'eglot-ensure)
-(add-hook 'rust-mode-hook 'eglot-ensure)
-(add-hook 'python-mode-hook 'eglot-ensure)
-(add-hook 'javascript-mode-hook 'eglot-ensure)
-(put 'downcase-region 'disabled nil)
+(unless (display-graphic-p)
+  (set-face-background 'default "unspecified"))

@@ -4,26 +4,33 @@
 (custom-theme-set-faces
  'debian-i3
 
- ;; Base
- '(default ((t (:background "#161616"
-                            :foreground "#D8DEE9"
-                            :family "JetBrainsMono Nerd Font"))))
+ '(default
+   ((t (:background "#161616"
+                    :foreground "#D8DEE9"
+                    :family "JetBrainsMono Nerd Font"))))
 
- '(cursor ((t (:background "#4C7899"))))
- '(region ((t (:background "#1F405A"))))
- '(highlight ((t (:background "#222222"))))
- '(minibuffer-prompt ((t (:foreground "#4C7899"))))
+ '(cursor
+   ((t (:background "#00A8FF"))))
 
+ '(region
+   ((t (:background "#0057FF"
+                    :foreground "#FFFFFF"))))
 
- ;; Mode line
- '(mode-line ((t (:background "#222222"
-                              :foreground "#D8DEE9"
-                              :box nil))))
- '(mode-line-inactive ((t (:background "#161616"
-                                      :foreground "#666666"
-                                      :box nil))))
+ '(highlight
+   ((t (:background "#222222"))))
 
+ '(minibuffer-prompt
+   ((t (:foreground "#008CFF"))))
 
+ '(mode-line
+   ((t (:background "#222222"
+                    :foreground "#D8DEE9"
+                    :box nil))))
+
+ '(mode-line-inactive
+   ((t (:background "#161616"
+                    :foreground "#666666"
+                    :box nil))))
  ;; Syntax
 
  ;; comments
@@ -39,7 +46,7 @@
  '(font-lock-function-name-face
    ((t (:foreground "#4C9ED9"))))
 
- ;; keyword
+ ;; keywords
  '(font-lock-keyword-face
    ((t (:foreground "#008CFF"))))
 
@@ -47,7 +54,7 @@
  '(font-lock-variable-name-face
    ((t (:foreground "#D8DEE9"))))
 
- ;; types
+ ;; types / libraries
  '(font-lock-type-face
    ((t (:foreground "#39B54A"))))
 
@@ -59,16 +66,18 @@
  '(font-lock-number-face
    ((t (:foreground "#73D216"))))
 
- ;; warning/errors
+ ;; warnings/errors
  '(font-lock-warning-face
    ((t (:foreground "#FF0033"
                     :weight bold))))
 
-
+ ;; ============================================================
  ;; Search
+ ;; ============================================================
+
  '(isearch
-   ((t (:background "#4C7899"
-                    :foreground "#000000"
+   ((t (:background "#0057FF"
+                    :foreground "#FFFFFF"
                     :weight bold))))
 
  '(lazy-highlight
@@ -76,10 +85,72 @@
                     :foreground "#D8DEE9"))))
 
 
- ;; Link
+ ;; ============================================================
+ ;; Links
+ ;; ============================================================
+
  '(link
-   ((t (:foreground "#00B7FF"
+   ((t (:foreground "#00E5FF"
                     :underline t))))
+
+
+ ;; ============================================================
+ ;; Vterm
+ ;; ============================================================
+
+ '(vterm-color-default
+   ((t (:foreground "#D8DEE9"
+                    :background "#161616"))))
+
+ ;; Normal ANSI
+ '(vterm-color-black
+   ((t (:foreground "#000000"))))
+
+ '(vterm-color-red
+   ((t (:foreground "#FF0033"))))
+
+ '(vterm-color-green
+   ((t (:foreground "#00FF41"))))
+
+ '(vterm-color-yellow
+   ((t (:foreground "#FFD600"))))
+
+ '(vterm-color-blue
+   ((t (:foreground "#008CFF"))))
+
+ '(vterm-color-magenta
+   ((t (:foreground "#D500FF"))))
+
+ '(vterm-color-cyan
+   ((t (:foreground "#00E5FF"))))
+
+ '(vterm-color-white
+   ((t (:foreground "#E8F1FF"))))
+
+ ;; Bright ANSI
+ '(vterm-color-bright-black
+   ((t (:foreground "#333333"))))
+
+ '(vterm-color-bright-red
+   ((t (:foreground "#FF3355"))))
+
+ '(vterm-color-bright-green
+   ((t (:foreground "#39FF14"))))
+
+ '(vterm-color-bright-yellow
+   ((t (:foreground "#FFFF33"))))
+
+ '(vterm-color-bright-blue
+   ((t (:foreground "#00B7FF"))))
+
+ '(vterm-color-bright-magenta
+   ((t (:foreground "#FF33FF"))))
+
+ '(vterm-color-bright-cyan
+   ((t (:foreground "#66FFFF"))))
+
+ '(vterm-color-bright-white
+   ((t (:foreground "#FFFFFF"))))
 
 )
 

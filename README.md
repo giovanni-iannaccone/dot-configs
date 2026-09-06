@@ -14,16 +14,18 @@ sudo ./install.sh
 
 ## ⚙️ Utilities
 The installation script also sets up a collection of lightweight, essential utilities to enhance productivity and keep the system minimal:
-- `bat` a modern cat replacement with syntax highlighting
-- `Emacs` a powerful keyboard‑driven text editor
-- `eza` a Rust-based ls replacement with icons
-- `main` minimal screenshot tool
-- `htop` process and resource monitor
-- `ImageMagick` versatile image editor and converter
-- `Alacritty` fast, GPU-based terminal emulator
-- `yazi` a lightweight and terminal based file manager
-- `ripgrep` a fast grep replacement with search highlitghting
-- `Nyxt` minimal web browser
+- `Alacritty`: fast, GPU-based terminal emulator
+- `Emacs`: a powerful keyboard‑driven text editor
+- `Dirvish`: a lightweight file manager inside Emacs
+- `Qutebrowser`: minimal web browser
+- `ImageMagick`: versatile image editor and converter
+- `eza`: a Rust-based ls replacement with icons
+- `bat`: a modern cat replacement with syntax highlighting
+- `main`: minimal screenshot tool
+- `ripgrep`: a fast grep replacement with search highlitghting
+- `mpv`: fast media player
+
+Other tools (such as `htop`) aren't installed because they can be easly replaced by Emacs
 
 ## 📐 i3
 
@@ -37,11 +39,10 @@ In window managers like i3, keybindings are crucial and can make the mouse almos
 
 | Keybind                  | Action                                |
 |--------------------------|---------------------------------------|
-| Super + B                | Start browser (Nyxt)                  |
+| Super + B                | Start browser (Qute)                  |
 | Super + Enter            | Launch terminal (Alacritty)           |
 | Super + Space            | Launch Rofi                           |
 | Super + e                | Start Emacs                           |
-| Super + f                | Launch file manager (yazi)            |
 | Super + h                | Show keybindings help                 |
 | Super + w                | Launch Wallpaper Menu                 |
 | Super + c                | Launch Wifi Menu                      |
@@ -62,7 +63,7 @@ Press Super + h to list all of the keybinds
 
 <img width="1920" height="1080" alt="terminal" src="images/terminal.png" /> <br/> <br/>
 
-My prompt is very simple: `TIME CURRENT_DIRECTORY GIT_BRANCH`. I don’t use frameworks like Oh My Zsh or unusual plugins. Instead, I’ve defined aliases to help with commands I can’t always remember, frequently used long commands, and others that make my terminal cleaner and more user-friendly.
+I don’t use frameworks like Oh My Zsh or unusual plugins. Instead, I’ve defined aliases to help with commands I can’t always remember, frequently used long commands, and others that make my terminal cleaner and more user-friendly.
 
 | Alias       | Description                                                    |
 |-------------|----------------------------------------------------------------|
@@ -83,15 +84,41 @@ My prompt is very simple: `TIME CURRENT_DIRECTORY GIT_BRANCH`. I don’t use fra
 
 <img width="1920" height="1080" alt="emacs" src="images/emacs.png" /> <br/> <br/>
 
-Emacs is already set up for different programming languages, such as C/C++, Go, and Rust. The theme I use is custom, since I couldn’t find one I liked. I use the classic Emacs keybindings, but I’ve also configured some of my own because I find them easier to use.
+Emacs is configured as the central part of my development workflow. It supports several programming languages, including C/C++, Go, and Python and integrates tools such as Git, terminals, project management, file navigation, PDF viewing, and LSP-based development.
 
-| Keybind    | Action              |
-|------------|---------------------|
-| `C-z`      | Undo                |
-| `C-l`      | Mark the whole line |
-| `M-<up>`   | Move the line up    |
-| `M-<down>` | Move the line down  |
-| `M-x`      | Start smex          |
+I avoid heavy frameworks such as Doom Emacs or Spacemacs and prefer configuring everything directly with use-package. I use a lightweight setup based on built-in Emacs functionality and a small number of carefully selected packages:
+- `cape`: additional completion-at-point backends
+- `consult`: enhanced commands for searching buffers, files, lines, and projects
+- `corfu`: lightweight in-buffer completion
+- `eglot`: LSP integration for programming languages
+- `embark`: context-aware actions for selected objects
+- `eww`: a built-int text-based web browser
+- `magit`: a powerful Git interface inside Emacs
+- `marginalia`: adds useful metadata to minibuffer completions
+- `multiple-cursors`: Edit multiple locations in a buffer simultaneously.
+- `orderless`: flexible, space-separated fuzzy-style completion
+- `pdf-tools`: native PDF viewing and navigation
+- `vertico`: a clean and efficient completion interface in the minibuffer
+- `vterm`: a fully featured terminal emulator inside Emacs
+- `which-key`: displays available keybindings after pressing a prefix key
+
+I use the classic Emacs keybindings, but I’ve also configured some of my own because I find them easier to use. 
+
+| Keybind    | Action                      |
+|------------|-----------------------------|
+| `C-z`      | Undo                        |
+| `C-l`      | Mark the whole line         |
+| `C-c m m`  | Set mutliple cursors        |
+| `C-x b`    | Switch buffers with Consult |
+| `C-x d`    | Open Dirvish                |
+| `C-x g`    | Open Magit                  |
+| `C-x p`    | Project commands            |
+| `C-x t`    | Switch to vterm             |
+| `C-.`      | Run an Embark action        |
+| `C-M-p`    | Starts Proced               |
+| `C-M-w`    | Open man pages              |
+| `M-<up>`   | Move the line up            |
+| `M-<down>` | Move the line down          |
 
 ## 🖼️ Wallpapers
 

@@ -1,10 +1,10 @@
-# Launch Browser (Nyxt)
+# Launch Browser (Qute)
 super + b
-      /opt/nyxt/Nyxt-x86_64.AppImage
+      qutebrowser
 
-# Launch Private Browser (Librewolf)
+# Launch Private Browser (Chromium)
 super + shift + b
-      librewolf -private-window
+      ~/.local/bin/ungoogled-chromium.AppImage --incognito
 
 # Launch Terminal (Alacritty)
 super + Return
@@ -38,13 +38,9 @@ super + a
 super + w
 	~/.config/i3/scripts/wallpaper
 
-# Launch File Manager (yazi)
-super + f
-    alacritty -e yazi
-
 # Launche Editor (emacs)
 super + e
-    alacritty -e emacs -nw
+    emacs
           
 # Launch Wifi Menu
 super + c
