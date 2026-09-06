@@ -1,7 +1,8 @@
 (require 'package)
 
-(add-to-list 'package-archives
-             '("melpa" . "https://melpa.org/packages/") t)
+(dolist (archive '(("melpa" . "https://melpa.org/packages/")
+                   ("gnu"   . "https://elpa.gnu.org/packages/")))
+  (add-to-list 'package-archives archive t))
 
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
@@ -10,19 +11,16 @@
 (require 'use-package)
 
 (setq use-package-always-ensure t
-      use-package-always-defer t)
-
-(setq inhibit-startup-screen t
+      use-package-always-defer t
+      inhibit-startup-screen t
       inhibit-splash-screen t
       initial-scratch-message nil
       ring-bell-function 'ignore
-      make-backup-files nil
       use-file-dialog nil
       column-number-mode t)
 
 (setq-default indent-tabs-mode nil
               make-backup-files nil
-              cursor-type 'bar 
               tab-width 4
               c-basic-offset 4
               c-basic-indent 4)
@@ -42,7 +40,12 @@
 (add-hook 'prog-mode-hook #'display-line-numbers-mode)
 (setq display-line-numbers-type 'relative)
 
-(server-start)
+(use-package server
+  :ensure nil
+  :defer 1
+  :config
+  (unless (server-running-p)
+    (server-start)))
 
 (defun move-line-up ()
   (interactive)
@@ -105,6 +108,7 @@
 
 (use-package which-key
   :ensure t
+  :defer 2
   :init
   (which-key-mode))
 
@@ -239,8 +243,8 @@
   (savehist-mode 1))
 
 (use-package pdf-tools
-  :commands (pdf-tools-install)
   :mode ("\\.pdf\\'" . pdf-view-mode)
+  :commands (pdf-tools-install)
   :config
   (pdf-tools-install))
 
@@ -286,6 +290,10 @@
    ("C-c m l" . mc/mark-lines)))
 
 (load-theme 'debian-i3 t)
+
+(with-eval-after-load 'eglot
+  (set-face-attribute 'eglot-inlay-hint-face nil
+                      :height 1.0))
 
 (set-frame-parameter nil 'alpha-background 80)
 (add-to-list 'default-frame-alist '(alpha-background . 80))
