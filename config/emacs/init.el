@@ -17,7 +17,11 @@
       initial-scratch-message nil
       ring-bell-function 'ignore
       use-file-dialog nil
-      column-number-mode t)
+      column-number-mode t
+      gc-cons-threshold (* 32 1024 1024))
+
+(setq yank-excluded-properties
+      '(category field mouse-face))
 
 (setq-default indent-tabs-mode nil
               make-backup-files nil
@@ -98,6 +102,9 @@
 (global-set-key (kbd "C-<f5>") #'search-selection-with-browser)
 
 (global-set-key (kbd "C-M-w") #'woman)
+
+(global-set-key (kbd "C-=") 'text-scale-increase)
+(global-set-key (kbd "C--") 'text-scale-decrease)
 
 (use-package helpful
   :bind
@@ -236,6 +243,9 @@
   (vterm-shell "/bin/zsh")
   (vterm-max-scrollback 1000)
   (vterm-timer-delay 0.01))
+
+(with-eval-after-load 'vterm
+  (define-key vterm-mode-map (kbd "C-S-c C-y") #'vterm-yank))
 
 (use-package savehist
   :ensure nil

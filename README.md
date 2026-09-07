@@ -21,7 +21,7 @@ The installation script also sets up a collection of lightweight, essential util
 - `ImageMagick`: versatile image editor and converter
 - `eza`: a Rust-based ls replacement with icons
 - `bat`: a modern cat replacement with syntax highlighting
-- `main`: minimal screenshot tool
+- `maim`: minimal screenshot tool
 - `ripgrep`: a fast grep replacement with search highlitghting
 - `mpv`: fast media player
 
@@ -129,6 +129,5 @@ To set a new wallpaper, copy it into the `.config/wallpapers` folder, press Supe
 ### Emacs
 - If irony says it can't contact server, run `M-x irony-server-install`
 - If irony has "couldn't find irony.el" issue, follow <a href="https://github.com/Sarcasm/irony-mode/issues/592">this guide</a>
-- To install go, just type `sudo apt install gopls` in your terminal
 
 🐧 Happy ricing...

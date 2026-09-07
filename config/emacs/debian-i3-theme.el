@@ -5,9 +5,13 @@
  'debian-i3
 
  '(default
-   ((t (:background "#161616"
+   ((t (:background "#000000"
                     :foreground "#D8DEE9"
                     :family "JetBrainsMono Nerd Font"))))
+
+ '(fringe
+   ((t (:background "#000000"
+                    :foreground "#607080"))))
 
  '(cursor
    ((t (:background "#00A8FF"))))
@@ -16,20 +20,22 @@
    ((t (:background "#0057FF"
                     :foreground "#FFFFFF"))))
 
- '(highlight
-   ((t (:background "#222222"))))
+'(highlight
+   ((t (:background "#151515"
+                    :foreground "#D8DEE9"))))
 
  '(minibuffer-prompt
-   ((t (:foreground "#008CFF"))))
+   ((t (:foreground "#008CFF"
+                    :weight bold))))
 
  '(mode-line
-   ((t (:background "#222222"
+   ((t (:background "#0A0A0A"
                     :foreground "#D8DEE9"
                     :box nil))))
 
  '(mode-line-inactive
-   ((t (:background "#161616"
-                    :foreground "#666666"
+   ((t (:background "#000000"
+                    :foreground "#444444"
                     :box nil))))
  ;; Syntax
 
@@ -71,10 +77,6 @@
    ((t (:foreground "#FF0033"
                     :weight bold))))
 
- ;; ============================================================
- ;; Search
- ;; ============================================================
-
  '(isearch
    ((t (:background "#0057FF"
                     :foreground "#FFFFFF"
@@ -84,23 +86,14 @@
    ((t (:background "#30363D"
                     :foreground "#D8DEE9"))))
 
-
- ;; ============================================================
- ;; Links
- ;; ============================================================
-
  '(link
    ((t (:foreground "#00E5FF"
                     :underline t))))
 
-
- ;; ============================================================
  ;; Vterm
- ;; ============================================================
-
  '(vterm-color-default
    ((t (:foreground "#D8DEE9"
-                    :background "#161616"))))
+                    :background "#000000"))))
 
  ;; Normal ANSI
  '(vterm-color-black
