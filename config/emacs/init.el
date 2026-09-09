@@ -247,6 +247,27 @@
 (with-eval-after-load 'vterm
   (define-key vterm-mode-map (kbd "C-S-c C-y") #'vterm-yank))
 
+(defvar pwn-file nil)
+
+(defun pwn ()
+  (interactive)
+  (save-buffer)
+  (setq pwn-file (buffer-file-name))
+  (vterm)
+  (vterm-send-string
+   (format "python3 -u %s" (shell-quote-argument pwn-file)))
+  (vterm-send-return))
+
+(defun pwn-restart ()
+  (interactive)
+  (vterm-send-C-c)
+  (vterm-send-string
+   (format "python3 -u %s" (shell-quote-argument pwn-file)))
+  (vterm-send-return))
+
+(global-set-key (kbd "C-c d") #'pwn)
+(global-set-key (kbd "C-c D") #'pwn-restart)
+
 (use-package savehist
   :ensure nil
   :init
@@ -282,6 +303,16 @@
   (recentf-max-saved-items 200)
   :bind
   ("C-x C-r" . #'consult-recent-file))
+
+(use-package yasnippet
+  :ensure t
+  :hook (prog-mode . yas-minor-mode)
+  :config
+  (setq yas-snippet-dirs
+        '("~/.config/emacs/snippets"))
+  (yas-reload-all))
+
+(setq yas-indent-line 'fixed)
 
 (use-package tramp
   :ensure nil

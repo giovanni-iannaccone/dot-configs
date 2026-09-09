@@ -102,6 +102,7 @@ I avoid heavy frameworks such as Doom Emacs or Spacemacs and prefer configuring 
 - `vertico`: a clean and efficient completion interface in the minibuffer
 - `vterm`: a fully featured terminal emulator inside Emacs
 - `which-key`: displays available keybindings after pressing a prefix key
+- `yasnippet`: provides reusable code templates and snippet expansion
 
 I use the classic Emacs keybindings, but I’ve also configured some of my own because I find them easier to use. 
 
