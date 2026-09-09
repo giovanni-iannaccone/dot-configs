@@ -35,7 +35,7 @@ super + a
          -theme ~/.config/i3/rofi/applications.rasi
 
 # Launch Rofi Wallpaper Menu
-super + w
+super + shift + w
 	~/.config/i3/scripts/wallpaper
 
 # Launche Editor (emacs)
@@ -78,6 +78,10 @@ super + Print
 Print
    	~/.config/i3/scripts/screenshot full
 
+# Toggle tabbed mode
+super + w
+    i3-msg tabbed mode
+    
 # Switch to Workspace 1
 super + 1
 	i3-msg workspace 1

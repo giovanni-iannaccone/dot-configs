@@ -44,13 +44,14 @@ In window managers like i3, keybindings are crucial and can make the mouse almos
 | Super + Space            | Launch Rofi                           |
 | Super + e                | Start Emacs                           |
 | Super + h                | Show keybindings help                 |
-| Super + w                | Launch Wallpaper Menu                 |
+| Super + shift + w        | Launch Wallpaper Menu                 |
 | Super + c                | Launch Wifi Menu                      |
 | Super + p                | Launch Power Menu                     |
 | Super + print            | Take a screenshot                     |
 | Super + [1-9, 0]         | Switch to workspace 1-10              |
 | Super + Shift + [1-9, 0] | Move current window to workspace 1-10 |
 | Super + q                | Quit window                           |
+| Super + w                | Switch to tabbed mode                 |
 | Super + Shift + q        | Quit i3                               |
 | Super + insert           | Volume up                             |
 | Super + delete           | Volume down                           |
