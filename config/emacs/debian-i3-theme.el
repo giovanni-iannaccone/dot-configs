@@ -20,7 +20,7 @@
    ((t (:background "#0057FF"
                     :foreground "#FFFFFF"))))
 
-'(highlight
+ '(highlight
    ((t (:background "#151515"
                     :foreground "#D8DEE9"))))
 
@@ -90,61 +90,54 @@
    ((t (:foreground "#00E5FF"
                     :underline t))))
 
- ;; Vterm
- '(vterm-color-default
-   ((t (:foreground "#D8DEE9"
-                    :background "#000000"))))
-
- ;; Normal ANSI
- '(vterm-color-black
+ ;; Eat / ANSI colors
+ '(ansi-color-black
    ((t (:foreground "#000000"))))
 
- '(vterm-color-red
+ '(ansi-color-red
    ((t (:foreground "#FF0033"))))
 
- '(vterm-color-green
+ '(ansi-color-green
    ((t (:foreground "#00FF41"))))
 
- '(vterm-color-yellow
+ '(ansi-color-yellow
    ((t (:foreground "#FFD600"))))
 
- '(vterm-color-blue
+ '(ansi-color-blue
    ((t (:foreground "#008CFF"))))
 
- '(vterm-color-magenta
+ '(ansi-color-magenta
    ((t (:foreground "#D500FF"))))
 
- '(vterm-color-cyan
+ '(ansi-color-cyan
    ((t (:foreground "#00E5FF"))))
 
- '(vterm-color-white
+ '(ansi-color-white
    ((t (:foreground "#E8F1FF"))))
 
- ;; Bright ANSI
- '(vterm-color-bright-black
+ '(ansi-color-bright-black
    ((t (:foreground "#333333"))))
 
- '(vterm-color-bright-red
+ '(ansi-color-bright-red
    ((t (:foreground "#FF3355"))))
 
- '(vterm-color-bright-green
+ '(ansi-color-bright-green
    ((t (:foreground "#39FF14"))))
 
- '(vterm-color-bright-yellow
+ '(ansi-color-bright-yellow
    ((t (:foreground "#FFFF33"))))
 
- '(vterm-color-bright-blue
+ '(ansi-color-bright-blue
    ((t (:foreground "#00B7FF"))))
 
- '(vterm-color-bright-magenta
+ '(ansi-color-bright-magenta
    ((t (:foreground "#FF33FF"))))
 
- '(vterm-color-bright-cyan
+ '(ansi-color-bright-cyan
    ((t (:foreground "#66FFFF"))))
 
- '(vterm-color-bright-white
+ '(ansi-color-bright-white
    ((t (:foreground "#FFFFFF"))))
-
-)
+ )
 
 (provide-theme 'debian-i3)

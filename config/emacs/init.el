@@ -18,7 +18,7 @@
       ring-bell-function 'ignore
       use-file-dialog nil
       column-number-mode t
-      gc-cons-threshold (* 32 1024 1024))
+      gc-cons-threshold (* 64 1024 1024))
 
 (setq yank-excluded-properties
       '(category field mouse-face))
@@ -225,27 +225,30 @@
   (global-auto-revert-mode 1))
 
 (use-package dirvish
+  :ensure t
   :init
   (dirvish-override-dired-mode 1)
   :bind
   ("C-x d" . dirvish))
 
-(defun my-vterm-toggle ()
+(defun my-eat-toggle ()
   (interactive)
-  (if (eq major-mode 'vterm-mode)
+  (if (eq major-mode 'eat-mode)
       (previous-buffer)
-    (vterm)))
+    (eat)))
 
-(use-package vterm
-  :bind
-  ("C-x t" . my-vterm-toggle)
+(use-package eat
+  :ensure t
   :custom
-  (vterm-shell "/bin/zsh")
-  (vterm-max-scrollback 1000)
-  (vterm-timer-delay 0.01))
-
-(with-eval-after-load 'vterm
-  (define-key vterm-mode-map (kbd "C-S-c C-y") #'vterm-yank))
+  (shell-file-name "/bin/zsh")
+  (eat-shell "/bin/zsh")
+  (eat-term-scrollback-size 1000)
+  (eat-enable-directory-tracking t)
+  (eat-shell-prompt-annotation-success-margin-indicator "")
+  (eat-shell-prompt-annotation-failure-margin-indicator "")
+  (eat-term-scrollback-size (* 100 1024))
+  :bind
+  ("C-x t" . my-eat-toggle))
 
 (defvar pwn-file nil)
 
@@ -253,17 +256,27 @@
   (interactive)
   (save-buffer)
   (setq pwn-file (buffer-file-name))
-  (vterm)
-  (vterm-send-string
-   (format "python3 -u %s" (shell-quote-argument pwn-file)))
-  (vterm-send-return))
+  (eat)
+  (run-at-time
+   0.1 nil
+   (lambda ()
+     (when (and (get-buffer "*eat*")
+                (buffer-live-p (get-buffer "*eat*")))
+       (with-current-buffer "*eat*"
+         (eat-term-send-string
+          eat-terminal
+          (format "python3 -u %s\n"
+                  (shell-quote-argument pwn-file))))))))
 
 (defun pwn-restart ()
   (interactive)
-  (vterm-send-C-c)
-  (vterm-send-string
-   (format "python3 -u %s" (shell-quote-argument pwn-file)))
-  (vterm-send-return))
+  (when (and (boundp 'eat-terminal)
+             eat-terminal)
+    (eat-term-send-string eat-terminal "\C-c")
+    (eat-term-send-string
+     eat-terminal
+     (format "python3 -u %s\n"
+             (shell-quote-argument pwn-file)))))
 
 (global-set-key (kbd "C-c d") #'pwn)
 (global-set-key (kbd "C-c D") #'pwn-restart)
@@ -319,6 +332,20 @@
   :custom
   (tramp-default-method "ssh"))
 
+(with-eval-after-load 'tramp
+  (connection-local-set-profile-variables
+   'remote-direct-async-process
+   '((tramp-direct-async-process . t)))
+
+  (connection-local-set-profiles
+   '(:application tramp :protocol "ssh")
+   'remote-direct-async-process))
+
+(setq vc-ignore-dir-regexp
+      (format "\\(%s\\)\\|\\(%s\\)"
+              vc-ignore-dir-regexp
+              tramp-file-name-regexp))
+
 (use-package uniquify
   :ensure nil
   :custom
@@ -341,3 +368,10 @@
 
 (unless (display-graphic-p)
   (set-face-background 'default "unspecified"))
+
+(add-to-list 'load-path "~/.config/emacs/lisp")
+(autoload 'ctftime "ctftime"
+  "Browse CTFtime events."
+  t)
+
+(require 'orgconfig)

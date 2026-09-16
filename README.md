@@ -91,6 +91,7 @@ I avoid heavy frameworks such as Doom Emacs or Spacemacs and prefer configuring 
 - `cape`: additional completion-at-point backends
 - `consult`: enhanced commands for searching buffers, files, lines, and projects
 - `corfu`: lightweight in-buffer completion
+- `eat`: a fully featured terminal emulator inside Emacs
 - `eglot`: LSP integration for programming languages
 - `embark`: context-aware actions for selected objects
 - `eww`: a built-int text-based web browser
@@ -100,7 +101,6 @@ I avoid heavy frameworks such as Doom Emacs or Spacemacs and prefer configuring 
 - `orderless`: flexible, space-separated fuzzy-style completion
 - `pdf-tools`: native PDF viewing and navigation
 - `vertico`: a clean and efficient completion interface in the minibuffer
-- `vterm`: a fully featured terminal emulator inside Emacs
 - `which-key`: displays available keybindings after pressing a prefix key
 - `yasnippet`: provides reusable code templates and snippet expansion
 
@@ -115,7 +115,7 @@ I use the classic Emacs keybindings, but I’ve also configured some of my own b
 | `C-x d`    | Open Dirvish                |
 | `C-x g`    | Open Magit                  |
 | `C-x p`    | Project commands            |
-| `C-x t`    | Switch to vterm             |
+| `C-x t`    | Switch to eat               |
 | `C-.`      | Run an Embark action        |
 | `C-M-p`    | Starts Proced               |
 | `C-M-w`    | Open man pages              |

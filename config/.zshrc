@@ -3,9 +3,11 @@ autoload -Uz vcs_info
 
 precmd() { vcs_info }
 
-brightness() {
-    brightnessctl set "$1%"
-}
+bak() 		{ cp -- "$1" "$1.bak" }
+restore() 	{ cp -- "$1.bak" "$1" }
+rmbak() 	{ rm -- "$1.bak" }
+
+brightness() { brightnessctl set "$1%" }
 
 pwncheck() {
     file $1
@@ -58,6 +60,7 @@ alias la="eza --icons -a"
 alias ll="eza --icons -l"
 alias lla="eza --icons -la"
 alias lt="eza --icons --tree"
+alias lta="eza --icons --tree -a"
 
 alias angrinit="cp ~/development/ctf/templates/angr-template.py solve.py; venv"
 alias gdb="gdb -q"
@@ -78,11 +81,10 @@ alias updatezsh="source ~/.zshrc"
 
 alias -g NE="2>/dev/null"
 
-export PATH=$PATH:~/.local/bin/:/opt:~/go/bin:/home/giovanni/.local/share/gem/ruby/3.3.0/bin:/usr/sbin:/sbin:~/.cargo/bin
+export PATH=$PATH:~/.local/bin/:/opt:~/go/bin:~/.local/share/gem/ruby/3.3.0/bin:/usr/sbin:/sbin
 export EDITOR=emacs
 
-if [[ "$INSIDE_EMACS" = 'vterm' ]] \
-   && [[ -n ${EMACS_VTERM_PATH} ]] \
-   && [[ -f ${EMACS_VTERM_PATH}/etc/emacs-vterm-zsh.sh ]]; then
-    source "${EMACS_VTERM_PATH}/etc/emacs-vterm-zsh.sh"
+if [[ -n "$EAT_SHELL_INTEGRATION_DIR" ]]; then
+    source "$EAT_SHELL_INTEGRATION_DIR/zsh"
+    PROMPT="${PROMPT#0}"
 fi
