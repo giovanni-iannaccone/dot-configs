@@ -124,7 +124,7 @@ I use the classic Emacs keybindings, but I’ve also configured some of my own b
 
 ## 🖼️ Wallpapers
 
-To set a new wallpaper, copy it into the `.config/wallpapers` folder, press Super + w, and select it from the wallpaper menu. The chosen wallpaper will be saved and set as the default, so you won’t need to change it each time you log in.
+To set a new wallpaper, copy it into the `.config/wallpapers` folder, press `Super + shift + w`, and select it from the wallpaper menu. The chosen wallpaper will be saved and set as the default, so you won’t need to change it each time you log in.
 
 ## 🐞 Troubleshooting
 

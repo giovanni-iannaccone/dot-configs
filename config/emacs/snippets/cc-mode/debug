@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: C debug
+# key: debug
+# --
+fprintf(stderr, "%s:%d\n", __FILE__, __LINE__);
