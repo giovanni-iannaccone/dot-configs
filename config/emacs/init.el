@@ -29,7 +29,8 @@
               c-basic-offset 4
               c-basic-indent 4)
 
-(set-frame-font "JetBrainsMono NF 13" nil t)
+(add-to-list 'default-frame-alist
+             '(font . "JetBrainsMono NF-13"))
 
 (blink-cursor-mode 0)
 (menu-bar-mode 0)
@@ -113,6 +114,10 @@
    ("C-h k" . helpful-key)
    ("C-h x" . helpful-command)))
 
+(use-package ace-link
+  :init
+  (ace-link-setup-default))
+
 (use-package which-key
   :ensure t
   :defer 2
@@ -189,6 +194,7 @@
   (add-to-list 'eglot-server-programs
                '((python-mode python-ts-mode)
                  "basedpyright-langserver" "--stdio")))
+
 (setq-default
  eglot-workspace-configuration
  '((:basedpyright
@@ -288,9 +294,8 @@
 
 (use-package pdf-tools
   :mode ("\\.pdf\\'" . pdf-view-mode)
-  :commands (pdf-tools-install)
   :config
-  (pdf-tools-install))
+  (pdf-tools-install :no-query))
 
 (use-package proced
   :ensure nil
@@ -363,15 +368,10 @@
   (set-face-attribute 'eglot-inlay-hint-face nil
                       :height 1.0))
 
-(set-frame-parameter nil 'alpha-background 80)
 (add-to-list 'default-frame-alist '(alpha-background . 80))
 
 (unless (display-graphic-p)
   (set-face-background 'default "unspecified"))
 
 (add-to-list 'load-path "~/.config/emacs/lisp")
-(autoload 'ctftime "ctftime"
-  "Browse CTFtime events."
-  t)
-
 (require 'orgconfig)

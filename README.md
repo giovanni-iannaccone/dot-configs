@@ -132,4 +132,7 @@ To set a new wallpaper, copy it into the `.config/wallpapers` folder, press `Sup
 - If irony says it can't contact server, run `M-x irony-server-install`
 - If irony has "couldn't find irony.el" issue, follow <a href="https://github.com/Sarcasm/irony-mode/issues/592">this guide</a>
 
+> “Perfection is achieved, not when there is nothing more to add, but when there is nothing left to take away.”
+> - **Antoine de Saint-Exupéry**
+
 🐧 Happy ricing...
