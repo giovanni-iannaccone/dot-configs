@@ -88,6 +88,7 @@ I don’t use frameworks like Oh My Zsh or unusual plugins. Instead, I’ve defi
 Emacs is configured as the central part of my development workflow. It supports several programming languages, including C/C++, Go, and Python and integrates tools such as Git, terminals, project management, file navigation, PDF viewing, and LSP-based development.
 
 I avoid heavy frameworks such as Doom Emacs or Spacemacs and prefer configuring everything directly with use-package. I use a lightweight setup based on built-in Emacs functionality and a small number of carefully selected packages:
+- `ace-link`: makes eww navigation more powerful
 - `cape`: additional completion-at-point backends
 - `consult`: enhanced commands for searching buffers, files, lines, and projects
 - `corfu`: lightweight in-buffer completion
@@ -126,13 +127,7 @@ I use the classic Emacs keybindings, but I’ve also configured some of my own b
 
 To set a new wallpaper, copy it into the `.config/wallpapers` folder, press `Super + shift + w`, and select it from the wallpaper menu. The chosen wallpaper will be saved and set as the default, so you won’t need to change it each time you log in.
 
-## 🐞 Troubleshooting
-
-### Emacs
-- If irony says it can't contact server, run `M-x irony-server-install`
-- If irony has "couldn't find irony.el" issue, follow <a href="https://github.com/Sarcasm/irony-mode/issues/592">this guide</a>
-
 > “Perfection is achieved, not when there is nothing more to add, but when there is nothing left to take away.”
-> - **Antoine de Saint-Exupéry**
+> -**Antoine de Saint-Exupéry**
 
 🐧 Happy ricing...
