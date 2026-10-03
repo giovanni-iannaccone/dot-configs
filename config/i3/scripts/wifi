@@ -1,19 +1,36 @@
 #!/usr/bin/env bash
 
-ROFI_THEME="$HOME/.config/i3/rofi/wifi.rasi"
-
+FONT='JetBrainsMono Nerd Font-12'
+BG='#000000'
+FG='#F2F4F8'
+ACCENT='#4C7899'
+WHITE='#FFFFFF'
 BACK="󰌍  Back"
+NETWORK_LINES=10
+SAVED_LINES=10
+
+command -v nmcli >/dev/null 2>&1 || { notify-send "Wi-Fi" "nmcli not found"; exit 1; }
+command -v dmenu >/dev/null 2>&1 || { notify-send "Wi-Fi" "dmenu not found"; exit 1; }
+
+dmenu_cmd() {
+    dmenu -i -fn "$FONT" -nb "$BG" -nf "$FG" -sb "$ACCENT" -sf "$WHITE" "$@"
+}
 
 wifi_interface() {
-    nmcli -t -f DEVICE,TYPE device | awk -F: '$2=="wifi"{print $1; exit}'
+    nmcli -t -f DEVICE,TYPE device 2>/dev/null |
+        awk -F: '$2=="wifi" && $1!="" {print $1; exit}'
+}
+
+wifi_enabled() {
+    [ "$(nmcli radio wifi 2>/dev/null)" = "enabled" ]
 }
 
 wifi_title() {
+    local iface connection
     iface=$(wifi_interface)
-
-    connection=$(nmcli -t -f GENERAL.CONNECTION device show "$iface" 2>/dev/null | cut -d: -f2)
-
-    if [ "$connection" != "--" ] && [ -n "$connection" ]; then
+    [ -z "$iface" ] && { echo "󰤭  Wi-Fi  |  No interface"; return; }
+    connection=$(nmcli -t -f GENERAL.CONNECTION device show "$iface" 2>/dev/null | cut -d: -f2-)
+    if [ -n "$connection" ] && [ "$connection" != "--" ]; then
         echo "󰤨  Wi-Fi  |  $connection"
     else
         echo "󰤭  Wi-Fi  |  Disconnected"
@@ -38,297 +55,254 @@ security_icon() {
     esac
 }
 
-main_menu() {
-    while true; do
+password_prompt() {
+    local prompt="$1"
+    if dmenu -h 2>&1 | grep -q -- '-P'; then
+        printf '' | dmenu_cmd -P -p "$prompt"
+    elif command -v zenity >/dev/null 2>&1; then
+        zenity --password --title="Wi-Fi" --text="$prompt"
+    else
+        notify-send "Wi-Fi" "Install dmenu-password or zenity"
+        return 1
+    fi
+}
 
-        choice=$(printf "%s\n" \
-            "󰤨  Scan Networks" \
-            "󰈀  Saved Networks" \
-            "󰤭  Toggle Wi-Fi" \
-            "󰤮  Disconnect" \
-            "󰋗  Information" |
-        rofi \
-            -dmenu \
-            -i \
-            -p "$(wifi_title)" \
-            -line-padding 4 \
-            -hide-scrollbar \
-            -theme "$ROFI_THEME")
+main_menu() {
+    local choice iface
+
+    while true; do
+        iface=$(wifi_interface)
+
+        if [ -z "$iface" ]; then
+            choice=$(
+                printf '%s\n' \
+                    "󰤭  No Wi-Fi interface detected" \
+                    "󰈆  Exit" |
+                dmenu_cmd -l 2 -p "Wi-Fi"
+            )
+            [ "$choice" = "󰈆  Exit" ] || [ -z "$choice" ] && exit 0
+            continue
+        fi
+
+        if ! wifi_enabled; then
+            choice=$(
+                printf '%s\n' \
+                    "󰤨  Enable Wi-Fi" \
+                    "󰈆  Exit" |
+                dmenu_cmd -l 2 -p "󰤭  Wi-Fi | Disabled"
+            )
+            case "$choice" in
+                "󰤨  Enable Wi-Fi")
+                    nmcli radio wifi on >/dev/null 2>&1 &&
+                        notify-send "Wi-Fi" "Enabled" ||
+                        notify-send "Wi-Fi" "Failed to enable Wi-Fi"
+                    ;;
+                *) exit 0 ;;
+            esac
+            continue
+        fi
+
+        choice=$(
+            printf '%s\n' \
+                "󰤨  Scan Networks" \
+                "󰈀  Saved Networks" \
+                "󰤭  Toggle Wi-Fi" \
+                "󰤮  Disconnect" \
+                "󰋗  Information" |
+            dmenu_cmd -l 5 -p "$(wifi_title)"
+        )
 
         case "$choice" in
-
-            "󰤨  Scan Networks")
-                scan_menu
-                ;;
-
-            "󰈀  Saved Networks")
-                saved_menu
-                ;;
-
+            "󰤨  Scan Networks") scan_menu ;;
+            "󰈀  Saved Networks") saved_menu ;;
             "󰤭  Toggle Wi-Fi")
-                if [ "$(nmcli radio wifi)" = "enabled" ]; then
-                    nmcli radio wifi off
+                if wifi_enabled; then
+                    nmcli radio wifi off >/dev/null 2>&1 &&
+                        notify-send "Wi-Fi" "Disabled" ||
+                        notify-send "Wi-Fi" "Failed to disable Wi-Fi"
                 else
-                    nmcli radio wifi on
+                    nmcli radio wifi on >/dev/null 2>&1 &&
+                        notify-send "Wi-Fi" "Enabled" ||
+                        notify-send "Wi-Fi" "Failed to enable Wi-Fi"
                 fi
                 ;;
-
             "󰤮  Disconnect")
-                nmcli device disconnect "$(wifi_interface)"
-                notify-send "Wi-Fi" "Disconnected"
+                if nmcli device disconnect "$iface" >/dev/null 2>&1; then
+                    notify-send "Wi-Fi" "Disconnected"
+                else
+                    notify-send "Wi-Fi" "Nothing to disconnect"
+                fi
                 ;;
-
-            "󰋗  Information")
-                info_menu
-                ;;
-
-            "")
-                exit 0
-                ;;
+            "󰋗  Information") info_menu ;;
+            "") exit 0 ;;
         esac
     done
 }
 
 scan_menu() {
+    local iface saved choice ssid signal security freq active band state
+    local line data rest freq_int security_display entries="$BACK"
+    declare -A best_networks network_map
 
-    (
-        echo "󰤨  Scanning networks..."
-        sleep 999
-    ) | rofi \
-        -dmenu \
-        -i \
-        -p "󰤨 Wi-Fi" \
-        -no-fixed-num-lines \
-        -theme "$ROFI_THEME" &
+    iface=$(wifi_interface)
+    [ -z "$iface" ] && { notify-send "Wi-Fi" "No Wi-Fi interface detected"; return; }
+    wifi_enabled || { notify-send "Wi-Fi" "Wi-Fi is disabled"; return; }
 
-    ROFI_PID=$!
-
-    nmcli device wifi rescan >/dev/null 2>&1
+    notify-send "Wi-Fi" "Scanning networks..."
+    nmcli device wifi rescan >/dev/null 2>&1 || {
+        notify-send "Wi-Fi" "Failed to start Wi-Fi scan"
+        return
+    }
     sleep 2
 
-    kill "$ROFI_PID" 2>/dev/null
-
-
-    declare -A best_networks
-    declare -A network_map
-
-    saved=$(nmcli -t -f NAME connection show)
-
-    entries="$BACK"
-
+    saved=$(nmcli -t -f NAME connection show 2>/dev/null)
 
     while IFS=: read -r active ssid signal security freq; do
-
-        [ -z "$ssid" ] && continue
-        [ "$ssid" = "--" ] && continue
-
-        current="${best_networks[$ssid]}"
-
-        if [ -z "$current" ] || [ "$signal" -gt "${current%%:*}" ]; then
+        [ -z "$ssid" ] || [ "$ssid" = "--" ] || [ -z "$signal" ] && continue
+        case "$signal" in ''|*[!0-9]*) continue ;; esac
+        data="${best_networks[$ssid]:-}"
+        if [ -z "$data" ] || [ "$signal" -gt "${data%%:*}" ] 2>/dev/null; then
             best_networks["$ssid"]="$signal:$active:$security:$freq"
         fi
+    done < <(nmcli -t -f IN-USE,SSID,SIGNAL,SECURITY,FREQ device wifi list 2>/dev/null)
 
-    done < <(
-        nmcli -t \
-        -f IN-USE,SSID,SIGNAL,SECURITY,FREQ \
-        device wifi list
-    )
-
+    [ "${#best_networks[@]}" -eq 0 ] && {
+        printf '%s\n' "$BACK" "󰤯  No networks found" |
+            dmenu_cmd -l 2 -p "󰤨 Networks" >/dev/null
+        return
+    }
 
     while IFS= read -r ssid; do
-
         data="${best_networks[$ssid]}"
-
         signal="${data%%:*}"
         rest="${data#*:}"
-
         active="${rest%%:*}"
         rest="${rest#*:}"
-
         security="${rest%%:*}"
         freq="${rest#*:}"
 
-
         if [ "$active" = "*" ]; then
             state="󰄬"
-        elif grep -Fxq "$ssid" <<< "$saved"; then
+        elif printf '%s\n' "$saved" | grep -Fqx -- "$ssid"; then
             state="󰇖"
         else
             state=" "
         fi
 
-
         freq_int=${freq%.*}
+        [ -n "$freq_int" ] && [ "$freq_int" -gt 4000 ] 2>/dev/null &&
+            band="5GHz" || band="2.4GHz"
 
-        if [ "$freq_int" -gt 4000 ] 2>/dev/null; then
-            band="5GHz"
-        else
-            band="2.4GHz"
-        fi
-
-
+        security_display="${security:-OPEN}"
         line=$(printf "%s  %-28s  %s  %3s%%  %-5s %-7s %s" \
-            "$state" \
-            "$ssid" \
-            "$(signal_icon "$signal")" \
-            "$signal" \
-            "$(security_icon "$security")" \
-            "${security:-OPEN}" \
-            "$band"
-        )
-
+            "$state" "$ssid" "$(signal_icon "$signal")" "$signal" \
+            "$(security_icon "$security")" "$security_display" "$band")
 
         entries+=$'\n'"$line"
         network_map["$line"]="$ssid"
-
-
     done < <(
         for ssid in "${!best_networks[@]}"; do
-            echo "${best_networks[$ssid]%%:*} $ssid"
-        done | sort -rn | cut -d' ' -f2-
+            data="${best_networks[$ssid]}"
+            printf '%s\t%s\n' "${data%%:*}" "$ssid"
+        done | sort -rn | cut -f2-
     )
 
+    choice=$(printf '%s\n' "$entries" | dmenu_cmd -l "$NETWORK_LINES" -p "󰤨 Networks")
+    [ "$choice" = "$BACK" ] || [ -z "$choice" ] && return
 
-    choice=$(printf "%s\n" "$entries" |
-        rofi \
-        -dmenu \
-        -i \
-        -p "󰤨 Networks" \
-        -line-padding 3 \
-        -theme "$ROFI_THEME"
-    )
-
-
-    case "$choice" in
-        "$BACK"|"")
-            return
-            ;;
-    esac
-
-
-    ssid="${network_map[$choice]}"
-
+    ssid="${network_map[$choice]:-}"
     [ -z "$ssid" ] && return
 
+    [ "$(nmcli -t -f GENERAL.CONNECTION device show "$iface" 2>/dev/null | cut -d: -f2-)" = "$ssid" ] && {
+        notify-send "Wi-Fi" "Already connected to $ssid"
+        return
+    }
 
-    if nmcli device wifi connect "$ssid" >/dev/null 2>&1; then
+    nmcli device wifi connect "$ssid" ifname "$iface" >/dev/null 2>&1 && {
         notify-send "Wi-Fi" "Connected: $ssid"
         return
-    fi
+    }
 
-
-    password=$(rofi \
-        -dmenu \
-        -password \
-        -p "󰌾 Password" \
-        -theme "$ROFI_THEME"
-    )
-
-
+    local password
+    password=$(password_prompt "󰌾 Password") || return
     [ -z "$password" ] && return
 
-
-    if nmcli device wifi connect "$ssid" password "$password"; then
+    if nmcli device wifi connect "$ssid" password "$password" ifname "$iface" >/dev/null 2>&1; then
         notify-send "Wi-Fi" "Connected: $ssid"
     else
-        notify-send "Wi-Fi" "Connection failed"
+        notify-send "Wi-Fi" "Connection failed: $ssid"
     fi
 }
 
 saved_menu() {
+    local choice
 
     while true; do
-
         choice=$(
             {
-                echo "$BACK"
-                nmcli -t -f NAME connection show
+                printf '%s\n' "$BACK"
+                nmcli -t -f NAME connection show 2>/dev/null
             } |
-            rofi \
-                -dmenu \
-                -i \
-                -p "󰈀 Saved Networks" \
-                -theme "$ROFI_THEME"
+            dmenu_cmd -l "$SAVED_LINES" -p "󰈀 Saved Networks"
         )
 
         case "$choice" in
-            "$BACK"|"")
-                return
-                ;;
+            "$BACK"|"") return ;;
         esac
 
         saved_network_actions "$choice"
-
     done
 }
 
-
 saved_network_actions() {
-
-    local network="$1"
+    local network="$1" action confirm
 
     while true; do
-
         action=$(
-            printf "%s\n" \
+            printf '%s\n' \
                 "󰤨  Connect" \
                 "󰆴  Forget Network" \
                 "$BACK" |
-            rofi \
-                -dmenu \
-                -i \
-                -p "$network" \
-                -theme "$ROFI_THEME"
+            dmenu_cmd -l 3 -p "$network"
         )
 
         case "$action" in
-
             "󰤨  Connect")
-
-                if nmcli connection up "$network"; then
+                if nmcli connection up "$network" >/dev/null 2>&1; then
                     notify-send "Wi-Fi" "Connected to $network"
                 else
                     notify-send "Wi-Fi" "Connection failed"
                 fi
-
                 return
                 ;;
-
             "󰆴  Forget Network")
-
                 confirm=$(
-                    printf "%s\nNo" "Yes" |
-                    rofi \
-                        -dmenu \
-                        -selected-row 0 \
-                        -p "Forget \"$network\"?" \
-                        -theme "$ROFI_THEME"
+                    printf '%s\n' "Yes" "No" |
+                    dmenu_cmd -l 2 -p "Forget \"$network\"?"
                 )
-
                 [ "$confirm" != "Yes" ] && continue
 
-                if nmcli connection delete "$network"; then
+                if nmcli connection delete "$network" >/dev/null 2>&1; then
                     notify-send "Wi-Fi" "Removed \"$network\""
                     return
                 else
                     notify-send "Wi-Fi" "Failed to remove \"$network\""
                 fi
                 ;;
-
-            "$BACK"|"")
-                return
-                ;;
+            "$BACK"|"") return ;;
         esac
     done
 }
 
 info_menu() {
+    local iface device_info connection mac ip gateway dns iw_bin link
+    local ssid freq signal rxrate txrate width band info
 
-    iface=$(nmcli -t -f DEVICE,TYPE device | awk -F: '$2=="wifi"{print $1; exit}')
-    
-    [ -z "$iface" ] && return
-
-    IW="/usr/sbin/iw"
+    iface=$(wifi_interface)
+    [ -z "$iface" ] && {
+        notify-send "Wi-Fi" "No Wi-Fi interface detected"
+        return
+    }
 
     device_info=$(nmcli device show "$iface" 2>/dev/null)
 
@@ -344,50 +318,64 @@ info_menu() {
     gateway=$(get_nmcli "IP4.GATEWAY")
 
     dns=$(echo "$device_info" |
-        grep "IP4.DNS" |
+        grep 'IP4.DNS' |
         sed 's/^[^:]*:[[:space:]]*//' |
         tr '\n' ' ')
 
+    iw_bin=$(command -v iw 2>/dev/null)
 
-    link=$($IW dev "$iface" link 2>/dev/null)
+    [ -z "$iw_bin" ] && [ -x /usr/sbin/iw ] && iw_bin=/usr/sbin/iw
+    [ -z "$iw_bin" ] && [ -x /usr/bin/iw ] && iw_bin=/usr/bin/iw
 
-read -r ssid freq signal rxrate txrate <<< "$(
-echo "$link" | awk '
-/SSID:/ {
-    ssid=$2
-}
-/freq:/ {
-    freq=$2
-}
-/signal:/ {
-    signal=$2
-}
-/rx bitrate:/ {
-    rx=$3" "$4
-}
-/tx bitrate:/ {
-    tx=$3" "$4
-}
-END {
-    print ssid, freq, signal, rx, tx
-}
-'
-)"
-
-    freq_int=${freq%.*}
-    
-    if [ "$freq_int" -gt 4000 ] 2>/dev/null; then
-        band="5 GHz"
+    if [ -n "$iw_bin" ]; then
+        link=$("$iw_bin" dev "$iface" link 2>/dev/null)
     else
-        band="2.4 GHz"
+        link=""
     fi
 
+    ssid=$(printf '%s\n' "$link" |
+        awk -F': ' '/^[[:space:]]*SSID:/ {
+            print $2
+            exit
+        }')
+
+    freq=$(printf '%s\n' "$link" |
+        awk '/^[[:space:]]*freq:/ {
+            print $2
+            exit
+        }')
+
+    freq=${freq%.*}
+
+    signal=$(printf '%s\n' "$link" |
+        awk '/^[[:space:]]*signal:/ {
+            print $2
+            exit
+        }')
+
+    rxrate=$(printf '%s\n' "$link" |
+        sed -n 's/^[[:space:]]*rx bitrate: //p' |
+        head -n1)
+
+    txrate=$(printf '%s\n' "$link" |
+        sed -n 's/^[[:space:]]*tx bitrate: //p' |
+        head -n1)
+
+    width=$(printf '%s\n' "$link" |
+        grep -oE '[0-9]+MHz' |
+        head -n1)
+
+    [ -n "$width" ] && width="${width%MHz} MHz"
+
     case "$freq" in
-        24*)
+        2[4-9][0-9][0-9]|24[0-9][0-9])
             band="2.4 GHz"
             ;;
-        5*)
+        5[0-9][0-9][0-9])
             band="5 GHz"
+            ;;
+        6[0-9][0-9][0-9])
+            band="6 GHz"
             ;;
         *)
             band="Unknown"
@@ -395,24 +383,20 @@ END {
     esac
 
     info="󰤨  SSID:          ${ssid:-Unknown}
-󰖩  Interface:     ${iface}
-󰈀  MAC:           ${mac:-Unknown}
-󰩟  IP:            ${ip:-Unknown}
-󰒍  Gateway:       ${gateway:-Unknown}
-󰇖  DNS:           ${dns:-Unknown}
-󰤨  Signal:        ${signal:-Unknown} dBm
-󰓅  TX Speed:      ${txrate:-Unknown}
-󰓅  RX Speed:      ${rxrate:-Unknown}
-󰈙  Frequency:     ${freq:-Unknown} MHz
-󰥔  Band:          ${band:-Unknown}"
-    
-    printf "%s\n" "$info" |
-    rofi \
-        -dmenu \
-        -i \
-        -p "󰋗 Wi-Fi Information" \
-        -line-padding 4 \
-        -theme "$ROFI_THEME" >/dev/null
+󰖩  Interface:      ${iface}
+󰈀  MAC:            ${mac:-Unknown}
+󰩟  IP:             ${ip:-Unknown}
+󰒍  Gateway:        ${gateway:-Unknown}
+󰇖  DNS:            ${dns:-Unknown}
+󰤨  Signal:         ${signal:-Unknown} dBm
+󰓅  TX Speed:       ${txrate:-Unknown}
+󰓅  RX Speed:       ${rxrate:-Unknown}
+󰈙  Frequency:      ${freq:-Unknown} MHz
+󰥔  Band:           ${band:-Unknown}
+󰒌  Bandwidth:      ${width:-Unknown}"
+
+    printf '%s\n' "$info" |
+        dmenu_cmd -l 12 -p "󰋗 Wi-Fi Information" >/dev/null
 }
 
 main_menu

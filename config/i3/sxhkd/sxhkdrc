@@ -16,27 +16,11 @@ super + shift + Return
 
 # Launch Rofi Application Menu
 super + space
-   	rofi -show drun \
-         -modi drun \
-         -line-padding 4 \
-         -hide-scrollbar \
-         -show-icons \
-         -theme ~/.config/i3/rofi/config.rasi
-
-# Show Applications List
-super + a
-    rofi -show drun \
-         -modi drun \
-         -matching fuzzy \
-         -sorting-method fzf \
-         -line-padding 4 \
-         -hide-scrollbar \
-         -show-icons \
-         -theme ~/.config/i3/rofi/applications.rasi
+      ~/.config/dmenu/launch.sh
 
 # Launch Rofi Wallpaper Menu
 super + shift + w
-	~/.config/i3/scripts/wallpaper
+      ~/.config/i3/scripts/wallpaper
 
 # Launche Editor (emacs)
 super + e
@@ -56,7 +40,7 @@ super + h
 
 # Launch Ida
 super + g
-      /opt/ida-free-9.3/ida
+    /home/giovanni/.config/i3/scripts/run_ida.sh
 
 # Lock screen (i3lock)
 super + control + l

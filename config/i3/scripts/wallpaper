@@ -1,9 +1,33 @@
+#!/bin/sh
+
 wall_dir="${HOME}/.config/wallpapers"
-rofi_command="rofi -dmenu -i -p "Wallpaper" -theme ~/.config/i3/rofi/wallpaper.rasi"
 
-wall_selection=$(find "${wall_dir}"  -maxdepth 1  -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" -o -iname "*.webp" \) -exec basename {} \; | sort | while read -r A ; do  echo -en "$A\x00icon\x1f""${wall_dir}"/"$A\n" ; done | $rofi_command)
+wall_selection=$(
+    find "$wall_dir" \
+        -maxdepth 1 \
+        -type f \
+        \( \
+            -iname "*.jpg" \
+            -o -iname "*.jpeg" \
+            -o -iname "*.png" \
+            -o -iname "*.webp" \
+        \) \
+        -exec basename {} \; |
+    sort |
+    dmenu \
+        -i \
+        -fn 'JetBrainsMono Nerd Font-12' \
+        -nb '#000000' \
+        -nf '#F2F4F8' \
+        -sb '#4C7899' \
+        -sf '#FFFFFF' \
+        -p 'Wallpaper:'
+)
 
-[[ -n "$wall_selection" ]] || exit 1
-feh --bg-fill ${wall_dir}/${wall_selection} &
-echo ${wall_dir}/${wall_selection} > ~/.config/default &
+[ -n "$wall_selection" ] || exit 0
 
+wallpaper="${wall_dir}/${wall_selection}"
+
+feh --bg-fill "$wallpaper" &
+
+printf '%s\n' "$wallpaper" > "${HOME}/.config/default"

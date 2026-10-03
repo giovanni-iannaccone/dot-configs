@@ -1,22 +1,35 @@
-#!/bin/bash
+#!/bin/sh
 
-# Extract keybindings and descriptions and format into fixed-width columns
-keybindings=$(awk '
-    /^[a-z]/ && last { 
-        # Use printf for consistent column widths and padding
-        printf "%-30s | %-40s\n", $0, last 
+KEYBINDINGS=$(awk '
+    /^[a-z]/ && last {
+        printf "%-30s | %s\n", $0, last
     }
-    { last="" } 
-    /^#/ { last=substr($0, 3) }' ~/.config/i3/sxhkd/sxhkdrc)
+    { last="" }
+    /^#/ { last=substr($0, 3) }
+' ~/.config/i3/sxhkd/sxhkdrc)
 
-# Pad the content with a fixed-width column approach
-formatted_keybindings=$(echo "$keybindings" | column -t -s '|')
+[ -n "$KEYBINDINGS" ] || exit 0
 
-# Show in rofi and capture the selected line
-selected=$(echo "$formatted_keybindings" | rofi -dmenu -i -p "Keybindings" -line-padding 4 -hide-scrollbar -theme ~/.config/i3/rofi/keybinds.rasi)
+SELECTED=$(
+    printf '%s\n' "$KEYBINDINGS" |
+    dmenu \
+        -i \
+        -fn 'JetBrainsMono Nerd Font-12' \
+        -nb '#000000' \
+        -nf '#F2F4C8' \
+        -sb '#4C7899' \
+        -sf '#FFFFFF' \
+        -l 20 \
+        -p 'Keybindings:'
+)
 
-# Execute the selected keybinding's command (if needed)
-if [ -n "$selected" ]; then
-    command=$(echo "$selected" | awk -F'|' '{print $1}' | xargs)
-    nohup $command &>/dev/null &
-fi
+[ -n "$SELECTED" ] || exit 0
+
+COMMAND=$(printf '%s\n' "$SELECTED" |
+    cut -d'|' -f1 |
+    sed 's/[[:space:]]*$//' |
+    sed 's/^[[:space:]]*//')
+
+[ -n "$COMMAND" ] || exit 0
+
+nohup sh -c "$COMMAND" >/dev/null 2>&1 &

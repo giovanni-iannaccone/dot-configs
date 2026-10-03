@@ -15,7 +15,7 @@ PACKAGES_CORE=(
 )
 
 PACKAGES_UI=(
-    rofi dunst picom lxpolkit breeze-icon-theme
+    dunst picom lxpolkit breeze-icon-theme
     breeze-cursor-theme
 )
 
@@ -80,12 +80,6 @@ sudo apt install eza
 
 msg "Installing Qutebrowser..."
 sudo apt install qutebrowser
-
-msg "Installing Librewolf..."
-sudo apt install extrepo -y
-sudo extrepo enable librewolf
-sudo apt update
-sudo apt install librewolf -y
 
 msg "Installing Überzug++..."
 echo 'deb http://download.opensuse.org/repositories/home:/justkidding/Debian_12/ /' \

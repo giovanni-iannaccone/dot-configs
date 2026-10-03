@@ -1,4 +1,4 @@
-<img width="1920" height="1080" alt="rofi" src="images/wifi.png" /> <br/> <br/>
+<img width="1920" height="1080" alt="desktop" src="images/desktop.png" /> <br/> <br/>
 
 # 🔧  Configs for my Debian system
 This repository contains my lightweight configurations for Zsh, Alacritty, Emacs, i3, and other tools I use daily. They are tailored for low-level programming and optimized to run smoothly even on older machines. It’s a minimal setup, free from heavy frameworks or flashy themes like Oh My Zsh or Doom, designed to keep development fast, clean, and efficient.
@@ -29,9 +29,9 @@ Other tools (such as `htop`) aren't installed because they can be easly replaced
 
 ## 📐 i3
 
-<img width="1920" height="1080" alt="wallpaper" src="images/desktop.png" /> <br/> <br/>
+<img width="1920" height="1080" alt="wifi" src="images/wifi.png" /> <br/> <br/>
 
-Since i3 is based on X11, the application launcher is Rofi. Press Super + Space to open it, navigate with the arrow keys or type the name of an app to search, and press Enter to launch your selection.
+Since i3 is based on X11, the application launcher is `dmenu`. Press Super + Space to open it, navigate with the arrow keys or type the name of an app to search, and press Enter to launch your selection.
 
 ## ⌨️ Keybinds
 
@@ -41,7 +41,7 @@ In window managers like i3, keybindings are crucial and can make the mouse almos
 |--------------------------|---------------------------------------|
 | Super + B                | Start browser (Qute)                  |
 | Super + Enter            | Launch terminal (Alacritty)           |
-| Super + Space            | Launch Rofi                           |
+| Super + Space            | Launch dmenu                          |
 | Super + e                | Start Emacs                           |
 | Super + h                | Show keybindings help                 |
 | Super + shift + w        | Launch Wallpaper Menu                 |

@@ -1,6 +1,6 @@
 #!/bin/sh
 
-file="$HOME/Screenshots/$(date +%Y-%m-%d_%H-%M-%S).png"
+file="$HOME/Pictures/Screenshots/$(date +%Y-%m-%d_%H-%M-%S).png"
 
 case "$1" in
     full)
