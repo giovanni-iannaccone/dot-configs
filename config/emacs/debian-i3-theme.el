@@ -1,143 +1,601 @@
+;;; debian-i3.el --- Debian i3 theme -*- lexical-binding: t; -*-
+
 (deftheme debian-i3
   "Debian i3 theme")
 
-(custom-theme-set-faces
- 'debian-i3
+(defgroup debian-i3 nil
+  "Customization for the Debian i3 theme."
+  :group 'faces)
 
- '(default
-   ((t (:background "#000000"
-                    :foreground "#D8DEE9"
-                    :family "JetBrainsMono Nerd Font"))))
+(let* (
+       (bg             "#000000")
+       (bg-alt         "#0A0A0A")
+       (bg-highlight   "#151515")
+       (bg-selection   "#0057FF")
 
- '(fringe
-   ((t (:background "#000000"
-                    :foreground "#607080"))))
+       (fg             "#D8DEE9")
+       (fg-bright      "#FFFFFF")
+       (fg-muted       "#607080")
+       (fg-dim         "#444444")
+       (fg-guide       "#30363D")
 
- '(cursor
-   ((t (:background "#00A8FF"))))
+       (blue           "#00B7FF")
+       (blue-bright    "#00A8FF")
+       (cyan           "#00E5FF")
+       (green          "#00CC00")
 
- '(region
-   ((t (:background "#0057FF"
-                    :foreground "#FFFFFF"))))
+       (yellow         "#FFD600")
+       (red            "#FF0033")
+       (red-bright     "#FF3355")
+       (magenta        "#D500FF")
 
- '(highlight
-   ((t (:background "#151515"
-                    :foreground "#D8DEE9"))))
+       (green-bg       "#001400")
+       (green-bg-hl    "#002000")
+       (red-bg         "#140006")
+       (red-bg-hl      "#200009")
 
- '(minibuffer-prompt
-   ((t (:foreground "#008CFF"
-                    :weight bold))))
+       (ansi-white     "#E8F1FF")
+       (ansi-bright-cyan "#66FFFF"))
 
- '(mode-line
-   ((t (:background "#0A0A0A"
-                    :foreground "#D8DEE9"
-                    :box nil))))
+  (custom-theme-set-faces
+   'debian-i3
 
- '(mode-line-inactive
-   ((t (:background "#000000"
-                    :foreground "#444444"
-                    :box nil))))
- ;; Syntax
+   `(default
+     ((t (:background ,bg
+                      :foreground ,fg
+                      :family "JetBrainsMono Nerd Font"))))
 
- ;; comments
- '(font-lock-comment-face
-   ((t (:foreground "#607080"
-                    :slant italic))))
+   `(fringe
+     ((t (:background ,bg
+                      :foreground ,fg-dim))))
 
- ;; strings
- '(font-lock-string-face
-   ((t (:foreground "#8FB339"))))
+   `(cursor
+     ((t (:background ,blue))))
 
- ;; functions
- '(font-lock-function-name-face
-   ((t (:foreground "#4C9ED9"))))
+   `(region
+     ((t (:background ,bg-selection
+                      :foreground ,fg-bright))))
 
- ;; keywords
- '(font-lock-keyword-face
-   ((t (:foreground "#008CFF"))))
+   `(highlight
+     ((t (:background ,bg-highlight
+                      :foreground ,fg))))
 
- ;; variables
- '(font-lock-variable-name-face
-   ((t (:foreground "#D8DEE9"))))
+   `(minibuffer-prompt
+     ((t (:foreground ,blue
+                      :weight bold))))
 
- ;; types / libraries
- '(font-lock-type-face
-   ((t (:foreground "#39B54A"))))
+   `(mode-line
+     ((t (:background ,bg-alt
+                      :foreground ,fg
+                      :box nil))))
 
- ;; constants
- '(font-lock-constant-face
-   ((t (:foreground "#00B7FF"))))
+   `(mode-line-inactive
+     ((t (:background ,bg
+                      :foreground ,fg-dim
+                      :box nil))))
 
- ;; numbers
- '(font-lock-number-face
-   ((t (:foreground "#73D216"))))
+   `(header-line
+     ((t (:background ,bg
+                      :foreground ,fg))))
 
- ;; warnings/errors
- '(font-lock-warning-face
-   ((t (:foreground "#FF0033"
-                    :weight bold))))
+   `(vertical-border
+     ((t (:foreground ,fg-guide))))
 
- '(isearch
-   ((t (:background "#0057FF"
-                    :foreground "#FFFFFF"
-                    :weight bold))))
+   `(shadow
+     ((t (:foreground ,fg-muted))))
 
- '(lazy-highlight
-   ((t (:background "#30363D"
-                    :foreground "#D8DEE9"))))
+   `(font-lock-comment-face
+     ((t (:foreground ,fg-muted
+                      :slant italic))))
 
- '(link
-   ((t (:foreground "#00E5FF"
-                    :underline t))))
+   `(font-lock-string-face
+     ((t (:foreground ,green))))
 
- ;; Eat / ANSI colors
- '(ansi-color-black
-   ((t (:foreground "#000000"))))
+   `(font-lock-function-name-face
+     ((t (:foreground ,cyan))))
 
- '(ansi-color-red
-   ((t (:foreground "#FF0033"))))
+   `(font-lock-keyword-face
+     ((t (:foreground ,blue
+                      :weight bold))))
 
- '(ansi-color-green
-   ((t (:foreground "#00FF41"))))
+   `(font-lock-variable-name-face
+     ((t (:foreground ,fg))))
 
- '(ansi-color-yellow
-   ((t (:foreground "#FFD600"))))
+   `(font-lock-type-face
+     ((t (:foreground ,green))))
 
- '(ansi-color-blue
-   ((t (:foreground "#008CFF"))))
+   `(font-lock-constant-face
+     ((t (:foreground ,cyan))))
 
- '(ansi-color-magenta
-   ((t (:foreground "#D500FF"))))
+   `(font-lock-number-face
+     ((t (:foreground ,green))))
 
- '(ansi-color-cyan
-   ((t (:foreground "#00E5FF"))))
+   `(font-lock-warning-face
+     ((t (:foreground ,red
+                      :weight bold))))
 
- '(ansi-color-white
-   ((t (:foreground "#E8F1FF"))))
+   `(font-lock-doc-face
+     ((t (:foreground ,fg-muted))))
 
- '(ansi-color-bright-black
-   ((t (:foreground "#333333"))))
+   `(font-lock-preprocessor-face
+     ((t (:foreground ,blue
+                      :weight bold))))
 
- '(ansi-color-bright-red
-   ((t (:foreground "#FF3355"))))
+   `(font-lock-builtin-face
+     ((t (:foreground ,cyan))))
 
- '(ansi-color-bright-green
-   ((t (:foreground "#39FF14"))))
+   `(font-lock-negation-char-face
+     ((t (:foreground ,red
+                      :weight bold))))
 
- '(ansi-color-bright-yellow
-   ((t (:foreground "#FFFF33"))))
+   `(font-lock-regexp-grouping-backslash
+     ((t (:foreground ,blue))))
 
- '(ansi-color-bright-blue
-   ((t (:foreground "#00B7FF"))))
+   `(font-lock-regexp-grouping-construct
+     ((t (:foreground ,cyan))))
 
- '(ansi-color-bright-magenta
-   ((t (:foreground "#FF33FF"))))
+   `(isearch
+     ((t (:background ,bg-selection
+                      :foreground ,fg-bright
+                      :weight bold))))
 
- '(ansi-color-bright-cyan
-   ((t (:foreground "#66FFFF"))))
+   `(isearch-fail
+     ((t (:background ,red
+                      :foreground ,fg-bright
+                      :weight bold))))
 
- '(ansi-color-bright-white
-   ((t (:foreground "#FFFFFF"))))
- )
+   `(lazy-highlight
+     ((t (:background ,bg-highlight
+                      :foreground ,fg))))
+
+   `(match
+     ((t (:background ,bg-selection
+                      :foreground ,fg-bright
+                      :weight bold))))
+
+   `(query-replace
+     ((t (:background ,bg-selection
+                      :foreground ,fg-bright
+                      :weight bold))))
+
+   `(link
+     ((t (:foreground ,cyan
+                      :underline t))))
+
+   `(link-visited
+     ((t (:foreground ,magenta
+                      :underline t))))
+
+   `(ansi-color-black
+     ((t (:foreground ,bg))))
+
+   `(ansi-color-red
+     ((t (:foreground ,red))))
+
+   `(ansi-color-green
+     ((t (:foreground ,green))))
+
+   `(ansi-color-yellow
+     ((t (:foreground ,yellow))))
+
+   `(ansi-color-blue
+     ((t (:foreground ,blue))))
+
+   `(ansi-color-magenta
+     ((t (:foreground ,magenta))))
+
+   `(ansi-color-cyan
+     ((t (:foreground ,cyan))))
+
+   `(ansi-color-white
+     ((t (:foreground ,ansi-white))))
+
+   `(ansi-color-bright-black
+     ((t (:foreground ,fg-dim))))
+
+   `(ansi-color-bright-red
+     ((t (:foreground ,red-bright))))
+
+   `(ansi-color-bright-green
+     ((t (:foreground ,green))))
+
+   `(ansi-color-bright-yellow
+     ((t (:foreground ,yellow))))
+
+   `(ansi-color-bright-blue
+     ((t (:foreground ,blue-bright))))
+
+   `(ansi-color-bright-magenta
+     ((t (:foreground ,magenta))))
+
+   `(ansi-color-bright-cyan
+     ((t (:foreground ,ansi-bright-cyan))))
+
+   `(ansi-color-bright-white
+     ((t (:foreground ,fg-bright))))
+
+   `(magit-section-heading
+     ((t (:foreground ,blue
+                      :weight bold))))
+
+   `(magit-section-secondary-heading
+     ((t (:foreground ,fg-muted
+                      :weight bold))))
+
+   `(magit-section-highlight
+     ((t (:background ,bg-highlight
+                      :foreground ,fg))))
+
+   `(magit-section-heading-selection
+     ((t (:foreground ,cyan
+                      :weight bold))))
+
+   `(magit-branch-local
+     ((t (:foreground ,blue))))
+
+   `(magit-branch-remote
+     ((t (:foreground ,green))))
+
+   `(magit-branch-current
+     ((t (:foreground ,cyan
+                      :weight bold))))
+
+   `(magit-branch-upstream
+     ((t (:foreground ,fg-muted))))
+
+   `(magit-branch-warning
+     ((t (:foreground ,yellow
+                      :weight bold))))
+
+   `(magit-log-author
+     ((t (:foreground ,fg-muted))))
+
+   `(magit-log-date
+     ((t (:foreground ,fg-dim))))
+
+   `(magit-log-graph
+     ((t (:foreground ,fg-guide))))
+
+   `(magit-log-head
+     ((t (:foreground ,blue
+                      :weight bold))))
+
+   `(magit-log-reflog
+     ((t (:foreground ,fg-muted))))
+
+   `(magit-hash
+     ((t (:foreground ,fg-muted))))
+
+   `(magit-tag
+     ((t (:foreground ,yellow
+                      :weight bold))))
+
+   `(magit-refname
+     ((t (:foreground ,cyan))))
+
+   `(magit-refname-stash
+     ((t (:foreground ,magenta))))
+
+   `(magit-refname-wip
+     ((t (:foreground ,magenta))))
+
+   `(magit-diff-context
+     ((t (:foreground ,fg-dim
+                      :background ,bg))))
+
+   `(magit-diff-context-highlight
+     ((t (:foreground ,fg-muted
+                      :background ,bg-highlight))))
+
+   `(magit-diff-added
+     ((t (:foreground ,green
+                      :background ,green-bg))))
+
+   `(magit-diff-added-highlight
+     ((t (:foreground ,green
+                      :background ,green-bg-hl
+                      :weight bold))))
+
+   `(magit-diff-added-over
+     ((t (:foreground ,green
+                      :background ,green-bg-hl))))
+
+   `(magit-diff-removed
+     ((t (:foreground ,red-bright
+                      :background ,red-bg))))
+
+   `(magit-diff-removed-highlight
+     ((t (:foreground ,red
+                      :background ,red-bg-hl
+                      :weight bold))))
+
+   `(magit-diff-removed-over
+     ((t (:foreground ,red-bright
+                      :background ,red-bg-hl))))
+
+   `(magit-diff-file-heading
+     ((t (:foreground ,blue
+                      :weight bold))))
+
+   `(magit-diff-file-heading-highlight
+     ((t (:foreground ,cyan
+                      :background ,bg-highlight
+                      :weight bold))))
+
+   `(magit-diff-hunk-heading
+     ((t (:foreground ,blue
+                      :background ,bg-alt))))
+
+   `(magit-diff-hunk-heading-highlight
+     ((t (:foreground ,cyan
+                      :background ,bg-highlight
+                      :weight bold))))
+
+   `(magit-process-ok
+     ((t (:foreground ,green
+                      :weight bold))))
+
+   `(magit-process-ng
+     ((t (:foreground ,red
+                      :weight bold))))
+
+   `(magit-process-unpushed
+     ((t (:foreground ,yellow))))
+
+   `(magit-process-unpulled
+     ((t (:foreground ,blue))))
+
+   `(magit-dimmed
+     ((t (:foreground ,fg-dim))))
+
+   `(magit-sequence
+     ((t (:foreground ,magenta))))
+
+   `(magit-sequence-done
+     ((t (:foreground ,green))))
+
+   `(magit-sequence-drop
+     ((t (:foreground ,red))))
+
+   `(magit-sequence-head
+     ((t (:foreground ,blue
+                      :weight bold))))
+
+   `(magit-sequence-part
+     ((t (:foreground ,yellow))))
+
+   `(magit-sequence-stop
+     ((t (:foreground ,red
+                      :weight bold))))
+
+   `(magit-bisect-good
+     ((t (:foreground ,green))))
+
+   `(magit-bisect-bad
+     ((t (:foreground ,red))))
+
+   `(magit-bisect-skip
+     ((t (:foreground ,yellow))))
+
+   `(magit-signature-good
+     ((t (:foreground ,green))))
+
+   `(magit-signature-bad
+     ((t (:foreground ,red))))
+
+   `(magit-signature-untrusted
+     ((t (:foreground ,yellow))))
+
+   `(transient-heading
+     ((t (:foreground ,blue
+                      :weight bold))))
+
+   `(transient-key
+     ((t (:foreground ,cyan
+                      :weight bold))))
+
+   `(transient-value
+     ((t (:foreground ,fg))))
+
+   `(transient-argument
+     ((t (:foreground ,yellow))))
+
+   `(transient-inactive-value
+     ((t (:foreground ,fg-dim))))
+
+   `(transient-inactive-argument
+     ((t (:foreground ,fg-dim))))
+
+   `(dirvish-hl-line
+     ((t (:background ,bg-highlight))))
+
+   `(dirvish-path-separators
+     ((t (:foreground ,fg-guide))))
+
+   `(dirvish-directory
+     ((t (:foreground ,blue
+                      :weight bold))))
+
+   `(dirvish-symlink
+     ((t (:foreground ,cyan))))
+
+   `(dirvish-file
+     ((t (:foreground ,fg))))
+
+   `(dirvish-subtree-guide
+     ((t (:foreground ,fg-guide))))
+
+   `(dirvish-quick-access
+     ((t (:foreground ,blue-bright
+                      :weight bold))))
+
+   `(dirvish-header
+     ((t (:background ,bg-alt
+                      :foreground ,blue
+                      :weight bold))))
+
+   `(dirvish-header-line
+     ((t (:background ,bg-alt
+                      :foreground ,fg))))
+
+   `(dirvish-side
+     ((t (:background ,bg
+                      :foreground ,fg))))
+
+   `(dirvish-side-header
+     ((t (:background ,bg-alt
+                      :foreground ,blue
+                      :weight bold))))
+
+   `(dirvish-collapse
+     ((t (:foreground ,fg-muted))))
+
+   `(dired-directory
+     ((t (:foreground ,blue
+                      :weight bold))))
+
+   `(dired-flagged
+     ((t (:foreground ,red
+                      :weight bold))))
+
+   `(dired-header
+     ((t (:foreground ,blue
+                      :weight bold))))
+
+   `(dired-ignored
+     ((t (:foreground ,fg-dim))))
+
+   `(dired-mark
+     ((t (:foreground ,yellow
+                      :weight bold))))
+
+   `(dired-marked
+     ((t (:foreground ,yellow
+                      :weight bold))))
+
+   `(dired-perm-write
+     ((t (:foreground ,green))))
+
+   `(dired-symlink
+     ((t (:foreground ,cyan))))
+
+   `(dired-warning
+     ((t (:foreground ,red
+                      :weight bold))))
+
+   `(compilation-error
+     ((t (:foreground ,red
+                      :weight bold))))
+
+   `(compilation-warning
+     ((t (:foreground ,yellow
+                      :weight bold))))
+
+   `(compilation-info
+     ((t (:foreground ,green))))
+
+   `(compilation-line-number
+     ((t (:foreground ,fg-dim))))
+
+   `(compilation-column-number
+     ((t (:foreground ,fg-muted))))
+
+   `(grep-match
+     ((t (:background ,bg-selection
+                      :foreground ,fg-bright
+                      :weight bold))))
+
+   `(success
+     ((t (:foreground ,green
+                      :weight bold))))
+
+   `(warning
+     ((t (:foreground ,yellow
+                      :weight bold))))
+
+   `(error
+     ((t (:foreground ,red
+                      :weight bold))))
+
+   `(info
+     ((t (:foreground ,blue))))
+
+   `(completions-highlight
+     ((t (:background ,bg-highlight
+                      :foreground ,cyan
+                      :weight bold))))
+
+   `(vertico-current
+     ((t (:background ,bg-highlight
+                      :foreground ,cyan
+                      :weight bold))))
+
+   `(orderless-match-face-0
+     ((t (:foreground ,blue
+                      :weight bold))))
+
+   `(orderless-match-face-1
+     ((t (:foreground ,green
+                      :weight bold))))
+
+   `(orderless-match-face-2
+     ((t (:foreground ,yellow
+                      :weight bold))))
+
+   `(orderless-match-face-3
+     ((t (:foreground ,magenta
+                      :weight bold))))
+
+   `(tab-bar
+     ((t (:background ,bg
+                      :foreground ,fg-dim))))
+
+   `(tab-bar-tab
+     ((t (:background ,bg-alt
+                      :foreground ,blue
+                      :weight bold))))
+
+   `(tab-bar-tab-inactive
+     ((t (:background ,bg
+                      :foreground ,fg-dim))))
+
+   `(help-key-binding
+     ((t (:foreground ,cyan
+                      :weight bold))))
+
+   `(widget-field
+     ((t (:background ,bg-highlight
+                      :foreground ,fg
+                      :box (:line-width 1
+                             :color ,fg-guide)))))
+
+   `(widget-button
+     ((t (:foreground ,blue
+                      :weight bold))))
+
+   `(widget-button-pressed
+     ((t (:foreground ,green
+                      :weight bold))))
+
+   `(button
+     ((t (:foreground ,cyan
+                      :underline t))))
+
+   `(tooltip
+     ((t (:background ,bg-alt
+                      :foreground ,fg))))
+
+   `(show-paren-match
+     ((t (:background ,bg-selection
+                      :foreground ,fg-bright
+                      :weight bold))))
+
+   `(show-paren-mismatch
+     ((t (:background ,red
+                      :foreground ,fg-bright
+                      :weight bold))))
+   ))
 
 (provide-theme 'debian-i3)
+
+;;; debian-i3.el ends here

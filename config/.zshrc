@@ -1,90 +1,126 @@
-autoload -U compinit; compinit
-autoload -Uz vcs_info
+autoload -Uz compinit vcs_info
+compinit
 
-precmd() { vcs_info }
+zstyle ':completion:*' menu select
+zstyle ':vcs_info:git:*' formats '(%b) '
+
+precmd() {
+    vcs_info
+}
+
+setopt PROMPT_SUBST
+PROMPT='%F{green}%n@%m%f %F{blue}%~%f %F{red}${vcs_info_msg_0_}%f$ '
+PROMPT_EOL_MARK=''
+
+setopt autocd
+setopt inc_append_history
+setopt hist_ignore_dups
+setopt hist_ignore_space
+setopt share_history
+
+HISTFILE="$HOME/.zsh_history"
+HISTSIZE=100000
+SAVEHIST=100000
+
+bindkey -e
+
+if [[ -r /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh ]]; then
+    source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+fi
+
+if [[ -r /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]]; then
+    source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+fi
+
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=5'
 
 bak() 		{ cp -- "$1" "$1.bak" }
 restore() 	{ cp -- "$1.bak" "$1" }
 rmbak() 	{ rm -- "$1.bak" }
 
-brightness() { brightnessctl set "$1%" }
-
-pwncheck() {
-    file $1
-    echo '\n'
-    checksec --file=$1
-    echo '\n'
-    ldd $1
+brightness() {
+    brightnessctl set "$1%"
 }
 
-source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+github() {
+    if [[ -z "$SSH_AUTH_SOCK" || ! -S "$SSH_AUTH_SOCK" ]]; then
+        eval "$(ssh-agent -s)" >/dev/null
+    fi
 
-zstyle ':vcs_info:git:*' formats '%b '
-zstyle ':completion:*' menu select
+    ssh-add "$HOME/.ssh/github" || return 1
+    ssh -T git@github.com
+}
 
-ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=5'
+mkcd() {
+    mkdir -p -- "$1" && cd -- "$1"
+}
 
-bindkey -e
+pwncheck() {
+    if (( $# != 1 )); then
+        echo "Usage: pwncheck <binary>" >&2
+        return 1
+    fi
 
-setopt autocd
-setopt PROMPT_SUBST
-PROMPT='%F{green}%n@%m%f %F{blue}%~%f %F{red}${vcs_info_msg_0_}%f$ '
+    local file="$1"
 
-PROMPT_EOL_MARK=''
+    file -- "$file"
+    echo
+    checksec --file="$file"
+    echo
+    ldd -- "$file"
+}
 
-HISTFILE=~/.zsh_history
-HISTSIZE=100000
-SAVEHIST=100000
+alias cat='batcat'
+alias catp='batcat -pp'
 
-setopt inc_append_history
+alias ls='eza --icons'
+alias la='eza --icons -a'
+alias ll='eza --icons -l'
+alias lla='eza --icons -la'
+alias lt='eza --icons --tree'
+alias lta='eza --icons --tree -a'
 
-alias clearhist="echo > $HISTFILE"
+alias clearhist=': > "$HISTFILE"'
+alias updatezsh='source "$HOME/.zshrc"'
 
-alias grep="rg"
+alias copy='xclip -sel clip'
 
-alias cat="batcat"
-alias catp="batcat -pp"
+alias chmox='chmod +x'
+alias rmcr='rm core.*'
+alias rf='rm -rf'
 
-alias copy="xclip -sel clip"
-alias chmox="chmod +x"
+alias emacs='emacs -nw'
+alias make='make -j$(nproc)'
+alias gdb='gdb -q'
+alias objdump='objdump -M intel'
 
-alias rmcr="rm core.*"
-alias rf="rm -rf"
+alias docker='podman'
+alias curl='curl --path-as-is'
 
-alias emacs="emacs -nw"
-alias make="make -j$(nproc)"
+alias wgup='sudo wg-quick up'
+alias wgdown='sudo wg-quick down'
 
-alias ls="eza --icons"
-alias la="eza --icons -a"
-alias ll="eza --icons -l"
-alias lla="eza --icons -la"
-alias lt="eza --icons --tree"
-alias lta="eza --icons --tree -a"
+alias venv='source "$HOME/Downloads/venv/bin/activate"'
+alias webup='python3 -m http.server 8080'
 
-alias angrinit="cp ~/development/ctf/templates/angr-template.py solve.py; venv"
-alias gdb="gdb -q"
-alias objdump="objdump -M intel"
+alias angrinit='cp "$HOME/development/ctf/templates/angr-template.py" solve.py && venv'
 
-alias github="eval '$(ssh-agent -s)' && ssh-add ~/.ssh/github && ssh -T git@github.com"
-alias curl="curl --path-as-is"
+alias -g NE='2>/dev/null'
 
-alias venv="source ~/Downloads/venv/bin/activate"
-alias webup="python3 -m http.server 8080"
+path=(
+    "$HOME/.local/bin"
+    /opt
+    "$HOME/go/bin"
+    "$HOME/.local/share/gem/ruby/3.3.0/bin"
+    /usr/sbin
+    /sbin
+    $path
+)
 
-alias wgdown="sudo wg-quick down "
-alias wgup="sudo wg-quick up "
+export EDITOR='emacs'
 
-alias docker="podman"
-
-alias updatezsh="source ~/.zshrc"
-
-alias -g NE="2>/dev/null"
-
-export PATH=$PATH:~/.local/bin/:/opt:~/go/bin:~/.local/share/gem/ruby/3.3.0/bin:/usr/sbin:/sbin
-export EDITOR=emacs
-
-if [[ -n "$EAT_SHELL_INTEGRATION_DIR" ]]; then
+if [[ -n "$EAT_SHELL_INTEGRATION_DIR" && \
+      -r "$EAT_SHELL_INTEGRATION_DIR/zsh" ]]; then
     source "$EAT_SHELL_INTEGRATION_DIR/zsh"
     PROMPT="${PROMPT#0}"
 fi

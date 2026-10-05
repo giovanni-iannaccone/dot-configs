@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: Python leakheap
+# key: leakheap
+# --
+log.success(f"LEAKED HEAP: {hex(HEAP)}")

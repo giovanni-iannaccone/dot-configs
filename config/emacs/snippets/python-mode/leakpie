@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: Python leakpie
+# key: leakpie
+# --
+log.success(f"LEAKED PIE BASE: {hex(exe.address)}")

@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: Python leaklibc
+# key: leaklibc
+# --
+log.success(f"LEAKED LIBC: {hex(libc.address)}")

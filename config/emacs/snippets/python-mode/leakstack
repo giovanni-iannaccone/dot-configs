@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: Python leakstack
+# key: leakstack
+# --
+log.success(f"LEAKED STACK: {hex(STACK)}")
