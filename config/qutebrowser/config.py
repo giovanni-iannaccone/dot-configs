@@ -1,7 +1,28 @@
 config.load_autoconfig()
 
-c.input.insert_mode.auto_enter = False
+c.tabs.title.format = "{audio}{current_title}"
 
+c.completion.open_categories = ['searchengines', 'quickmarks', 'bookmarks', 'history', 'filesystem']
+
+c.colors.webpage.darkmode.enabled = True
+c.colors.webpage.darkmode.algorithm = 'lightness-cielab'
+c.colors.webpage.darkmode.policy.images = 'never'
+config.set('colors.webpage.darkmode.enabled', False, 'file://*')
+
+c.tabs.padding = {'top': 5, 'bottom': 5, 'left': 9, 'right': 9}
+c.tabs.width = '7%'
+
+config.set("completion.cmd_history_max_items", 0)
+config.set("content.private_browsing", True)
+config.set("content.webgl", False, "*")
+config.set("content.canvas_reading", False)
+config.set("content.geolocation", False)
+config.set("content.webrtc_ip_handling_policy", "default-public-interface-only")
+
+c.content.blocking.enabled = True
+c.colors.webpage.darkmode.enabled = True
+
+c.input.insert_mode.auto_enter = False
 c.input.forward_unbound_keys = "all"
 
 c.url.searchengines = {"DEFAULT": "https://www.ecosia.org/search?method=index&q={}"}

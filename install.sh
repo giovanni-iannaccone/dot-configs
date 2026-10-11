@@ -35,7 +35,7 @@ PACKAGES_UTILITIES=(
 )
 
 PACKAGES_TERMINAL=(
-    suckless-tools alacritty zsh
+    suckless-tools zsh
 )
 
 PACKAGES_FONTS=(
@@ -56,7 +56,7 @@ msg() {
 }
 
 msg "Updating the system..."
-sudo apt update && sudo apt upgrade
+sudo apt update && sudo apt upgrade -y
 
 msg "Installing core packages..."
 sudo apt-get install -y "${PACKAGES_CORE[@]}" || die "Failed to install core packages"
@@ -81,16 +81,12 @@ sudo apt install eza
 msg "Installing Qutebrowser..."
 sudo apt install qutebrowser
 
-msg "Installing Überzug++..."
-echo 'deb http://download.opensuse.org/repositories/home:/justkidding/Debian_12/ /' \
-  | sudo tee /etc/apt/sources.list.d/home:justkidding.list
-
-curl -fsSL https://download.opensuse.org/repositories/home:/justkidding/Debian_12/Release.key \
-  | gpg --dearmor \
-  | sudo tee /etc/apt/trusted.gpg.d/home_justkidding.gpg > /dev/null
-
-sudo apt update
-sudo apt install ueberzugpp || die "Failed to install Überzug++"
+msg "Installing terminal..."
+(
+    cd "$SCRIPT_DIR/st" || exit 1
+    sudo make install
+) || die "Failed to install st"
+cd .. 
 
 msg "Installing terminal tools..."
 sudo apt-get install -y "${PACKAGES_TERMINAL[@]}" || die "Failed to install terminal tools"

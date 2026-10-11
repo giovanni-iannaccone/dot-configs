@@ -6,9 +6,9 @@ super + b
 super + shift + b
       ~/.local/bin/ungoogled-chromium.AppImage --incognito
 
-# Launch Terminal (Alacritty)
+# Launch Terminal (st)
 super + Return
-	alacritty
+    st
 
 # Toggle Scratchpad Terminal
 super + shift + Return
@@ -24,7 +24,7 @@ super + shift + w
 
 # Launche Editor (emacs)
 super + e
-    emacs
+      emacs
           
 # Launch Wifi Menu
 super + c

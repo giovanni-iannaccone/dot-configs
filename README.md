@@ -1,7 +1,7 @@
 <img width="1920" height="1080" alt="desktop" src="images/desktop.png" /> <br/> <br/>
 
 # 🔧  Configs for my Debian system
-This repository contains my lightweight configurations for Zsh, Alacritty, Emacs, i3, and other tools I use daily. They are tailored for low-level programming and optimized to run smoothly even on older machines. It’s a minimal setup, free from heavy frameworks or flashy themes like Oh My Zsh or Doom, designed to keep development fast, clean, and efficient.
+This repository contains my lightweight configurations for Zsh, st, Emacs, i3, and other tools I use daily. They are tailored for low-level programming and optimized to run smoothly even on older machines. It’s a minimal setup, free from heavy frameworks or flashy themes like Oh My Zsh or Doom, designed to keep development fast, clean, and efficient.
 
 ## 📥 Installation
 The repository includes an `install.sh` script that automates the entire setup process. To run it:
@@ -14,7 +14,7 @@ sudo ./install.sh
 
 ## ⚙️ Utilities
 The installation script also sets up a collection of lightweight, essential utilities to enhance productivity and keep the system minimal:
-- `Alacritty`: fast, GPU-based terminal emulator
+- `st`: fast, minimal terminal emulator
 - `Emacs`: a powerful keyboard‑driven text editor
 - `Dirvish`: a lightweight file manager inside Emacs
 - `Qutebrowser`: minimal web browser
@@ -40,7 +40,7 @@ In window managers like i3, keybindings are crucial and can make the mouse almos
 | Keybind                  | Action                                |
 |--------------------------|---------------------------------------|
 | Super + B                | Start browser (Qute)                  |
-| Super + Enter            | Launch terminal (Alacritty)           |
+| Super + Enter            | Launch terminal (st)                  |
 | Super + Space            | Launch dmenu                          |
 | Super + e                | Start Emacs                           |
 | Super + h                | Show keybindings help                 |
@@ -60,9 +60,11 @@ In window managers like i3, keybindings are crucial and can make the mouse almos
 
 Press Super + h to list all of the keybinds
 
-## 💻 Zsh
+## 💻 Terminal
 
 <img width="1920" height="1080" alt="terminal" src="images/terminal.png" /> <br/> <br/>
+
+I applied two patches to st: one to enable background transparency and another to support scrolling. Together, they make it a minimal yet fast, efficient, and customizable terminal.
 
 I don’t use frameworks like Oh My Zsh or unusual plugins. Instead, I’ve defined aliases to help with commands I can’t always remember, frequently used long commands, and others that make my terminal cleaner and more user-friendly.
 
