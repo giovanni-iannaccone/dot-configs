@@ -17,7 +17,7 @@ The installation script also sets up a collection of lightweight, essential util
 - `st`: fast, minimal terminal emulator
 - `Emacs`: a powerful keyboard‑driven text editor
 - `Dirvish`: a lightweight file manager inside Emacs
-- `Qutebrowser`: minimal web browser
+- `Luakit`: minimal web browser
 - `ImageMagick`: versatile image editor and converter
 - `eza`: a Rust-based ls replacement with icons
 - `bat`: a modern cat replacement with syntax highlighting
@@ -39,7 +39,7 @@ In window managers like i3, keybindings are crucial and can make the mouse almos
 
 | Keybind                  | Action                                |
 |--------------------------|---------------------------------------|
-| Super + B                | Start browser (Qute)                  |
+| Super + B                | Start browser (Luakit)                |
 | Super + Enter            | Launch terminal (st)                  |
 | Super + Space            | Launch dmenu                          |
 | Super + e                | Start Emacs                           |
@@ -107,6 +107,7 @@ I avoid heavy frameworks such as Doom Emacs or Spacemacs and prefer configuring 
 - `marginalia`: adds useful metadata to minibuffer completions
 - `multiple-cursors`: Edit multiple locations in a buffer simultaneously.
 - `orderless`: flexible, space-separated fuzzy-style completion
+- `org-modern`: enhances the visual appearance of org with a modern UI
 - `pdf-tools`: native PDF viewing and navigation
 - `vertico`: a clean and efficient completion interface in the minibuffer
 - `which-key`: displays available keybindings after pressing a prefix key
@@ -125,6 +126,7 @@ I use the classic Emacs keybindings, but I’ve also configured some of my own b
 | `C-x p`    | Project commands            |
 | `C-x t`    | Switch to eat               |
 | `C-.`      | Run an Embark action        |
+| `C-c a`    | Open org agenda 			   |
 | `C-M-p`    | Starts Proced               |
 | `C-M-w`    | Open man pages              |
 | `M-<up>`   | Move the line up            |

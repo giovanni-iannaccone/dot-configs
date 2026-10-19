@@ -1,6 +1,6 @@
-# Launch Browser (Qute)
+# Launch Browser (Luakit)
 super + b
-      qutebrowser
+      luakit
 
 # Launch Private Browser (Chromium)
 super + shift + b

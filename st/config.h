@@ -8,7 +8,7 @@
 static char *font = "JetBrainsMono Nerd Font:style=Bold:pixelsize=17:antialias=true:autohint=true";
 static int borderpx = 2;
 
-float alpha = 0.8;
+float alpha = 0.85;
     
 /*
  * What program is execed by st depends of these precedence rules:

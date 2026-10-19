@@ -78,8 +78,8 @@ echo "deb https://debian.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | su
 sudo apt update
 sudo apt install eza
 
-msg "Installing Qutebrowser..."
-sudo apt install qutebrowser
+msg "Installing Luakit..."
+sudo apt install luakit
 
 msg "Installing terminal..."
 (
