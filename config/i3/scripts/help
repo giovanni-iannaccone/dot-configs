@@ -1,35 +1,48 @@
 #!/bin/sh
 
-KEYBINDINGS=$(awk '
-    /^[a-z]/ && last {
-        printf "%-30s | %s\n", $0, last
-    }
-    { last="" }
-    /^#/ { last=substr($0, 3) }
-' ~/.config/i3/sxhkd/sxhkdrc)
+CONFIG="$HOME/.config/i3/keybinds.conf"
 
-[ -n "$KEYBINDINGS" ] || exit 0
+awk '
+/^[[:space:]]*#[[:space:]]*/ {
+    desc = $0
+    sub(/^[[:space:]]*#[[:space:]]*/, "", desc)
+    next
+}
 
-SELECTED=$(
-    printf '%s\n' "$KEYBINDINGS" |
-    dmenu \
-        -i \
-        -fn 'JetBrainsMono Nerd Font-12' \
-        -nb '#000000' \
-        -nf '#F2F4C8' \
-        -sb '#4C7899' \
-        -sf '#FFFFFF' \
-        -l 20 \
-        -p 'Keybindings:'
-)
+/^[[:space:]]*bindsym[[:space:]]/ {
+    line = $0
+    sub(/^[[:space:]]*bindsym[[:space:]]+/, "", line)
 
-[ -n "$SELECTED" ] || exit 0
+    key = line
+    sub(/[[:space:]].*$/, "", key)
 
-COMMAND=$(printf '%s\n' "$SELECTED" |
-    cut -d'|' -f1 |
-    sed 's/[[:space:]]*$//' |
-    sed 's/^[[:space:]]*//')
+    gsub(/\$mod/, "Super", key)
+    gsub(/Control/, "Ctrl", key)
+    gsub(/Mod1/, "Alt", key)
+    gsub(/Mod4/, "Super", key)
+    gsub(/Return/, "Enter", key)
+    gsub(/BackSpace/, "Backspace", key)
+    gsub(/Escape/, "Esc", key)
+    gsub(/space/, "Space", key)
 
-[ -n "$COMMAND" ] || exit 0
+    if (desc != "")
+        printf "%-30s | %s\n", key, desc
 
-nohup sh -c "$COMMAND" >/dev/null 2>&1 &
+    desc = ""
+    next
+}
+
+/^[[:space:]]*$/ {
+    next
+}
+
+{
+    desc = ""
+}
+' "$CONFIG" | dmenu -i -l 20 \
+                    -fn 'JetBrainsMono Nerd Font-12' \
+                    -nb '#000000' \
+                    -nf '#F2F4C8' \
+                    -sb '#4C7899' \
+                    -sf '#FFFFFF' \
+                    -p 'Keybindings:' >/dev/null

@@ -10,7 +10,7 @@ RESET="\033[0m"
 
 PACKAGES_CORE=(
     xorg xorg-dev xbacklight xbindkeys xvkbd xinput
-    build-essential i3 sxhkd xdotool gnome-keyring
+    build-essential i3 xdotool gnome-keyring
     libnotify-bin libnotify-dev libsecret-tools
 )
 
