@@ -1,8 +1,14 @@
 autoload -Uz compinit vcs_info
-compinit
+compinit -C
 
-zstyle ':completion:*' menu select
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
+zstyle ':completion:*' use-cache yes
+zstyle ':completion:*' cache-path "${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompcache"
+
+zstyle ':vcs_info:*' enable git
 zstyle ':vcs_info:git:*' formats '(%b) '
+zstyle ':vcs_info:git:*' actionformats '(%b|%a) '
+zstyle ':vcs_info:git:*' check-for-changes false
 
 precmd() {
     vcs_info
@@ -26,10 +32,6 @@ bindkey -e
 
 if [[ -r /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh ]]; then
     source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-fi
-
-if [[ -r /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]]; then
-    source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 fi
 
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=5'
@@ -75,8 +77,8 @@ alias catp='batcat -pp'
 
 alias ls='eza --icons'
 alias la='eza --icons -a'
-alias ll='eza --icons -l'
-alias lla='eza --icons -la'
+alias ll='eza --icons -lh'
+alias lla='eza --icons -lha'
 alias lt='eza --icons --tree'
 alias lta='eza --icons --tree -a'
 
@@ -107,6 +109,8 @@ alias angrinit='cp "$HOME/development/ctf/templates/angr-template.py" solve.py &
 
 alias -g NE='2>/dev/null'
 
+typeset -U path PATH
+
 path=(
     "$HOME/.local/bin"
     /opt
@@ -120,7 +124,11 @@ path=(
 export EDITOR='emacs'
 
 if [[ -n "$EAT_SHELL_INTEGRATION_DIR" && \
-      -r "$EAT_SHELL_INTEGRATION_DIR/zsh" ]]; then
+     -r "$EAT_SHELL_INTEGRATION_DIR/zsh" ]]; then
     source "$EAT_SHELL_INTEGRATION_DIR/zsh"
     PROMPT="${PROMPT#0}"
+fi
+
+if [[ -r /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]]; then
+    source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 fi

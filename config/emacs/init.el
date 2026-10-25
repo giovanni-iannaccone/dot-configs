@@ -8,20 +8,23 @@
   (package-refresh-contents)
   (package-install 'use-package))
 
+(blink-cursor-mode 0)
+(winner-mode 1)
+
 (require 'use-package)
 
-(setq use-package-always-ensure t
-      use-package-always-defer t
-      inhibit-startup-screen t
-      inhibit-splash-screen t
-      initial-scratch-message nil
-      ring-bell-function 'ignore
-      use-file-dialog nil
-      column-number-mode t
-      gc-cons-threshold (* 64 1024 1024))
+(setq gc-cons-threshold (* 64 1024 1024)
+      gc-cons-percentage 0.6)
+
+(add-hook 'emacs-startup-hook
+          (lambda ()
+            (setq gc-cons-threshold (* 16 1024 1024)
+                  gc-cons-percentage 0.1)))
 
 (setq yank-excluded-properties
       '(category field mouse-face))
+
+(setq native-comp-async-report-warnings-errors 'silent)
 
 (setq-default indent-tabs-mode nil
               make-backup-files nil
@@ -31,12 +34,6 @@
 
 (add-to-list 'default-frame-alist
              '(font . "JetBrainsMono NF-13"))
-
-(blink-cursor-mode 0)
-(menu-bar-mode 0)
-(scroll-bar-mode -1)
-(tool-bar-mode -1)
-(winner-mode 1)
 
 (use-package emacs
   :init
@@ -102,10 +99,18 @@
 (global-set-key (kbd "<f5>") #'search-selection-with-eww)
 (global-set-key (kbd "C-<f5>") #'search-selection-with-browser)
 
+(global-set-key (kbd "C-c k") #'kill-matching-buffers-no-ask)
+
+(global-set-key (kbd "C-S-<left>") #'switch-to-next-buffer)
+(global-set-key (kbd "C-S-<right>") #'switch-to-prev-buffer)
+
 (global-set-key (kbd "C-M-w") #'woman)
 
 (global-set-key (kbd "C-=") 'text-scale-increase)
 (global-set-key (kbd "C--") 'text-scale-decrease)
+
+(global-set-key (kbd "C-c <left>")  #'winner-undo)
+(global-set-key (kbd "C-c <right>") #'winner-redo)
 
 (use-package helpful
   :bind
@@ -135,6 +140,11 @@
         ("<down>" . isearch-repeat-forward)
         ("<up>" . isearch-repeat-backward)))
 
+(use-package undo-fu
+  :bind
+  (("C-z"       . undo-fu-only-undo)
+   ("C-S-z"     . undo-fu-only-redo)))
+
 (use-package vertico
   :init
   (vertico-mode 1))
@@ -151,12 +161,29 @@
 
 (use-package consult
   :bind
-  (("C-x b" . consult-buffer)
-   ("M-g g" . consult-goto-line)
-   ("M-s l" . consult-line)
-   ("M-s r" . consult-ripgrep)
-   ("M-s f" . consult-find)
-   ("M-y" . consult-yank-pop)))
+  (("C-x b"   . consult-buffer)
+   ("M-g g"   . consult-goto-line)
+   ("M-s l"   . consult-line)
+   ("M-s r"   . consult-ripgrep)
+   ("M-s f"   . consult-find)
+   ("M-y"     . consult-yank-pop)
+   ("C-c i"   . consult-imenu)))
+
+(use-package ace-window
+  :bind
+  (("M-o" . ace-window))
+  :custom
+  (aw-dispatch-always t)
+  (aw-scope 'frame)
+  (aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
+
+(use-package ibuffer
+  :ensure nil
+  :bind ("C-x C-b" . ibuffer)
+  :custom
+  (ibuffer-use-other-window nil)
+  (ibuffer-default-sorting-mode 'recency)
+  (ibuffer-show-empty-filter-groups nil))
 
 (use-package embark
   :bind
@@ -248,10 +275,8 @@
   :custom
   (shell-file-name "/bin/zsh")
   (eat-shell "/bin/zsh")
-  (eat-term-scrollback-size 1000)
   (eat-enable-directory-tracking t)
-  (eat-shell-prompt-annotation-success-margin-indicator "")
-  (eat-shell-prompt-annotation-failure-margin-indicator "")
+  (eat-shell-prompt-annotation-success-margin-indicator "✔")
   (eat-term-scrollback-size (* 100 1024))
   :bind
   ("C-x t" . my-eat-toggle))
@@ -332,6 +357,18 @@
 
 (setq yas-indent-line 'fixed)
 
+(with-eval-after-load 'woman
+  (setq woman-fontify t
+        woman-bold-headings t
+        woman-fill-frame t)
+
+  (set-face-attribute 'woman-bold nil
+                      :inherit 'bold
+                      :foreground "#00A8FF")
+
+  (set-face-attribute 'woman-italic nil
+                      :inherit 'italic
+                      :foreground "#00CC00"))
 (use-package tramp
   :ensure nil
   :custom
@@ -362,13 +399,9 @@
   (("C-c m m" . mc/mark-more-like-this-extended)
    ("C-c m l" . mc/mark-lines)))
 
-(load-theme 'debian-i3 t)
-
 (with-eval-after-load 'eglot
   (set-face-attribute 'eglot-inlay-hint-face nil
                       :height 1.0))
-
-(add-to-list 'default-frame-alist '(alpha-background . 80))
 
 (unless (display-graphic-p)
   (set-face-background 'default "unspecified"))
