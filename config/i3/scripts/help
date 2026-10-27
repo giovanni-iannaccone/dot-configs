@@ -26,7 +26,7 @@ awk '
     gsub(/space/, "Space", key)
 
     if (desc != "")
-        printf "%-30s | %s\n", key, desc
+        printf "%-30s %s\n", key, desc
 
     desc = ""
     next
@@ -39,10 +39,4 @@ awk '
 {
     desc = ""
 }
-' "$CONFIG" | dmenu -i -l 20 \
-                    -fn 'JetBrainsMono Nerd Font-12' \
-                    -nb '#000000' \
-                    -nf '#F2F4C8' \
-                    -sb '#4C7899' \
-                    -sf '#FFFFFF' \
-                    -p 'Keybindings:' >/dev/null
+' "$CONFIG" | ~/.config/dmenu/dmenu.sh -l 20 -p 'Keybindings:' >/dev/null

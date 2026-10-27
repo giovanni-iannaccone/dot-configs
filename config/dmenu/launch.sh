@@ -9,14 +9,7 @@ APPS=$(
     done |
     sort -f |
     cut -f1 |
-    dmenu \
-        -i \
-        -fn 'JetBrainsMono Nerd Font-12' \
-        -nb '#000000' \
-        -nf '#F2F4F8' \
-        -sb '#4C7899' \
-        -sf '#FFFFFF' \
-        -p 'Apps:'
+    ~/.config/dmenu/dmenu.sh -p 'Apps:'
 )
 
 [ -n "$APPS" ] || exit 0

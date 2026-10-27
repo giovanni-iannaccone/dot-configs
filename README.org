@@ -1,10 +1,10 @@
-#+html: <img width="1920" height="1080" alt="desktop" src="images/desktop.png" /> <br/> <br/>
+#+html: <img width="1920" height="1080" alt="desktop" src="images/desktop.png" />
 
 * 🔧  Configs for my Debian system
 This repository contains my lightweight configurations for Zsh, st, Emacs, i3, and other tools I use daily. They are tailored for low-level programming and optimized to run smoothly even on older machines. It’s a minimal setup, free from heavy frameworks or flashy themes like Oh My Zsh or Doom, designed to keep development fast, clean, and efficient.
 
 ** 📥 Installation
-The repository includes an `install.sh` script that automates the entire setup process. To run it:
+The repository includes an =install.sh= script that automates the entire setup process. To run it:
 
 #+begin_src 
 chmod +x install.sh
@@ -32,7 +32,7 @@ Other tools (such as =htop=) aren't installed because they can be easly replaced
 
 ** 📐 i3
 
-#+html: <img width="1920" height="1080" alt="wifi" src="images/wifi.png" /> <br/> <br/>
+#+html: <img width="1920" height="1080" alt="wifi" src="images/wifi.png" />
 
 Since i3 is based on X11, the application launcher is =dmenu=. Press =Super + Space= to open it, navigate with the arrow keys or type the name of an app to search, and press Enter to launch your selection.
 
@@ -64,7 +64,7 @@ Press Super + h to list all of the keybinds
 
 ** 💻 Terminal
 
-#+html: <img width="1920" height="1080" alt="terminal" src="images/terminal.png" /> <br/> <br/>
+#+html: <img width="1920" height="1080" alt="terminal" src="images/terminal.png" />
 
 I applied two patches to st: one to enable background transparency and another to support scrolling. Together, they make it a minimal yet fast, efficient, and customizable terminal.
 
@@ -91,7 +91,7 @@ And many others...
 
 ** 📘 Emacs
 
-#+html: <img width="1920" height="1080" alt="emacs" src="images/emacs.png" /> <br/> <br/>
+#+html: <img width="1920" height="1080" alt="emacs" src="images/emacs.png" />
 
 Emacs is configured as the central part of my development workflow. It supports several programming languages, including C/C++, Go, and Python and integrates tools such as Git, terminals, project management, file navigation, PDF viewing, and LSP-based development.
 
