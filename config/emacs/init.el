@@ -42,6 +42,8 @@
 (add-hook 'prog-mode-hook #'display-line-numbers-mode)
 (setq display-line-numbers-type 'relative)
 
+(defvaralias 'woman-topic-history 'Man-topic-history)
+
 (use-package server
   :ensure nil
   :defer 1
@@ -281,37 +283,6 @@
   :bind
   ("C-x t" . my-eat-toggle))
 
-(defvar pwn-file nil)
-
-(defun pwn ()
-  (interactive)
-  (save-buffer)
-  (setq pwn-file (buffer-file-name))
-  (eat)
-  (run-at-time
-   0.1 nil
-   (lambda ()
-     (when (and (get-buffer "*eat*")
-                (buffer-live-p (get-buffer "*eat*")))
-       (with-current-buffer "*eat*"
-         (eat-term-send-string
-          eat-terminal
-          (format "python3 -u %s\n"
-                  (shell-quote-argument pwn-file))))))))
-
-(defun pwn-restart ()
-  (interactive)
-  (when (and (boundp 'eat-terminal)
-             eat-terminal)
-    (eat-term-send-string eat-terminal "\C-c")
-    (eat-term-send-string
-     eat-terminal
-     (format "python3 -u %s\n"
-             (shell-quote-argument pwn-file)))))
-
-(global-set-key (kbd "C-c d") #'pwn)
-(global-set-key (kbd "C-c D") #'pwn-restart)
-
 (use-package savehist
   :ensure nil
   :init
@@ -361,14 +332,15 @@
   (setq woman-fontify t
         woman-bold-headings t
         woman-fill-frame t)
-
+  
   (set-face-attribute 'woman-bold nil
                       :inherit 'bold
                       :foreground "#00A8FF")
-
+  
   (set-face-attribute 'woman-italic nil
                       :inherit 'italic
                       :foreground "#00CC00"))
+
 (use-package tramp
   :ensure nil
   :custom
@@ -399,6 +371,9 @@
   (("C-c m m" . mc/mark-more-like-this-extended)
    ("C-c m l" . mc/mark-lines)))
 
+(use-package ctftime
+  :ensure t)
+
 (with-eval-after-load 'eglot
   (set-face-attribute 'eglot-inlay-hint-face nil
                       :height 1.0))
@@ -408,3 +383,4 @@
 
 (add-to-list 'load-path "~/.config/emacs/lisp")
 (require 'orgconfig)
+(require 'pwn)
