@@ -1,30 +1,30 @@
-(require 'package)
-
-(dolist (archive '(("melpa" . "https://melpa.org/packages/")
-                   ("gnu"   . "https://elpa.gnu.org/packages/")))
-  (add-to-list 'package-archives archive t))
-
-(unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'use-package))
-
-(blink-cursor-mode 0)
-(winner-mode 1)
-
-(require 'use-package)
-
-(setq gc-cons-threshold (* 64 1024 1024)
-      gc-cons-percentage 0.6)
-
 (add-hook 'emacs-startup-hook
           (lambda ()
             (setq gc-cons-threshold (* 16 1024 1024)
                   gc-cons-percentage 0.1)))
 
+(require 'package)
+
+(setq package-archives
+      '(("melpa" . "https://melpa.org/packages/")
+        ("gnu"   . "https://elpa.gnu.org/packages/")))
+
+(unless (require 'use-package nil t)
+  (package-refresh-contents)
+  (package-install 'use-package)
+  (require 'use-package))
+
 (setq yank-excluded-properties
       '(category field mouse-face))
 
-(setq native-comp-async-report-warnings-errors 'silent)
+(setq native-comp-async-report-warnings-errors 'silent 
+      sentence-end-double-space nil
+      require-final-newline t
+      scroll-conservatively 101
+      scroll-margin 5
+      scroll-preserve-screen-position t
+      enable-recursive-minibuffers t
+      display-line-numbers-type 'relative)
 
 (setq-default indent-tabs-mode nil
               make-backup-files nil
@@ -32,16 +32,17 @@
               c-basic-offset 4
               c-basic-indent 4)
 
-(add-to-list 'default-frame-alist
-             '(font . "JetBrainsMono NF-13"))
-
-(use-package emacs
-  :init
-  (defalias 'yes-or-no-p 'y-or-n-p))
+(blink-cursor-mode -1)
+(winner-mode 1)
+(delete-selection-mode 1)
+(electric-pair-mode 1)
+(show-paren-mode 1)
+(column-number-mode 1)
+(global-auto-revert-mode 1)
 
 (add-hook 'prog-mode-hook #'display-line-numbers-mode)
-(setq display-line-numbers-type 'relative)
 
+(fset 'yes-or-no-p 'y-or-n-p)
 (defvaralias 'woman-topic-history 'Man-topic-history)
 
 (use-package server
@@ -50,17 +51,6 @@
   :config
   (unless (server-running-p)
     (server-start)))
-
-(defun move-line-up ()
-  (interactive)
-  (transpose-lines 1)
-  (forward-line -2))
-
-(defun move-line-down ()
-  (interactive)
-  (forward-line 1)
-  (transpose-lines 1)
-  (forward-line -1))
 
 (defun mark-whole-line ()
   (interactive)
@@ -89,22 +79,16 @@
   (interactive "r")
   (my-search-selection start end #'browse-url))
 
-(delete-selection-mode 1)
-
 (global-set-key (kbd "C-l") #'mark-whole-line)
 (global-set-key (kbd "C-v") #'yank)
-(global-set-key (kbd "C-z") #'undo)
-
-(global-set-key (kbd "M-<up>") #'move-line-up)
-(global-set-key (kbd "M-<down>") #'move-line-down)
 
 (global-set-key (kbd "<f5>") #'search-selection-with-eww)
 (global-set-key (kbd "C-<f5>") #'search-selection-with-browser)
 
 (global-set-key (kbd "C-c k") #'kill-matching-buffers-no-ask)
 
-(global-set-key (kbd "C-S-<left>") #'switch-to-next-buffer)
-(global-set-key (kbd "C-S-<right>") #'switch-to-prev-buffer)
+(global-set-key (kbd "C-<tab>") #'switch-to-next-buffer)
+(global-set-key (kbd "C-<iso-lefttab>") #'switch-to-prev-buffer)
 
 (global-set-key (kbd "C-M-w") #'woman)
 
@@ -114,20 +98,8 @@
 (global-set-key (kbd "C-c <left>")  #'winner-undo)
 (global-set-key (kbd "C-c <right>") #'winner-redo)
 
-(use-package helpful
-  :bind
-  (("C-h f" . helpful-callable)
-   ("C-h v" . helpful-variable)
-   ("C-h k" . helpful-key)
-   ("C-h x" . helpful-command)))
-
-(use-package ace-link
-  :init
-  (ace-link-setup-default))
-
 (use-package which-key
   :ensure t
-  :defer 2
   :init
   (which-key-mode))
 
@@ -164,12 +136,19 @@
 (use-package consult
   :bind
   (("C-x b"   . consult-buffer)
+   ("C-x C-r" . consult-recent-file)
+   ("C-c i"   . consult-imenu)
    ("M-g g"   . consult-goto-line)
    ("M-s l"   . consult-line)
    ("M-s r"   . consult-ripgrep)
    ("M-s f"   . consult-find)
-   ("M-y"     . consult-yank-pop)
-   ("C-c i"   . consult-imenu)))
+   ("M-y"     . consult-yank-pop)))
+
+(use-package move-text
+  :ensure t
+  :bind
+  (("M-<up>"   . move-text-up)
+   ("M-<down>" . move-text-down)))
 
 (use-package ace-window
   :bind
@@ -208,6 +187,17 @@
   :bind
   ("C-c p" . cape-prefix-map))
 
+(use-package helpful
+  :bind
+  (("C-h f" . helpful-callable)
+   ("C-h v" . helpful-variable)
+   ("C-h k" . helpful-key)
+   ("C-h x" . helpful-command)))
+
+(use-package ace-link
+  :init
+  (ace-link-setup-default))
+
 (use-package eglot
   :hook
   ((c-mode
@@ -223,6 +213,10 @@
   (add-to-list 'eglot-server-programs
                '((python-mode python-ts-mode)
                  "basedpyright-langserver" "--stdio")))
+
+(with-eval-after-load 'eglot
+  (set-face-attribute 'eglot-inlay-hint-face nil
+                      :height 1.0))
 
 (setq-default
  eglot-workspace-configuration
@@ -240,7 +234,6 @@
                (reportUnknownParameterType . "none")))))))))
 
 (use-package magit
-  :defer t
   :bind
   ("C-x g" . magit-status))
 
@@ -288,14 +281,8 @@
   :init
   (savehist-mode 1))
 
-(use-package pdf-tools
-  :mode ("\\.pdf\\'" . pdf-view-mode)
-  :config
-  (pdf-tools-install :no-query))
-
 (use-package proced
   :ensure nil
-  :defer t
   :commands proced
   :bind (("C-M-p" . proced))
   :custom
@@ -314,19 +301,16 @@
   :init
   (recentf-mode 1)
   :custom
-  (recentf-max-saved-items 200)
-  :bind
-  ("C-x C-r" . #'consult-recent-file))
+  (recentf-max-saved-items 200))
 
 (use-package yasnippet
   :ensure t
   :hook (prog-mode . yas-minor-mode)
+  :custom
+  (yas-snippet-dirs '("~/.config/emacs/snippets"))
+  (yas-indent-line 'fixed)
   :config
-  (setq yas-snippet-dirs
-        '("~/.config/emacs/snippets"))
   (yas-reload-all))
-
-(setq yas-indent-line 'fixed)
 
 (with-eval-after-load 'woman
   (setq woman-fontify t
@@ -371,16 +355,16 @@
   (("C-c m m" . mc/mark-more-like-this-extended)
    ("C-c m l" . mc/mark-lines)))
 
+(use-package pdf-tools
+  :mode ("\\.pdf\\'" . pdf-view-mode)
+  :config
+  (pdf-tools-install :no-query))
+
 (use-package ctftime
   :ensure t)
-
-(with-eval-after-load 'eglot
-  (set-face-attribute 'eglot-inlay-hint-face nil
-                      :height 1.0))
 
 (unless (display-graphic-p)
   (set-face-background 'default "unspecified"))
 
-(add-to-list 'load-path "~/.config/emacs/lisp")
 (require 'orgconfig)
 (require 'pwn)

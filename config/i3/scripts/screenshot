@@ -4,10 +4,10 @@ file="$HOME/Pictures/Screenshots/$(date +%Y-%m-%d_%H-%M-%S).png"
 
 case "$1" in
     full)
-        maim "$file"
+        maim "$file" --hidecursor
         ;;
     select)
-        maim -s "$file"
+        maim -s "$file" --hidecursor 
         ;;
 esac
 

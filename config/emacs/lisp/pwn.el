@@ -10,60 +10,58 @@
       (setq pwnit-target (find-elf))))
 
 (defun find-elf ()
-  (let* ((root default-directory)
-         (current (buffer-file-name))
-         (current-elf
-          (when (and current (file-executable-p current))
-            (when (string-match-p
-                   "ELF"
-                   (shell-command-to-string
-                    (format "file -b %s"
-                            (shell-quote-argument current))))
-              current)))
-         (output
-          (unless current-elf
-            (shell-command-to-string
-             (format "find %s -type f -executable -exec file {} +"
-                     (shell-quote-argument root)))))
-         (elfs
-          (when output
-            (seq-filter
-             (lambda (line)
-               (string-match-p ":.*ELF" line))
-             (split-string output "\n" t))))
-         (files
-          (mapcar
-           (lambda (line)
-             (car (split-string line ": ")))
-           elfs)))
-    (or current-elf
-        (cond
-         ((null files)
-          (user-error "No ELF found in %s" root))
-         ((= (length files) 1)
-          (car files))
-         (t
-          (completing-read "Select ELF: " files nil t))))))
+  (or (and-let* ((file (buffer-file-name))
+                 (_ (file-executable-p file))
+                 (_ (string-match-p "ELF"
+                      (shell-command-to-string
+                       (format "file -b %s" (shell-quote-argument file))))))
+        file)
+      (pcase (seq-keep
+              (lambda (s)
+                (and (string-match "^\\(.*\\):.*ELF" s)
+                     (match-string 1 s)))
+              (split-string
+               (shell-command-to-string
+                (format "find %s -type f -executable -exec file {} +"
+                        (shell-quote-argument default-directory)))
+               "\n" t))
+        (`() (user-error "No ELF found in %s" default-directory))
+        (`(,file) file)
+        (files (completing-read "Select ELF: " files nil t)))))
 
 (defun pwnit/check ()
   (interactive)
-  (let* ((elf (pwnit/target))
-         (output
-          (shell-command-to-string
-           (concat "pwnit check "
-                   (shell-quote-argument elf))))
-         (colored (ansi-color-apply output))
+  (let* ((output (ansi-color-apply
+                  (shell-command-to-string
+                   (concat "pwnit check "
+                           (shell-quote-argument (pwnit/target))))))
          (pos 0))
-
-    (while (< pos (length colored))
-      (let* ((next (next-property-change pos colored))
-             (next (or next (length colored)))
-             (font-face (get-text-property pos 'font-lock-face colored)))
-        (when font-face
-          (put-text-property pos next 'face font-face colored))
+    (while (< pos (length output))
+      (let ((next (or (next-property-change pos output)
+                      (length output))))
+        (when-let ((face (get-text-property pos 'font-lock-face output)))
+          (put-text-property pos next 'face face output))
         (setq pos next)))
+    
+    (message "%s" (string-trim-right output))))
 
-    (minibuffer-message "%s" (string-trim-right colored))))
+(defun pwnit/check-reset ()
+  (interactive)
+  (let* ((pwnit-target (setq pwnit-target (find-elf)))
+         (output (ansi-color-apply
+                  (shell-command-to-string
+                   (concat "pwnit check "
+                           (shell-quote-argument pwnit-target)))))
+         (pos 0))
+    
+    (while (< pos (length output))
+      (let ((next (or (next-property-change pos output)
+                      (length output))))
+        (when-let ((face (get-text-property pos 'font-lock-face output)))
+          (put-text-property pos next 'face face output))
+        (setq pos next)))
+    
+    (message "%s" (string-trim-right output))))
 
 (defun pwnit/start-filter (proc output)
   (let ((buffer (process-buffer proc)))
@@ -157,6 +155,7 @@
 (global-set-key (kbd "C-c D") #'solve/restart)
 
 (global-set-key (kbd "C-c w") #'pwnit/check)
+(global-set-key (kbd "C-c W") #'pwnit/check-reset)
 (global-set-key (kbd "C-c s") #'pwnit/start)
 
 (provide 'pwn)
