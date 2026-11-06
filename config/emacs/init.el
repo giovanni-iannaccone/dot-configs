@@ -1,21 +1,17 @@
-(add-hook 'emacs-startup-hook
-          (lambda ()
-            (setq gc-cons-threshold (* 16 1024 1024)
-                  gc-cons-percentage 0.1)))
-
 (require 'package)
 
 (setq package-archives
       '(("melpa" . "https://melpa.org/packages/")
         ("gnu"   . "https://elpa.gnu.org/packages/")))
 
-(unless (require 'use-package nil t)
+(unless (package-installed-p 'use-package)
   (package-refresh-contents)
-  (package-install 'use-package)
-  (require 'use-package))
+  (package-install 'use-package))
 
-(setq yank-excluded-properties
-      '(category field mouse-face))
+(require 'use-package)
+
+(setq use-package-always-defer t
+      yank-excluded-properties '(category field mouse-face))
 
 (setq native-comp-async-report-warnings-errors 'silent 
       sentence-end-double-space nil
@@ -24,6 +20,7 @@
       scroll-margin 5
       scroll-preserve-screen-position t
       enable-recursive-minibuffers t
+      read-process-output-max (* 1024 1024)
       display-line-numbers-type 'relative)
 
 (setq-default indent-tabs-mode nil
@@ -38,7 +35,6 @@
 (electric-pair-mode 1)
 (show-paren-mode 1)
 (column-number-mode 1)
-(global-auto-revert-mode 1)
 
 (add-hook 'prog-mode-hook #'display-line-numbers-mode)
 
@@ -99,7 +95,6 @@
 (global-set-key (kbd "C-c <right>") #'winner-redo)
 
 (use-package which-key
-  :ensure t
   :init
   (which-key-mode))
 
@@ -142,33 +137,28 @@
    ("M-s l"   . consult-line)
    ("M-s r"   . consult-ripgrep)
    ("M-s f"   . consult-find)
-   ("M-y"     . consult-yank-pop)))
+   ("M-y"     . consult-yank-pop)
+   ("M-s m"    . consult-multi-occur)))
 
 (use-package move-text
-  :ensure t
   :bind
   (("M-<up>"   . move-text-up)
    ("M-<down>" . move-text-down)))
 
-(use-package ace-window
-  :bind
-  (("M-o" . ace-window))
-  :custom
-  (aw-dispatch-always t)
-  (aw-scope 'frame)
-  (aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
-
 (use-package ibuffer
   :ensure nil
-  :bind ("C-x C-b" . ibuffer)
+  :bind
+  ("C-x C-b" . ibuffer)
   :custom
   (ibuffer-use-other-window nil)
   (ibuffer-default-sorting-mode 'recency)
-  (ibuffer-show-empty-filter-groups nil))
+  (ibuffer-show-empty-filter-groups nil)
+  (ibuffer-expert t))
 
 (use-package embark
   :bind
-  (("C-." . embark-act)
+  (("C-."   . embark-act)
+   ("C-;"   . embark-dwim)
    ("C-h B" . embark-bindings)))
 
 (use-package embark-consult
@@ -180,12 +170,20 @@
   (corfu-auto-delay 0.1)
   (corfu-auto-prefix 1)
   (corfu-cycle t)
+  (corfu-preselect 'prompt)
+  (corfu-popupinfo-delay '(0.5 . 0.2))
   :init
-  (global-corfu-mode 1))
+  (global-corfu-mode 1)
+  (corfu-popupinfo-mode 1))
 
 (use-package cape
   :bind
-  ("C-c p" . cape-prefix-map))
+  ("C-c p" . cape-prefix-map)
+  :init
+  (add-to-list 'completion-at-point-functions
+               #'cape-file)
+  (add-to-list 'completion-at-point-functions
+               #'cape-dabbrev))
 
 (use-package helpful
   :bind
@@ -194,19 +192,28 @@
    ("C-h k" . helpful-key)
    ("C-h x" . helpful-command)))
 
-(use-package ace-link
-  :init
-  (ace-link-setup-default))
+(setq treesit-languages
+      '((c-mode      . c-ts-mode)
+        (c++-mode    . c++-ts-mode)
+        (python-mode . python-ts-mode)
+        (go-mode     . go-ts-mode)))
+
+(use-package treesit-auto
+  :custom
+  (treesit-auto-install 'prompt)
+  :config
+  (treesit-auto-add-to-auto-mode-alist 'all)
+  (global-treesit-auto-mode 1))
+
+(setq major-mode-remap-alist treesit-languages)
 
 (use-package eglot
-  :hook
-  ((c-mode
-    c++-mode
-    go-mode
-    python-mode
-    python-ts-mode)
-   . eglot-ensure)
+  :hook (prog-mode . (lambda ()
+                       (when (project-current)
+                         (eglot-ensure))))
   :custom
+  (eglot-autoshutdown t)
+  (eglot-sync-connect 0)
   (eglot-ignored-server-capabilities
    '(:documentOnTypeFormattingProvider))
   :config
@@ -218,20 +225,43 @@
   (set-face-attribute 'eglot-inlay-hint-face nil
                       :height 1.0))
 
-(setq-default
- eglot-workspace-configuration
- '((:basedpyright
-    . ((analysis
-        . ((typeCheckingMode . "basic")
-           (diagnosticSeverityOverrides
-            . ((reportUnknownVariableType . "none")
-               (reportUnknownMemberType . "none")
-               (reportUnknownArgumentType . "none")
-               (reportOptionalMemberAccess . "none")
-               (reportOperatorIssue . "none")
-               (reportWildcardImportFromLibrary . "none")
-               (reportAttributeAccessIssue . "none")
-               (reportUnknownParameterType . "none")))))))))
+(setq eglot-workspace-configuration
+      '((:basedpyright
+         . ((analysis
+             . ((typeCheckingMode . "basic")
+                (diagnosticSeverityOverrides
+                 . ((reportUnknownVariableType . "none")
+                    (reportUnknownMemberType . "none")
+                    (reportUnknownArgumentType . "none")
+                    (reportOptionalMemberAccess . "none")
+                    (reportOperatorIssue . "none")
+                    (reportWildcardImportFromLibrary . "none")
+                    (reportAttributeAccessIssue . "none")
+                    (reportUnknownParameterType . "none")))))))))
+
+(use-package eldoc
+  :ensure nil
+  :custom
+  (eldoc-idle-delay 0.3)
+  (eldoc-echo-area-use-multiline-p nil))
+
+(use-package avy
+  :bind
+  (("C-:" . avy-goto-char)
+   ("M-g l" . avy-goto-line)
+   ("M-g w" . avy-goto-word-1)))
+
+(use-package ace-link
+  :init
+  (ace-link-setup-default))
+
+(use-package ace-window
+  :bind
+  (("M-o" . ace-window))
+  :custom
+  (aw-dispatch-always t)
+  (aw-scope 'frame)
+  (aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
 
 (use-package magit
   :bind
@@ -252,8 +282,9 @@
   :init
   (global-auto-revert-mode 1))
 
+(put 'dired-find-alternate-file 'disabled nil)
+
 (use-package dirvish
-  :ensure t
   :init
   (dirvish-override-dired-mode 1)
   :bind
@@ -266,7 +297,6 @@
     (eat)))
 
 (use-package eat
-  :ensure t
   :custom
   (shell-file-name "/bin/zsh")
   (eat-shell "/bin/zsh")
@@ -304,26 +334,12 @@
   (recentf-max-saved-items 200))
 
 (use-package yasnippet
-  :ensure t
   :hook (prog-mode . yas-minor-mode)
   :custom
   (yas-snippet-dirs '("~/.config/emacs/snippets"))
   (yas-indent-line 'fixed)
   :config
   (yas-reload-all))
-
-(with-eval-after-load 'woman
-  (setq woman-fontify t
-        woman-bold-headings t
-        woman-fill-frame t)
-  
-  (set-face-attribute 'woman-bold nil
-                      :inherit 'bold
-                      :foreground "#00A8FF")
-  
-  (set-face-attribute 'woman-italic nil
-                      :inherit 'italic
-                      :foreground "#00CC00"))
 
 (use-package tramp
   :ensure nil
@@ -350,18 +366,30 @@
   (uniquify-buffer-name-style 'forward))
 
 (use-package multiple-cursors
-  :ensure t
   :bind
   (("C-c m m" . mc/mark-more-like-this-extended)
    ("C-c m l" . mc/mark-lines)))
 
 (use-package pdf-tools
   :mode ("\\.pdf\\'" . pdf-view-mode)
+  :defer t
   :config
   (pdf-tools-install :no-query))
 
-(use-package ctftime
-  :ensure t)
+(use-package ctftime)
+
+(with-eval-after-load 'woman
+  (setq woman-fontify t
+        woman-bold-headings t
+        woman-fill-frame t)
+  
+  (set-face-attribute 'woman-bold nil
+                      :inherit 'bold
+                      :foreground "#00A8FF")
+  
+  (set-face-attribute 'woman-italic nil
+                      :inherit 'italic
+                      :foreground "#00CC00"))
 
 (unless (display-graphic-p)
   (set-face-background 'default "unspecified"))

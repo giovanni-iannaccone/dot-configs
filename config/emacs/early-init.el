@@ -1,3 +1,6 @@
+(setq gc-cons-threshold most-positive-fixnum
+      gc-cons-percentage 0.6)
+
 (load-theme 'debian-i3 t)
 
 (add-to-list 'load-path "~/.config/emacs/lisp")
@@ -20,5 +23,7 @@
       use-file-dialog nil
       column-number-mode t)
 
-(setq gc-cons-threshold most-positive-fixnum
-      gc-cons-percentage 0.6)
+(add-hook 'emacs-startup-hook
+          (lambda ()
+            (setq gc-cons-threshold (* 32 1024 1024)
+                  gc-cons-percentage 0.1)))
